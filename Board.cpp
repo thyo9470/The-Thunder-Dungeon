@@ -30,8 +30,8 @@ std::string TileTypeToString(TileType tile){
   Creates a board with a given amount of layers with given dimensions
 
   @param  (int) layers - The number of rendering layers needed
-          (int) width - The width of the dungeon
-          (int) height - The height of the dungeon
+          (int) width - Number of rooms wide the dungeon is
+          (int) height - Number of rooms high the dungeon is
 */
 Board::Board(int layers, int width, int height){
  
