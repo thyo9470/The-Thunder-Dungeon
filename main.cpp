@@ -11,11 +11,12 @@ int main(){
 
   srand(time(NULL));
 
-  Board* board = new Board(2, 3, 5);
+  Board* board = new Board(2, 2, 5);
 
-  board->PrintBoard();
 
   board->GenerateDungeon();
+
+  board->PrintBoard();
 
   return 1;
 }

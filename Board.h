@@ -13,7 +13,7 @@ struct Position{
   int x_;
   int y_;
 
-  Position(){}
+  Position():x_(0),y_(0){}
 
   Position(int x, int y){
     x_ = x;

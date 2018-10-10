@@ -50,7 +50,7 @@ Board::Board(int layers, int width, int height){
   std::vector< std::vector<TileType> > blank_board;
  
   for(int i = 0; i < height_res_; i++){
-    std::vector<TileType> blank_row(width_res_, TileType::Empty);
+    std::vector<TileType> blank_row(width_res_, TileType::Wall);
     blank_board.push_back( blank_row );
   }
 
@@ -77,11 +77,12 @@ void Board::GenerateDungeon(){
 
   int temp_width = width_*2+1;
   int temp_height = height_*2+1;
- 
+
   for(int i = 0; i < temp_height; i++){
     std::vector<TileType> blank_row(temp_width, TileType::Empty);
     dungeon.push_back( blank_row );
   }
+
   /*
      -------------------------------------------
       Part 2 - Generate maze using radnom Kruskel's algorithm
@@ -192,19 +193,65 @@ void Board::GenerateDungeon(){
   walls.clear();
   cells.clear();	
 
+  // Apply our Dungeon layout to actual board
+
+  for(int x = 1; x < temp_width-1; x++){
+    for(int y = 1; y < temp_height-1; y++){
+      if(dungeon[y][x] == TileType::Empty){
+         
+        // if this is the position of a room
+        if( (x%2 == 1) && (y%2 == 1) ){
+
+          Position room_center(x*3,y*3);
+  
+          int room_size =  
+
+          // make room at position
+          for(int i = room_center.x_-1; i <= room_center.x_+1; i++){
+            for(int j = room_center.y_-1; j <= room_center.y_+1; j++){
+              board_[0][j][i] = TileType::Empty;
+            }
+          }
+
+        } 
+        // if this is the position of a hallway
+        else if( (x%2==1) || (y%2 == 1)  ){
+          
+          bool side = true;
+          if(y%2 == 0){
+            side = false;
+          } 
 
 
+          if(side){
+
+            int x_start = (x-1)*3;
+
+            int x_end = (x+1)*3;
+
+            for(int i = x_start; i < x_end; i++){
+              board_[0][y*3][i] = TileType::Empty;  
+            }
+          }else{
+            int y_start = (y-1)*3;
+
+            int y_end = (y+1)*3;
+
+            for(int i = y_start; i < y_end; i++){
+              board_[0][i][x*3] = TileType::Empty;  
+            }
+            
+          }
+
+        }
+ 
+      } 
+    }
+  }
 
 
-
-
-
-
-
-
-
-  for(int x = 0; x < temp_width; x++){
-    for(int y = 0; y < temp_height; y++){
+  for(int y = 0; y < temp_height; y++){
+    for(int x = 0; x < temp_width; x++){
       int current = static_cast<int>(dungeon[y][x]);
       switch(current){
         case 0:
@@ -218,7 +265,10 @@ void Board::GenerateDungeon(){
     std::cout << std::endl;
   }
 
+
+
 }
+
 
 /*
   TEST FUNCTION NOT TO KEEP
@@ -230,9 +280,17 @@ void Board::PrintBoard(){
   std::cout << "Thunder Dungeon" <<std::endl;
 
 
-  for(int x = 0; x < width_res_; x++){
-    for(int y = 0; y < height_res_; y++){
-      std::cout << static_cast<int>(board_[0][y][x]) << " ";
+  for(int y = 0; y < height_res_; y++){
+    for(int x = 0; x < width_res_; x++){
+      int current = static_cast<int>(board_[0][y][x]);
+      switch(current){
+        case 0:
+          std::cout << " ";
+          break;
+        case 1:
+          std::cout << "█";
+          break;
+      }
     } 
     std::cout << std::endl;
   }
