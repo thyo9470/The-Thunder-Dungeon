@@ -204,11 +204,11 @@ void Board::GenerateDungeon(){
 
           Position room_center(x*3,y*3);
   
-          int room_size =  
+          int room_size = std::rand() % 3;
 
           // make room at position
-          for(int i = room_center.x_-1; i <= room_center.x_+1; i++){
-            for(int j = room_center.y_-1; j <= room_center.y_+1; j++){
+          for(int i = room_center.x_-room_size; i <= room_center.x_+1; i++){
+            for(int j = room_center.y_-room_size; j <= room_center.y_+1; j++){
               board_[0][j][i] = TileType::Empty;
             }
           }

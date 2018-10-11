@@ -11,7 +11,7 @@ int main(){
 
   srand(time(NULL));
 
-  Board* board = new Board(2, 2, 5);
+  Board* board = new Board(2, 9, 7);
 
 
   board->GenerateDungeon();
