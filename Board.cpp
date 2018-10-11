@@ -120,10 +120,6 @@ void Board::GenerateDungeon(){
   // shuffle the walls for randomness
   std::random_shuffle(walls.begin(), walls.end());
 
-  for(auto w : walls){
-    std::cout << "(" << w.x_ << ", " << w.y_ << ")";
-  }
-
   std::cout << std::endl;
 
   // while we still ahve walls to check
@@ -193,10 +189,14 @@ void Board::GenerateDungeon(){
   walls.clear();
   cells.clear();	
 
-  // Apply our Dungeon layout to actual board
+  /*
+     -------------------------------------------
+      Part 3 - Apply dungeon to actual board
+     -------------------------------------------
+  */
 
-  for(int x = 1; x < temp_width-1; x++){
-    for(int y = 1; y < temp_height-1; y++){
+  for(int x = 0; x < temp_width; x++){
+    for(int y = 0; y < temp_height; y++){
       if(dungeon[y][x] == TileType::Empty){
          
         // if this is the position of a room
@@ -204,11 +204,12 @@ void Board::GenerateDungeon(){
 
           Position room_center(x*3,y*3);
   
-          int room_size = std::rand() % 3;
+          int room_width = std::rand() % 4;
+          int room_height = std::rand() % 4;
 
           // make room at position
-          for(int i = room_center.x_-room_size; i <= room_center.x_+1; i++){
-            for(int j = room_center.y_-room_size; j <= room_center.y_+1; j++){
+          for(int i = room_center.x_-room_width; i <= room_center.x_+room_width; i++){
+            for(int j = room_center.y_-room_height; j <= room_center.y_+room_height; j++){
               board_[0][j][i] = TileType::Empty;
             }
           }
@@ -249,7 +250,18 @@ void Board::GenerateDungeon(){
     }
   }
 
+  // Make sure boarder is all walls
+  std::vector<TileType> wall_row(width_res_, TileType::Wall);
+  board_[0][0] = wall_row;
+  board_[0][height_res_-1] = wall_row;
 
+  for(int i = 0; i < height_res_; i++){
+    board_[0][i][0] = TileType::Wall;
+    board_[0][i][width_res_-1] = TileType::Wall;
+  }
+
+  // Print out the dungeon used to make board
+  /*
   for(int y = 0; y < temp_height; y++){
     for(int x = 0; x < temp_width; x++){
       int current = static_cast<int>(dungeon[y][x]);
@@ -263,7 +275,7 @@ void Board::GenerateDungeon(){
       }
     } 
     std::cout << std::endl;
-  }
+  }*/
 
 
 
