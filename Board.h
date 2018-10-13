@@ -4,10 +4,10 @@
 #define _BOARD_H_
 
 #include <vector>
+#include "Tile.h"
 
-enum class TileType {Empty, Wall, Player, Enemy};
 
-std::string TileTypeToString(TileType tile);
+
 
 struct Position{
   int x_;
@@ -47,7 +47,13 @@ private:
   // Number of tiles in each row and column
   int width_res_;
   int height_res_;
-  std::vector< std::vector< std::vector<TileType> > > board_;
+
+  //Pointers to Tile objects for flyweight
+  Tile* empty_ref_;
+  Tile* wall_ref_;
+
+  std::vector< std::vector< std::vector<TileType> > > board_test_;
+  std::vector< std::vector< std::vector<Tile*> > > board_;
 
 
 };

@@ -5,28 +5,8 @@
 #include<stdlib.h>
 
 #include "Board.h"
+#include "Tile.h"
 
-/*
-  Convert a given TileType to a string
-
-  @param  (TileType) tile - The tile you want the type of in a string
-  @return (string)        - The tile type as a string 
-*/
-std::string TileTypeToString(TileType tile){
-  int test = static_cast<int>(tile);
-  switch(test){
-    case 0:
-      return "Empty";
-    case 1:
-      return "Wall";
-    case 2:
-      return "Player";
-    case 3:
-      return "Enemy";
-    default:
-      return "UNKNOWN";
-  }
-}
 
 
 /*
@@ -39,6 +19,9 @@ std::string TileTypeToString(TileType tile){
 */
 Board::Board(int layers, int width, int height){
  
+  empty_ref_ = new Empty();
+  wall_ref_ = new Wall();
+
   layers_ = layers;
 
   width_ = width;
@@ -48,15 +31,21 @@ Board::Board(int layers, int width, int height){
   height_res_ = height * 6 + 1;
  
   std::vector< std::vector<TileType> > blank_board;
+  std::vector< std::vector<Tile*> > blank_board_test;
  
   for(int i = 0; i < height_res_; i++){
     std::vector<TileType> blank_row(width_res_, TileType::Wall);
+    std::vector<Tile*> blank_row_test(width_res_, wall_ref_);
     blank_board.push_back( blank_row );
+    blank_board_test.push_back( blank_row_test );
   }
 
   std::vector< std::vector< std::vector<TileType> > > temp_board(layers, blank_board);
+  std::vector< std::vector< std::vector<Tile*> > > temp_board_test(layers, blank_board_test);
+  
 
-  board_ = temp_board;
+  board_test_ = temp_board;
+  board_ = temp_board_test;
 
 }
 
@@ -210,7 +199,7 @@ void Board::GenerateDungeon(){
           // make room at position
           for(int i = room_center.x_-room_width; i <= room_center.x_+room_width; i++){
             for(int j = room_center.y_-room_height; j <= room_center.y_+room_height; j++){
-              board_[0][j][i] = TileType::Empty;
+              board_[0][j][i] = empty_ref_;
             }
           }
 
@@ -231,7 +220,7 @@ void Board::GenerateDungeon(){
             int x_end = (x+1)*3;
 
             for(int i = x_start; i < x_end; i++){
-              board_[0][y*3][i] = TileType::Empty;  
+              board_[0][y*3][i] = empty_ref_;  
             }
           }else{
             int y_start = (y-1)*3;
@@ -239,7 +228,7 @@ void Board::GenerateDungeon(){
             int y_end = (y+1)*3;
 
             for(int i = y_start; i < y_end; i++){
-              board_[0][i][x*3] = TileType::Empty;  
+              board_[0][i][x*3] = empty_ref_;  
             }
             
           }
@@ -251,17 +240,17 @@ void Board::GenerateDungeon(){
   }
 
   // Make sure boarder is all walls
-  std::vector<TileType> wall_row(width_res_, TileType::Wall);
+  std::vector<Tile*> wall_row(width_res_, wall_ref_);
   board_[0][0] = wall_row;
   board_[0][height_res_-1] = wall_row;
 
   for(int i = 0; i < height_res_; i++){
-    board_[0][i][0] = TileType::Wall;
-    board_[0][i][width_res_-1] = TileType::Wall;
+    board_[0][i][0] = wall_ref_;
+    board_[0][i][width_res_-1] = wall_ref_;
   }
 
   // Print out the dungeon used to make board
-  /*
+ /* 
   for(int y = 0; y < temp_height; y++){
     for(int x = 0; x < temp_width; x++){
       int current = static_cast<int>(dungeon[y][x]);
@@ -275,8 +264,8 @@ void Board::GenerateDungeon(){
       }
     } 
     std::cout << std::endl;
-  }*/
-
+  }
+*/
 
 
 }
