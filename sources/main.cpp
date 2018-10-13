@@ -1,13 +1,13 @@
 #include <QApplication>
-#include "headers/graphics.h"
+#include "headers/mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     // Create the widget responsible for all of our graphics and show it
-    Graphics * graphics = new Graphics(800, 640);
-    graphics->show();
+    MainWindow * window = new MainWindow(nullptr, 16 * 4 * 8, 16 * 4 * 8);
+    window->show();
 
     QList<QList<int>> floor;
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
     QList<QList<QList<int>>> board;
     board.append(floor);
-    graphics->UpdateBoard(board);
+    window->UpdateBoard(board);
 
     return a.exec();
 }

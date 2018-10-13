@@ -25,11 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    sources/graphics.cpp \
-    sources/main.cpp
+    sources/main.cpp \
+    sources/mainwindow.cpp
 
 HEADERS += \
-    headers/graphics.h
+    mainwindow.h \
+    headers/mainwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -38,3 +39,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+FORMS += \
+    mainwindow.ui
