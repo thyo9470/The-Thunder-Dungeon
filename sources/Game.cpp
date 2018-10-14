@@ -2,8 +2,8 @@
 #include<thread>
 #include<chrono>
 
-#include "Game.h"
-#include "Board.h"
+#include "../headers/Game.h"
+#include "../headers/Board.h"
 
 Game::Game(){
   

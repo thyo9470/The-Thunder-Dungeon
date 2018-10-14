@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "../headers/Command.h"
 
 void UpCommand::execute(EntityTile* tile){
   tile->SetPosition(tile->get_position() + Position(0,-1)); 

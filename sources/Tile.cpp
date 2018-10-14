@@ -1,5 +1,5 @@
 
-#include "Tile.h"
+#include "../headers/Tile.h"
 /*
   Convert a given TileType to a string
 

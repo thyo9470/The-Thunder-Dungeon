@@ -5,7 +5,7 @@
 #include<algorithm>
 #include<stdlib.h>
 
-#include "Board.h"
+#include "../headers/Board.h"
 #include "Tile.h"
 
 

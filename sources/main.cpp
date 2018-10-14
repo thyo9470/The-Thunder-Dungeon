@@ -1,8 +1,17 @@
+#include<iostream>
+
+#include<ctime>
+#include<stdlib.h>
+
 #include <QApplication>
+
 #include "headers/graphics.h"
+#include "headers/Game.h"
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
+    
     QApplication a(argc, argv);
 
     // Create the widget responsible for all of our graphics and show it
