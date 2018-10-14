@@ -8,14 +8,14 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class Graphics : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr, int window_x = 800, int window_y = 640);
+    explicit Graphics(QWidget *parent = nullptr, int window_x = 800, int window_y = 640);
     void UpdateBoard(QList<QList<QList<int>>> tileInfo);
-    ~MainWindow();
+    ~Graphics();
 
 private:
     Ui::MainWindow *ui;

@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // Create the widget responsible for all of our graphics and show it
-    MainWindow * window = new MainWindow(nullptr, 16 * 4 * 8, 16 * 4 * 8);
+    Graphics * window = new Graphics(nullptr, 16 * 4 * 8, 16 * 4 * 8);
     window->show();
 
     QList<QList<int>> floor;

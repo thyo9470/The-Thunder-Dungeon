@@ -1,8 +1,8 @@
-#include "headers/mainwindow.h"
+#include "headers/graphics.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsPixmapItem>
 
-MainWindow::MainWindow(QWidget *parent, int window_x, int window_y) :
+Graphics::Graphics(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent, int window_x, int window_y) :
     sprite_sheet_ = QPixmap(":/images/Tiles.png");
 }
 
-MainWindow::~MainWindow()
+Graphics::~Graphics()
 {
     delete ui;
 }
@@ -34,7 +34,7 @@ MainWindow::~MainWindow()
  *
  * @param tileInfo A 3 dimensional qlist representing the board's tiles to render
  */
-void MainWindow::UpdateBoard(QList<QList<QList<int> > > tileInfo)
+void Graphics::UpdateBoard(QList<QList<QList<int> > > tileInfo)
 {
     for(int i = 0; i < tileInfo.size(); i++){
         for(int y = 0; y < tileInfo[i].size(); y++){
