@@ -3,6 +3,7 @@
 #include<ctime>
 #include<stdlib.h>
 
+#include "Game.h"
 #include "Board.h"
 #include "Tile.h"
 
@@ -12,18 +13,9 @@ int main(){
 
   srand(time(NULL));
 
-  TileType test1 = TileType::Empty;
+  Game game;
 
-  Empty test2;
-
-  std::cout << (test2 == test1) << std::endl;
-
-  Board* board = new Board(2, 16, 8);
-
-
-  board->GenerateDungeon();
-
-  board->PrintBoard();
+  game.GameLoop();
 
   return 1;
 }

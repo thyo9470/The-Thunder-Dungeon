@@ -4,11 +4,12 @@
 #define _BOARD_H_
 
 #include <vector>
+
 #include "Tile.h"
+#include "Command.h"
 
 
-
-
+enum class ActionType {Up=101, Right=102, Down=103, Left=104};
 
 class Board{
 
@@ -20,7 +21,7 @@ public:
   void GenerateDungeon();
 
   // Move Player
-  void MovePlayer();
+  void MovePlayer(ActionType action_type);
 
   void PrintBoard(); //TESTING FUNCTION DO NOT KEEP
 
@@ -36,12 +37,17 @@ private:
   int height_res_;
 
   //Pointers to Tile objects for flyweight
-  Tile* empty_ref_;
-  Tile* wall_ref_;
-  Tile* player_;
+  Tile* empty_tile_ref_;
+  Tile* wall_tile_ref_;
+  PlayerTile* player_tile_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
 
+  // Commands
+  Command* up_command_;
+  Command* right_command_;
+  Command* down_command_;
+  Command* left_command_;
 
 };
 

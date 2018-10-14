@@ -20,6 +20,13 @@ struct Position{
     return x_ == other.x_ && y_ == other.y_;
   }
 
+  // Override + operator
+  Position operator+(const Position &other){
+    Position ret_pos;
+    ret_pos.x_ = x_ + other.x_;
+    ret_pos.y_ = y_ + other.y_;
+    return ret_pos;
+  } 
 };
 
 enum class TileType {Empty, Wall, Player, Enemy};
@@ -42,28 +49,42 @@ protected:
 
 };
 
-class Empty:public Tile{
+class EmptyTile:public Tile{
 
 public:
-  Empty():Tile(TileType::Empty){};
+  EmptyTile():Tile(TileType::Empty){};
 
 };
 
-class Wall:public Tile{
+class WallTile:public Tile{
 
 public:
-  Wall():Tile(TileType::Wall){};
+  WallTile():Tile(TileType::Wall){};
 
 };
 
-class Player:public Tile{
+/*
+    moveable objects
+*/
+
+class EntityTile:public Tile{
 
 public:
-  Player();
+  EntityTile(TileType type):Tile(type){};
 
-private:
+  virtual Position get_position(){return pos_;};
+  virtual void SetPosition(Position new_pos);
+
+protected:
   Position pos_;
-
 };
+
+class PlayerTile:public EntityTile{
+
+public:
+  PlayerTile();
+  
+};
+
 
 #endif // TILE_H

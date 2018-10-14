@@ -7,8 +7,8 @@
   @return (string)        - The tile type as a string 
 */
 std::string TileTypeToString(TileType tile){
-  int test = static_cast<int>(tile);
-  switch(test){
+  int type = static_cast<int>(tile);
+  switch(type){
     case 0:
       return "Empty";
     case 1:
@@ -58,6 +58,15 @@ Tile::Tile(TileType type){
   type_ = type;
 }
 
-Player::Player():Tile(TileType::Player){
+/*
+    Player class methods
+*/
+
+PlayerTile::PlayerTile():EntityTile(TileType::Player){
   pos_ = Position(3,3); 
 }
+
+void EntityTile::SetPosition(Position new_position){
+  pos_ = new_position;
+}
+

@@ -19,10 +19,17 @@
           (int) height - Number of rooms high the dungeon is
 */
 Board::Board(int layers, int width, int height){
- 
-  empty_ref_ = new Empty();
-  wall_ref_ = new Wall();
-  player_ = new Player();
+
+  // Initiate Tile reference objeccts for flyweight pattern 
+  empty_tile_ref_ = new EmptyTile();
+  wall_tile_ref_ = new WallTile();
+  player_tile_ = new PlayerTile();
+
+  // Initiate Command objects for command pattern
+  up_command_ = new UpCommand();
+  right_command_ = new RightCommand();
+  down_command_ = new DownCommand();
+  left_command_ = new LeftCommand();
 
   layers_ = layers;
 
@@ -35,12 +42,12 @@ Board::Board(int layers, int width, int height){
   std::vector< std::vector<Tile*> > blank_board;
  
   for(int i = 0; i < height_res_; i++){
-    std::vector<Tile*> blank_row(width_res_, wall_ref_);
+    std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
     blank_board.push_back( blank_row );
   }
 
   std::vector< std::vector< std::vector<Tile*> > > temp_board(layers, blank_board);
-  temp_board[1][3][3] = player_; 
+  temp_board[1][3][3] = player_tile_; 
 
   board_ = temp_board;
 
@@ -196,7 +203,7 @@ void Board::GenerateDungeon(){
           // make room at position
           for(int i = room_center.x_-room_width; i <= room_center.x_+room_width; i++){
             for(int j = room_center.y_-room_height; j <= room_center.y_+room_height; j++){
-              board_[0][j][i] = empty_ref_;
+              board_[0][j][i] = empty_tile_ref_;
             }
           }
 
@@ -217,7 +224,7 @@ void Board::GenerateDungeon(){
             int x_end = (x+1)*3;
 
             for(int i = x_start; i < x_end; i++){
-              board_[0][y*3][i] = empty_ref_;  
+              board_[0][y*3][i] = empty_tile_ref_;  
             }
           }else{
             int y_start = (y-1)*3;
@@ -225,7 +232,7 @@ void Board::GenerateDungeon(){
             int y_end = (y+1)*3;
 
             for(int i = y_start; i < y_end; i++){
-              board_[0][i][x*3] = empty_ref_;  
+              board_[0][i][x*3] = empty_tile_ref_;  
             }
             
           }
@@ -237,17 +244,40 @@ void Board::GenerateDungeon(){
   }
 
   // Make sure boarder is all walls
-  std::vector<Tile*> wall_row(width_res_, wall_ref_);
+  std::vector<Tile*> wall_row(width_res_, wall_tile_ref_);
   board_[0][0] = wall_row;
   board_[0][height_res_-1] = wall_row;
 
   for(int i = 0; i < height_res_; i++){
-    board_[0][i][0] = wall_ref_;
-    board_[0][i][width_res_-1] = wall_ref_;
+    board_[0][i][0] = wall_tile_ref_;
+    board_[0][i][width_res_-1] = wall_tile_ref_;
   }
 
 }
-
+/*
+    Used to move the player that is cotrolled by the user
+*/
+void Board::MovePlayer(ActionType action_type){
+  int type = static_cast<int>(action_type);
+  Position old_pos =  player_tile_->get_position(); 
+  board_[1][old_pos.y_][old_pos.x_] = empty_tile_ref_;
+  switch(type){
+    case 101: // up
+      up_command_->execute(player_tile_);
+      break;
+    case 102: // right
+      right_command_->execute(player_tile_);
+      break;
+    case 103: // down
+      down_command_->execute(player_tile_);
+      break;
+    case 104: // left
+      left_command_->execute(player_tile_);
+      break;
+  }
+  Position new_pos =  player_tile_->get_position(); 
+  board_[1][new_pos.y_][new_pos.x_] = player_tile_;
+}
 
 /*
   TEST FUNCTION NOT TO KEEP
@@ -265,7 +295,7 @@ void Board::PrintBoard(){
       output << (*board_[0][y][x]);
       for(int l = 1; l < layers_; l++){
         Tile cur_sq = (*board_[l][y][x]);
-        if( (cur_sq == TileType::Wall) == false){
+        if( (cur_sq == TileType::Wall) == false && (cur_sq == TileType::Empty) == false){
           output.clear();
           output.str(std::string());
           output << cur_sq;
