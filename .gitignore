@@ -42,3 +42,5 @@
 
 # Swap file frfom vim
 *.swp
+
+*.user
