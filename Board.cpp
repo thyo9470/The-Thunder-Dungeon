@@ -1,4 +1,5 @@
 #include<iostream>
+#include<sstream>
 
 #include<vector>
 #include<algorithm>
@@ -21,6 +22,7 @@ Board::Board(int layers, int width, int height){
  
   empty_ref_ = new Empty();
   wall_ref_ = new Wall();
+  player_ = new Player();
 
   layers_ = layers;
 
@@ -30,22 +32,17 @@ Board::Board(int layers, int width, int height){
   width_res_ = width * 6 + 1;
   height_res_ = height * 6 + 1;
  
-  std::vector< std::vector<TileType> > blank_board;
-  std::vector< std::vector<Tile*> > blank_board_test;
+  std::vector< std::vector<Tile*> > blank_board;
  
   for(int i = 0; i < height_res_; i++){
-    std::vector<TileType> blank_row(width_res_, TileType::Wall);
-    std::vector<Tile*> blank_row_test(width_res_, wall_ref_);
+    std::vector<Tile*> blank_row(width_res_, wall_ref_);
     blank_board.push_back( blank_row );
-    blank_board_test.push_back( blank_row_test );
   }
 
-  std::vector< std::vector< std::vector<TileType> > > temp_board(layers, blank_board);
-  std::vector< std::vector< std::vector<Tile*> > > temp_board_test(layers, blank_board_test);
-  
+  std::vector< std::vector< std::vector<Tile*> > > temp_board(layers, blank_board);
+  temp_board[1][3][3] = player_; 
 
-  board_test_ = temp_board;
-  board_ = temp_board_test;
+  board_ = temp_board;
 
 }
 
@@ -249,25 +246,6 @@ void Board::GenerateDungeon(){
     board_[0][i][width_res_-1] = wall_ref_;
   }
 
-  // Print out the dungeon used to make board
- /* 
-  for(int y = 0; y < temp_height; y++){
-    for(int x = 0; x < temp_width; x++){
-      int current = static_cast<int>(dungeon[y][x]);
-      switch(current){
-        case 0:
-          std::cout << " ";
-          break;
-        case 1:
-          std::cout << "█";
-          break;
-      }
-    } 
-    std::cout << std::endl;
-  }
-*/
-
-
 }
 
 
@@ -283,15 +261,17 @@ void Board::PrintBoard(){
 
   for(int y = 0; y < height_res_; y++){
     for(int x = 0; x < width_res_; x++){
-      int current = static_cast<int>(board_[0][y][x]);
-      switch(current){
-        case 0:
-          std::cout << " ";
-          break;
-        case 1:
-          std::cout << "█";
-          break;
+      std::stringstream output;
+      output << (*board_[0][y][x]);
+      for(int l = 1; l < layers_; l++){
+        Tile cur_sq = (*board_[l][y][x]);
+        if( (cur_sq == TileType::Wall) == false){
+          output.clear();
+          output.str(std::string());
+          output << cur_sq;
+        }
       }
+      std::cout << output.str();
     } 
     std::cout << std::endl;
   }

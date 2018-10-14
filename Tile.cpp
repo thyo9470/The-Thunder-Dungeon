@@ -34,6 +34,22 @@ bool operator==(const Tile& tl, const TileType& tt){
   return tt == tl.type_;
 }
 
+std::ostream& operator<<(std::ostream& os, const Tile& tt){
+  
+  int current = static_cast<int>(tt.type_);
+  switch(current){
+	  case 0:
+	    os << "  ";
+	    break;
+	  case 1:
+	    os << "██";
+	    break;
+    case 2:;
+      os << ":(";
+  }
+  return os;
+}
+
 Tile::Tile(){
   type_ = TileType::Empty;
 }
@@ -42,3 +58,6 @@ Tile::Tile(TileType type){
   type_ = type;
 }
 
+Player::Player():Tile(TileType::Player){
+  pos_ = Position(3,3); 
+}

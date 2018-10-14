@@ -9,22 +9,6 @@
 
 
 
-struct Position{
-  int x_;
-  int y_;
-
-  Position():x_(0),y_(0){}
-
-  Position(int x, int y){
-    x_ = x;
-    y_ = y;
-  }
-
-  bool operator==(const Position &other) {
-    return x_ == other.x_ && y_ == other.y_;
-  }
-
-};
 
 class Board{
 
@@ -34,6 +18,9 @@ public:
 
   // Create dungeon
   void GenerateDungeon();
+
+  // Move Player
+  void MovePlayer();
 
   void PrintBoard(); //TESTING FUNCTION DO NOT KEEP
 
@@ -51,8 +38,8 @@ private:
   //Pointers to Tile objects for flyweight
   Tile* empty_ref_;
   Tile* wall_ref_;
+  Tile* player_;
 
-  std::vector< std::vector< std::vector<TileType> > > board_test_;
   std::vector< std::vector< std::vector<Tile*> > > board_;
 
 

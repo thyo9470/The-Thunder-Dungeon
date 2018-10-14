@@ -18,7 +18,7 @@ int main(){
 
   std::cout << (test2 == test1) << std::endl;
 
-  Board* board = new Board(2, 3, 7);
+  Board* board = new Board(2, 16, 8);
 
 
   board->GenerateDungeon();
