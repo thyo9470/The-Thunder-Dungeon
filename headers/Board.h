@@ -17,6 +17,8 @@ class Board{
 public:
   Board(int layers, int width, int height);
 
+  std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
+
   // Create dungeon
   void GenerateDungeon();
 

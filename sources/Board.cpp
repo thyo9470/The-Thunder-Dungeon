@@ -6,7 +6,7 @@
 #include<stdlib.h>
 
 #include "../headers/Board.h"
-#include "Tile.h"
+#include "../headers/Tile.h"
 
 
 
@@ -40,14 +40,27 @@ Board::Board(int layers, int width, int height){
   height_res_ = height * 6 + 1;
  
   std::vector< std::vector<Tile*> > blank_board;
+  std::vector< std::vector< std::vector<Tile*> > > temp_board;
  
   for(int i = 0; i < height_res_; i++){
     std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
     blank_board.push_back( blank_row );
   }
 
-  std::vector< std::vector< std::vector<Tile*> > > temp_board(layers, blank_board);
-  temp_board[1][3][3] = player_tile_; 
+  temp_board.push_back(blank_board);
+
+  blank_board.clear();
+
+  for(int i = 0; i < height_res_; i++){
+    std::vector<Tile*> blank_row(width_res_, empty_tile_ref_);
+    blank_board.push_back( blank_row );
+  }
+
+  for(int i = 1; i < layers; i++){
+    temp_board.push_back(blank_board);
+  }
+
+  temp_board[1][3][3] = player_tile_;
 
   board_ = temp_board;
 

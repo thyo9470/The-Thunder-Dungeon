@@ -3,9 +3,13 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "Board.h"
+#include <QApplication>
 
-class Game{
+#include "Board.h"
+#include "headers/graphics.h"
+#include "../headers/keypressed.h"
+
+class Game : public QObject{
 
 public:
   Game();
@@ -14,15 +18,16 @@ public:
 
   void GameLoop();
 
+  void update();
+
 private:
+  Graphics * window_;
   Board  *board_;
   bool playing_;
+  KeyPressed* input_handler_;
     //Player *player_;
 
-  void InputHandler();
-
-  void InstantiateBoard();
-  void InstantiatePlayer();  
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
 };
 

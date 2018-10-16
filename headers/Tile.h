@@ -38,6 +38,8 @@ class Tile{
 public:
   Tile();
   Tile(TileType type);
+
+  TileType get_type(){return type_;}
  
   // Compare Tile to TileType 
   friend bool operator==(const TileType& tt, const Tile& tl);
