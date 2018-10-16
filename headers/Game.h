@@ -14,10 +14,13 @@ class Game : public QObject{
 public:
   Game();
 
+  // Creates a new game
   void StartGame();
 
+  // Game loop used for input, update, render
   void GameLoop();
 
+  // updates game state
   void update();
 
 private:
@@ -27,6 +30,7 @@ private:
   KeyPressed* input_handler_;
     //Player *player_;
 
+  // Filters events looking for keyboard input
   bool eventFilter(QObject *obj, QEvent *event) override;
 
 };

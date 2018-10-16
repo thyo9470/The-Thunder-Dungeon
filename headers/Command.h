@@ -4,6 +4,9 @@
 
 #include "Tile.h"
 
+/*
+    Command classes used in command design pattern
+*/
 class Command{
 
 public:

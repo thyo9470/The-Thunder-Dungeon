@@ -300,6 +300,14 @@ void Board::MovePlayer(ActionType action_type){
   board_[1][new_pos.y_][new_pos.x_] = player_tile_;
 }
 
+/*
+    Get the tile on the board on a specific layer at a position
+
+    @param  (int layer) - The layer that you are looking at
+            (Position pos) - The position (x,y) that you want the tile type of
+
+    @return (TileType) - The tile type at a give point
+*/
 TileType Board::GetTileAtPosition(int layer, Position pos){
   std::cout << pos.x_ << " | " << pos.y_ << std::endl;
   if(pos.x_ >= 0 && pos.y_ >= 0 && pos.x_ < width_res_ && pos.y_ < height_res_){

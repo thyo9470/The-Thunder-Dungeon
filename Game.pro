@@ -30,8 +30,7 @@ SOURCES += \
     sources/Board.cpp \
     sources/Command.cpp \
     sources/Game.cpp \
-    sources/Tile.cpp \
-    sources/keypressed.cpp
+    sources/Tile.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -44,8 +43,7 @@ HEADERS += \
     headers/keypress.h \
     headers/Keypress.h \
     headers/keypress.h \
-    headers/test.h \
-    headers/keypressed.h
+    headers/test.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
