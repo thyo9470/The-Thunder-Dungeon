@@ -276,47 +276,34 @@ void Board::MovePlayer(ActionType action_type){
   board_[1][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(type){
     case 101: // up
-      up_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall){
+        up_command_->execute(player_tile_);
+      }
       break;
     case 102: // right
-      right_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall){
+        right_command_->execute(player_tile_);
+      }
       break;
     case 103: // down
-      down_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall){
+        down_command_->execute(player_tile_);
+      }
       break;
     case 104: // left
-      left_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall){
+        left_command_->execute(player_tile_);
+      }
       break;
   }
   Position new_pos =  player_tile_->get_position(); 
   board_[1][new_pos.y_][new_pos.x_] = player_tile_;
 }
 
-/*
-  TEST FUNCTION NOT TO KEEP
-
-  Print the board in a visually pleasing way
-*/
-void Board::PrintBoard(){
-
-  std::cout << "Thunder Dungeon" <<std::endl;
-
-
-  for(int y = 0; y < height_res_; y++){
-    for(int x = 0; x < width_res_; x++){
-      std::stringstream output;
-      output << (*board_[0][y][x]);
-      for(int l = 1; l < layers_; l++){
-        Tile cur_sq = (*board_[l][y][x]);
-        if( (cur_sq == TileType::Wall) == false && (cur_sq == TileType::Empty) == false){
-          output.clear();
-          output.str(std::string());
-          output << cur_sq;
-        }
-      }
-      std::cout << output.str();
-    } 
-    std::cout << std::endl;
+TileType Board::GetTileAtPosition(int layer, Position pos){
+  std::cout << pos.x_ << " | " << pos.y_ << std::endl;
+  if(pos.x_ >= 0 && pos.y_ >= 0 && pos.x_ < width_res_ && pos.y_ < height_res_){
+      return board_[layer][pos.y_][pos.x_]->get_type();
   }
-
+  throw std::invalid_argument( "index out of range" );
 }

@@ -25,8 +25,6 @@ public:
   // Move Player
   void MovePlayer(ActionType action_type);
 
-  void PrintBoard(); //TESTING FUNCTION DO NOT KEEP
-
 private:
   // number of object layers
   int layers_;
@@ -51,6 +49,8 @@ private:
   Command* down_command_;
   Command* left_command_;
 
+  // Get the tile type at a given layer and position
+  TileType GetTileAtPosition(int layer, Position pos);
 };
 
 
