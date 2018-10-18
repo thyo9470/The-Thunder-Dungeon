@@ -4,6 +4,7 @@
 #define _TILE_H_
 
 #include<iostream>
+#include<vector>
 
 struct Position{
   int x_;
@@ -91,6 +92,19 @@ class PlayerTile:public EntityTile{
 public:
   PlayerTile();
   
+};
+
+// Represents a specific type of enemy with its own movement algorithm
+class EnemyTile:public EntityTile{
+
+public:
+  EnemyTile(Position startPos);
+  virtual void Move(std::vector< std::vector< std::vector<Tile*> > > &board);
+
+private:
+  std::vector<Position> next_moves_;
+  std::vector<Position> prev_moves_;
+
 };
 
 

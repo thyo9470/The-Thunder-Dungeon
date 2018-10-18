@@ -38,6 +38,7 @@ private:
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
   Tile* exit_tile_;
+  std::vector<EnemyTile *> enemies_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
 
@@ -58,6 +59,10 @@ private:
 
   // Create dungeon
   void GenerateDungeon();
+
+  // Spawna and move enemies
+  void SpawnEnemies();
+  void MoveEnemies();
 
   // checks it an entity tile has collided with another object
   Tile* CheckCollision(EntityTile* entity);
