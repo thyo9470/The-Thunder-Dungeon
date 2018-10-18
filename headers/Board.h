@@ -17,13 +17,13 @@ class Board{
 public:
   Board(int layers, int width, int height);
 
+  std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
+
   // Create dungeon
   void GenerateDungeon();
 
   // Move Player
   void MovePlayer(ActionType action_type);
-
-  void PrintBoard(); //TESTING FUNCTION DO NOT KEEP
 
 private:
   // number of object layers
@@ -49,6 +49,8 @@ private:
   Command* down_command_;
   Command* left_command_;
 
+  // Get the tile type at a given layer and position
+  TileType GetTileAtPosition(int layer, Position pos);
 };
 
 

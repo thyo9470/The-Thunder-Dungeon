@@ -6,7 +6,7 @@
 #include<stdlib.h>
 
 #include "../headers/Board.h"
-#include "Tile.h"
+#include "../headers/Tile.h"
 
 
 
@@ -40,14 +40,27 @@ Board::Board(int layers, int width, int height){
   height_res_ = height * 6 + 1;
  
   std::vector< std::vector<Tile*> > blank_board;
+  std::vector< std::vector< std::vector<Tile*> > > temp_board;
  
   for(int i = 0; i < height_res_; i++){
     std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
     blank_board.push_back( blank_row );
   }
 
-  std::vector< std::vector< std::vector<Tile*> > > temp_board(layers, blank_board);
-  temp_board[1][3][3] = player_tile_; 
+  temp_board.push_back(blank_board);
+
+  blank_board.clear();
+
+  for(int i = 0; i < height_res_; i++){
+    std::vector<Tile*> blank_row(width_res_, empty_tile_ref_);
+    blank_board.push_back( blank_row );
+  }
+
+  for(int i = 1; i < layers; i++){
+    temp_board.push_back(blank_board);
+  }
+
+  temp_board[1][3][3] = player_tile_;
 
   board_ = temp_board;
 
@@ -263,16 +276,24 @@ void Board::MovePlayer(ActionType action_type){
   board_[1][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(type){
     case 101: // up
-      up_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall){
+        up_command_->execute(player_tile_);
+      }
       break;
     case 102: // right
-      right_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall){
+        right_command_->execute(player_tile_);
+      }
       break;
     case 103: // down
-      down_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall){
+        down_command_->execute(player_tile_);
+      }
       break;
     case 104: // left
-      left_command_->execute(player_tile_);
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall){
+        left_command_->execute(player_tile_);
+      }
       break;
   }
   Position new_pos =  player_tile_->get_position(); 
@@ -280,30 +301,16 @@ void Board::MovePlayer(ActionType action_type){
 }
 
 /*
-  TEST FUNCTION NOT TO KEEP
+    Get the tile on the board on a specific layer at a position
 
-  Print the board in a visually pleasing way
+    @param  (int layer) - The layer that you are looking at
+            (Position pos) - The position (x,y) that you want the tile type of
+
+    @return (TileType) - The tile type at a give point
 */
-void Board::PrintBoard(){
-
-  std::cout << "Thunder Dungeon" <<std::endl;
-
-
-  for(int y = 0; y < height_res_; y++){
-    for(int x = 0; x < width_res_; x++){
-      std::stringstream output;
-      output << (*board_[0][y][x]);
-      for(int l = 1; l < layers_; l++){
-        Tile cur_sq = (*board_[l][y][x]);
-        if( (cur_sq == TileType::Wall) == false && (cur_sq == TileType::Empty) == false){
-          output.clear();
-          output.str(std::string());
-          output << cur_sq;
-        }
-      }
-      std::cout << output.str();
-    } 
-    std::cout << std::endl;
+TileType Board::GetTileAtPosition(int layer, Position pos){
+  if(pos.x_ >= 0 && pos.y_ >= 0 && pos.x_ < width_res_ && pos.y_ < height_res_){
+      return board_[layer][pos.y_][pos.x_]->get_type();
   }
-
+  throw std::invalid_argument( "index out of range" );
 }
