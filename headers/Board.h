@@ -40,7 +40,7 @@ private:
   Tile* empty_tile_ref_;
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
-  EnemyTile* enemy_tile_ref_;
+  std::vector<EnemyTile *> enemies_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
 
@@ -54,6 +54,7 @@ private:
   TileType GetTileAtPosition(int layer, Position pos);
 
   void SpawnEnemies();
+  void MoveEnemies();
 };
 
 
