@@ -8,8 +8,6 @@
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
 
-
-
 /*
 
   Creates a board with a given amount of layers with given dimensions
@@ -266,7 +264,15 @@ void Board::GenerateDungeon(){
     board_[0][i][width_res_-1] = wall_tile_ref_;
   }
 
+  SpawnEnemies();
 }
+
+void Board::SpawnEnemies()
+{
+  enemy_tile_ref_ = new EnemyTile(Position(3, 2));
+  board_[1][2][3] = enemy_tile_ref_;
+}
+
 /*
     Used to move the player that is cotrolled by the user
 */
@@ -276,22 +282,26 @@ void Board::MovePlayer(ActionType action_type){
   board_[1][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(type){
     case 101: // up
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall){
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall &&
+         GetTileAtPosition(1, player_tile_->get_position() + Position(0,-1)) == TileType::Empty){
         up_command_->execute(player_tile_);
       }
       break;
     case 102: // right
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall){
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall &&
+         GetTileAtPosition(1, player_tile_->get_position() + Position(1,0)) == TileType::Empty){
         right_command_->execute(player_tile_);
       }
       break;
     case 103: // down
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall){
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall &&
+         GetTileAtPosition(1, player_tile_->get_position() + Position(0,1)) == TileType::Empty){
         down_command_->execute(player_tile_);
       }
       break;
     case 104: // left
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall){
+      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall &&
+         GetTileAtPosition(1, player_tile_->get_position() + Position(-1,0)) == TileType::Empty){
         left_command_->execute(player_tile_);
       }
       break;

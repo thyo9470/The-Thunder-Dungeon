@@ -70,3 +70,7 @@ void EntityTile::SetPosition(Position new_position){
   pos_ = new_position;
 }
 
+EnemyTile::EnemyTile(Position startPos):EntityTile(TileType::Enemy)
+{
+  pos_ = startPos;
+}

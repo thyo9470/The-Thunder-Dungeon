@@ -88,5 +88,12 @@ public:
   
 };
 
+class EnemyTile:public EntityTile{
+
+public:
+  EnemyTile(Position startPos);
+
+};
+
 
 #endif // TILE_H
