@@ -6,11 +6,10 @@
 #include <QApplication>
 
 #include "Board.h"
-#include "headers/graphics.h"
-#include "../headers/keypressed.h"
+#include "headers/Window.h"
 
 class Game : public QObject{
-
+  Q_OBJECT
 public:
   Game();
 
@@ -24,14 +23,13 @@ public:
   void update();
 
 private:
-  Graphics * window_;
+  Window * window_;
   Board  *board_;
   bool playing_;
-  KeyPressed* input_handler_;
     //Player *player_;
 
-  // Filters events looking for keyboard input
-  bool eventFilter(QObject *obj, QEvent *event) override;
+public slots:
+  void GetInput(QKeyEvent* event);
 
 };
 

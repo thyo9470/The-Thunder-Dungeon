@@ -309,7 +309,6 @@ void Board::MovePlayer(ActionType action_type){
     @return (TileType) - The tile type at a give point
 */
 TileType Board::GetTileAtPosition(int layer, Position pos){
-  std::cout << pos.x_ << " | " << pos.y_ << std::endl;
   if(pos.x_ >= 0 && pos.y_ >= 0 && pos.x_ < width_res_ && pos.y_ < height_res_){
       return board_[layer][pos.y_][pos.x_]->get_type();
   }

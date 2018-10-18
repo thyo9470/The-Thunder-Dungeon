@@ -1,10 +1,13 @@
-#include "headers/graphics.h"
+#include "headers/Window.h"
 #include "ui_mainwindow.h"
+
 #include <QGraphicsPixmapItem>
+#include <QKeyEvent>
+#include <iostream>
 
 #include "../headers/Tile.h"
 
-Graphics::Graphics(QWidget *parent, int window_x, int window_y) :
+Window::Window(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -26,9 +29,14 @@ Graphics::Graphics(QWidget *parent, int window_x, int window_y) :
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
 }
 
-Graphics::~Graphics()
+Window::~Window()
 {
     delete ui;
+}
+
+void Window::keyPressEvent(QKeyEvent *event)
+{
+    emit KeyPressSignal(event);
 }
 
 /**
@@ -36,7 +44,7 @@ Graphics::~Graphics()
  *
  * @param tileInfo A 3 dimensional qlist representing the board's tiles to render
  */
-void Graphics::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_info)
+void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_info)
 {
   scene_->clear();
   for(int y = 0; y < tile_info[0].size(); y++){

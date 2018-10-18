@@ -17,7 +17,7 @@ Game::Game(){
   int x_rooms = 5;
   int y_rooms = 5;
 
-  window_ = new Graphics(nullptr, ( x_rooms * 6 + 1 ) * 4 * 8, ( y_rooms * 6 + 1 ) * 4 * 8);
+  window_ = new Window(nullptr, ( x_rooms * 6 + 1 ) * 4 * 8, ( y_rooms * 6 + 1 ) * 4 * 8);
 
   playing_ = true;
 
@@ -25,32 +25,25 @@ Game::Game(){
   board_->GenerateDungeon();
    
   window_->show();
+
+  connect(window_, &Window::KeyPressSignal, this, &Game::GetInput);
+
 }
 
-bool Game::eventFilter(QObject *obj, QEvent *event)
-{
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        qDebug("Ate key press %d", keyEvent->key());
-        if(keyEvent->key() == Qt::Key_Up){
-          qDebug("Up");
-          board_->MovePlayer(ActionType::Up);
-        }else if(keyEvent->key() == Qt::Key_Right){
-          qDebug("Right");
-          board_->MovePlayer(ActionType::Right);
-        }else if(keyEvent->key() == Qt::Key_Down){
-          qDebug("Down");
-          board_->MovePlayer(ActionType::Down);
-        }else if(keyEvent->key() == Qt::Key_Left){
-          qDebug("Left");
-          board_->MovePlayer(ActionType::Left);
-        }
-        window_->UpdateBoard(board_->get_board());
-        return true;
-    } else {
-        // standard event processing
-        return QObject::eventFilter(obj, event);
-    }
+/*
+
+*/
+void Game::GetInput(QKeyEvent* event){
+  if(event->key() == Qt::Key_W){
+    board_->MovePlayer(ActionType::Up);
+  }else if(event->key() == Qt::Key_D){
+    board_->MovePlayer(ActionType::Right);
+  }else if(event->key() == Qt::Key_S){
+    board_->MovePlayer(ActionType::Down);
+  }else if(event->key() == Qt::Key_A){
+    board_->MovePlayer(ActionType::Left);
+  }
+  window_->UpdateBoard(board_->get_board());
 }
 
 /*
@@ -58,12 +51,4 @@ bool Game::eventFilter(QObject *obj, QEvent *event)
 */
 void Game::GameLoop(){
   window_->UpdateBoard(board_->get_board());
-
- /*
-  while(playing_){
-    board_->PrintBoard();
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }*/
-
 }
