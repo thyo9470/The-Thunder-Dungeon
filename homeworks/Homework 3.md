@@ -35,7 +35,8 @@ generates a map that resembles a dungeon, and a
 player and enemies that have basic movement. Below
 are the implementation details of each class.
 
-Graphics
+Graphics(Window)
+* We changed the Graphics class to Window class becuase this made more sense in the context we are using it
 * The graphics for this stage is a conversion from the terminal graphics to using the
 QGraphicsScene and the QGraphicsView to render image-based sprites.
 * The way Qt works to efficiently render lots of objects is to instantiate them as a
@@ -58,6 +59,9 @@ not implemented as a flyweight.
 * Game
     * The game was also implemented closely to the proposed structure: it only handles
 input, turns, and holds a reference to the board.
+
+* Data Persistance
+    * We weren't able to get around to data persistance but we hope to be able to do this later on.
 
 **3) Our plan for the next homework: Basic Battle Simulator:**
 * The first prototype of the battle simulation
