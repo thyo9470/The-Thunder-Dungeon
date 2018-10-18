@@ -21,8 +21,7 @@ Game::Game(){
 
   playing_ = true;
 
-  board_ = new Board(2, x_rooms, y_rooms);
-  board_->GenerateDungeon();
+  board_ = new Board(3, x_rooms, y_rooms);
    
   window_->show();
 
@@ -42,6 +41,8 @@ void Game::GetInput(QKeyEvent* event){
     board_->MovePlayer(ActionType::Down);
   }else if(event->key() == Qt::Key_A){
     board_->MovePlayer(ActionType::Left);
+  }else if(event->key() == Qt::Key_Dollar){
+    board_->MovePlayer(ActionType::TEST);
   }
   window_->UpdateBoard(board_->get_board());
 }

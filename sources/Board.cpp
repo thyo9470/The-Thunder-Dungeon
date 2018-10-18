@@ -24,6 +24,7 @@ Board::Board(int layers, int width, int height){
   empty_tile_ref_ = new EmptyTile();
   wall_tile_ref_ = new WallTile();
   player_tile_ = new PlayerTile();
+  exit_tile_ = new ExitTile();
 
   // Initiate Command objects for command pattern
   up_command_ = new UpCommand();
@@ -33,15 +34,31 @@ Board::Board(int layers, int width, int height){
 
   layers_ = layers;
 
+  // Number of rooms wide/high
   width_ = width;
   height_ = height;
 
+  // Number of sprites wide/high
   width_res_ = width * 6 + 1;
   height_res_ = height * 6 + 1;
- 
+
+  // setup board data
+  level_ = 0;
+
+  NewLevel();
+}
+
+/*
+    Creates a new level by doing the following:
+      - Setting all board layers to default values
+      - Generating new maze
+      - Intantiate Tiles
+*/
+void Board::NewLevel(){
+  // create new board
   std::vector< std::vector<Tile*> > blank_board;
   std::vector< std::vector< std::vector<Tile*> > > temp_board;
- 
+
   for(int i = 0; i < height_res_; i++){
     std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
     blank_board.push_back( blank_row );
@@ -56,14 +73,22 @@ Board::Board(int layers, int width, int height){
     blank_board.push_back( blank_row );
   }
 
-  for(int i = 1; i < layers; i++){
+  for(int i = 1; i < layers_; i++){
     temp_board.push_back(blank_board);
   }
 
+  // place player tile
+  player_tile_->SetPosition(Position(3,3));
   temp_board[1][3][3] = player_tile_;
 
-  board_ = temp_board;
+  // place exit tile
+  temp_board[2][height_res_-4][width_res_-4] = exit_tile_;
 
+  board_ = temp_board;
+  GenerateDungeon();
+
+  // update board data
+  level_++;
 }
 
 /*
@@ -125,8 +150,6 @@ void Board::GenerateDungeon(){
   
   // shuffle the walls for randomness
   std::random_shuffle(walls.begin(), walls.end());
-
-  std::cout << std::endl;
 
   // while we still ahve walls to check
   while(walls.size()){
@@ -256,7 +279,7 @@ void Board::GenerateDungeon(){
     }
   }
 
-  // Make sure boarder is all walls
+  // make sure boarder is all walls
   std::vector<Tile*> wall_row(width_res_, wall_tile_ref_);
   board_[0][0] = wall_row;
   board_[0][height_res_-1] = wall_row;
@@ -264,6 +287,13 @@ void Board::GenerateDungeon(){
   for(int i = 0; i < height_res_; i++){
     board_[0][i][0] = wall_tile_ref_;
     board_[0][i][width_res_-1] = wall_tile_ref_;
+  }
+
+  // make sure player can omve around exit
+  for(int i = width_res_-5; i <= width_res_-3; i++){
+    for(int j = height_res_-5; j <= height_res_-3; j++){
+      board_[0][j][i] = empty_tile_ref_;
+    }
   }
 
 }
@@ -295,9 +325,16 @@ void Board::MovePlayer(ActionType action_type){
         left_command_->execute(player_tile_);
       }
       break;
+    case 999:
+      NewLevel();
+      break;
   }
   Position new_pos =  player_tile_->get_position(); 
   board_[1][new_pos.y_][new_pos.x_] = player_tile_;
+  Tile* test = CheckCollision(player_tile_);
+  if((*test) == TileType::Exit){
+    NewLevel();
+  }
 }
 
 /*
@@ -313,4 +350,15 @@ TileType Board::GetTileAtPosition(int layer, Position pos){
       return board_[layer][pos.y_][pos.x_]->get_type();
   }
   throw std::invalid_argument( "index out of range" );
+}
+
+Tile* Board::CheckCollision(EntityTile* entity){
+  for(int i = 0; i < layers_; i++){
+    Position cur_pos = entity->get_position();
+    Tile* check_tile = board_[i][cur_pos.y_][cur_pos.x_];
+    if( !((*check_tile) == TileType::Empty) && check_tile != player_tile_){
+        return check_tile;
+    }
+  }
+  return empty_tile_ref_;
 }

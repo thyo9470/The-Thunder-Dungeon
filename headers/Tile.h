@@ -29,7 +29,7 @@ struct Position{
   } 
 };
 
-enum class TileType {Empty, Wall, Player, Enemy};
+enum class TileType {Empty, Wall, Player, Enemy, Exit};
 
 std::string TileTypeToString(TileType tile);
 
@@ -44,7 +44,6 @@ public:
   // Compare Tile to TileType 
   friend bool operator==(const TileType& tt, const Tile& tl);
   friend bool operator==(const Tile& tl, const TileType& tt);
-  friend std::ostream& operator<<(std::ostream& os, const Tile& tt);
 
 protected:
   TileType type_;  
@@ -54,15 +53,21 @@ protected:
 class EmptyTile:public Tile{
 
 public:
-  EmptyTile():Tile(TileType::Empty){};
+  EmptyTile():Tile(TileType::Empty){}
 
 };
 
 class WallTile:public Tile{
 
 public:
-  WallTile():Tile(TileType::Wall){};
+  WallTile():Tile(TileType::Wall){}
 
+};
+
+class ExitTile:public Tile{
+
+public:
+  ExitTile():Tile(TileType::Exit){}
 };
 
 /*
