@@ -21,6 +21,8 @@ std::string TileTypeToString(TileType tile){
       return "Player";
     case 3:
       return "Enemy";
+    case 4:
+      return "Exit";
     default:
       return "UNKNOWN";
   }
@@ -36,22 +38,6 @@ bool operator==(const TileType& tt, const Tile& tl){
 
 bool operator==(const Tile& tl, const TileType& tt){
   return tt == tl.type_;
-}
-
-std::ostream& operator<<(std::ostream& os, const Tile& tt){
-  
-  int current = static_cast<int>(tt.type_);
-  switch(current){
-	  case 0:
-	    os << "  ";
-	    break;
-	  case 1:
-	    os << "██";
-	    break;
-    case 2:;
-      os << ":(";
-  }
-  return os;
 }
 
 Tile::Tile(){

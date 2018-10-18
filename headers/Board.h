@@ -9,7 +9,7 @@
 #include "Command.h"
 
 
-enum class ActionType {Up=101, Right=102, Down=103, Left=104};
+enum class ActionType {Up=101, Right=102, Down=103, Left=104, TEST=999};
 
 class Board{
 
@@ -18,9 +18,6 @@ public:
   Board(int layers, int width, int height);
 
   std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
-
-  // Create dungeon
-  void GenerateDungeon();
 
   // Move Player
   void MovePlayer(ActionType action_type);
@@ -36,13 +33,17 @@ private:
   int width_res_;
   int height_res_;
 
-  //Pointers to Tile objects for flyweight
+  // Pointers to Tile objects for flyweight
   Tile* empty_tile_ref_;
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
+  Tile* exit_tile_;
   std::vector<EnemyTile *> enemies_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
+
+  // Board data
+  int level_;
 
   // Commands
   Command* up_command_;
@@ -53,8 +54,18 @@ private:
   // Get the tile type at a given layer and position
   TileType GetTileAtPosition(int layer, Position pos);
 
+  // Called at the start of a new level
+  void NewLevel();
+
+  // Create dungeon
+  void GenerateDungeon();
+
+  // Spawna and move enemies
   void SpawnEnemies();
   void MoveEnemies();
+
+  // checks it an entity tile has collided with another object
+  Tile* CheckCollision(EntityTile* entity);
 };
 
 
