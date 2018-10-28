@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 
-#include "../headers/Tile.h"
+#include "./headers/Tile.h"
 
 namespace Ui {
 class MainWindow;

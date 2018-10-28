@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <iostream>
 
-#include "../headers/Tile.h"
+#include "./headers/Tile.h"
 
 Window::Window(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),

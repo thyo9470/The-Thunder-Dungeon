@@ -5,8 +5,8 @@
 
 #include <QApplication>
 
-#include "Board.h"
-#include "headers/Window.h"
+#include "./headers/Board.h"
+#include "Window.h"
 
 class Game : public QObject{
   Q_OBJECT

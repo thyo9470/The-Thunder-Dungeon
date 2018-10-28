@@ -7,6 +7,7 @@
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
+#include "../headers/Command.h"
 
 /*
 
