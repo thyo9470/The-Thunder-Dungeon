@@ -310,8 +310,11 @@ void Board::SpawnEnemies()
   enemies_.clear();
 
   // Spawn a bunch of enemies in a grid
-  for(int i = 9; i < 25; i+=6){
-      for(int j = 3; j < 25; j+=6){
+  Position start_room_pos = Position(3, 3);
+  int room_spacing = 6;
+  Position end_room_pos = Position(width_ * 6 - 3, width_ * 6 - 3);
+  for(int i = start_room_pos.y_; i < end_room_pos.y_; i+=room_spacing){
+      for(int j = start_room_pos.x_; j < end_room_pos.x_; j+=room_spacing){
           EnemyTile * enemy = new EnemyTile(Position(i, j));
           board_[1][j][i] = enemy;
           enemies_.push_back(enemy);

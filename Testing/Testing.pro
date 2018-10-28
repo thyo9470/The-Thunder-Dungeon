@@ -6,7 +6,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  tst_testgame.cpp
+SOURCES += \  
+    TestGame.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/release/ -lGameLibrary
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/debug/ -lGameLibrary
