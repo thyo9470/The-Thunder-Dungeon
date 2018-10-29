@@ -4,6 +4,7 @@
 #define _BOARD_H_
 
 #include <vector>
+#include <QJsonObject>
 
 #include "Tile.h"
 #include "Command.h"
@@ -21,6 +22,9 @@ public:
 
   // Move Player
   void MovePlayer(ActionType action_type);
+
+  void Read(const QJsonObject &json);
+  void Write(QJsonObject &json) const;
 
 private:
   // number of object layers

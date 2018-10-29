@@ -34,6 +34,11 @@ private:
 
 signals:
     void KeyPressSignal(QKeyEvent* event);
+    void SaveGameSignal();
+    void LoadGameSignal();
+private slots:
+    void on_save_button_clicked();
+    void on_load_button_clicked();
 };
 
 #endif // MAINWINDOW_H

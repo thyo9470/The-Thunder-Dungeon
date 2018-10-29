@@ -380,6 +380,17 @@ void Board::MovePlayer(ActionType action_type){
   MoveEnemies();
 }
 
+void Board::Read(const QJsonObject &json)
+{
+  if (json.contains("level") && json["level"].toInt())
+    level_ = json["level"].toInt();
+}
+
+void Board::Write(QJsonObject &json) const
+{
+  json["level"] = level_;
+}
+
 /*
     Get the tile on the board on a specific layer at a position
 
