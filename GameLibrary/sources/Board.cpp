@@ -4,6 +4,7 @@
 #include<vector>
 #include<algorithm>
 #include<stdlib.h>
+#include<QJsonArray>
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
@@ -54,31 +55,11 @@ Board::Board(int layers, int width, int height){
       - Intantiate Tiles
 */
 void Board::NewLevel(){
-  // create new board
-  std::vector< std::vector<Tile*> > blank_board;
-  std::vector< std::vector< std::vector<Tile*> > > temp_board;
-
-  for(int i = 0; i < height_res_; i++){
-    std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
-    blank_board.push_back( blank_row );
-  }
-
-  temp_board.push_back(blank_board);
-
-  blank_board.clear();
-
-  for(int i = 0; i < height_res_; i++){
-    std::vector<Tile*> blank_row(width_res_, empty_tile_ref_);
-    blank_board.push_back( blank_row );
-  }
-
-  for(int i = 1; i < layers_; i++){
-    temp_board.push_back(blank_board);
-  }
+  std::vector< std::vector< std::vector<Tile*> > > temp_board = GenerateBlankBoard();
 
   // place player tile
   player_tile_->SetPosition(Position(3,3));
-  temp_board[1][3][3] = player_tile_;
+  temp_board[entity_layer_id_][3][3] = player_tile_;
 
   // place exit tile
   temp_board[2][height_res_-4][width_res_-4] = exit_tile_;
@@ -89,6 +70,31 @@ void Board::NewLevel(){
 
   // update board data
   level_++;
+}
+
+std::vector< std::vector< std::vector<Tile*> > > Board::GenerateBlankBoard(){
+  std::vector< std::vector<Tile*> > blank_board;
+  std::vector< std::vector< std::vector<Tile*> > > board;
+
+  for(int i = 0; i < height_res_; i++){
+    std::vector<Tile*> blank_row(width_res_, wall_tile_ref_);
+    blank_board.push_back( blank_row );
+  }
+
+  board.push_back(blank_board);
+
+  blank_board.clear();
+
+  for(int i = 0; i < height_res_; i++){
+    std::vector<Tile*> blank_row(width_res_, empty_tile_ref_);
+    blank_board.push_back( blank_row );
+  }
+
+  for(int i = 1; i < layers_; i++){
+    board.push_back(blank_board);
+  }
+
+  return board;
 }
 
 /*
@@ -304,10 +310,7 @@ void Board::GenerateDungeon(){
  * */
 void Board::SpawnEnemies()
 {
-  for(int i = 0; i < enemies_.size(); i++){
-    delete enemies_[i];
-  }
-  enemies_.clear();
+  ClearEnemies();
 
   // Spawn a bunch of enemies in a grid
   Position start_room_pos = Position(3, 3);
@@ -316,7 +319,7 @@ void Board::SpawnEnemies()
   for(int i = start_room_pos.y_; i < end_room_pos.y_; i+=room_spacing){
       for(int j = start_room_pos.x_; j < end_room_pos.x_; j+=room_spacing){
           EnemyTile * enemy = new EnemyTile(Position(i, j));
-          board_[1][j][i] = enemy;
+          board_[entity_layer_id_][j][i] = enemy;
           enemies_.push_back(enemy);
         }
     }
@@ -328,9 +331,20 @@ void Board::SpawnEnemies()
 void Board::MoveEnemies()
 {
   for(EnemyTile * enemy : enemies_){
-      board_[1][enemy->get_position().y_][enemy->get_position().x_] = empty_tile_ref_;
+      board_[entity_layer_id_][enemy->get_position().y_][enemy->get_position().x_] = empty_tile_ref_;
       enemy->Move(board_);
     }
+}
+
+/*
+ * Safely remove all enemies from the board
+ * */
+void Board::ClearEnemies()
+{
+  for(int i = 0; i < enemies_.size(); i++){
+    delete enemies_[i];
+  }
+  enemies_.clear();
 }
 
 /*
@@ -340,7 +354,7 @@ void Board::MoveEnemies()
 void Board::MovePlayer(ActionType action_type){
   int type = static_cast<int>(action_type);
   Position old_pos =  player_tile_->get_position(); 
-  board_[1][old_pos.y_][old_pos.x_] = empty_tile_ref_;
+  board_[entity_layer_id_][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(type){
     case 101: // up
       if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall &&
@@ -371,7 +385,7 @@ void Board::MovePlayer(ActionType action_type){
       break;
   }
   Position new_pos =  player_tile_->get_position(); 
-  board_[1][new_pos.y_][new_pos.x_] = player_tile_;
+  board_[entity_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
   Tile* test = CheckCollision(player_tile_);
   if((*test) == TileType::Exit){
     NewLevel();
@@ -380,15 +394,109 @@ void Board::MovePlayer(ActionType action_type){
   MoveEnemies();
 }
 
+/*
+ * Loads the board from a previous save
+ *
+ * @param &json The json object to load from
+ * */
 void Board::Read(const QJsonObject &json)
 {
-  if (json.contains("level") && json["level"].toInt())
-    level_ = json["level"].toInt();
+  // Make sure that all part of the board save exist
+  if (!json.contains("level") || !json["level"].toInt() ||
+      !json.contains("board") || !json["board"].isArray() ||
+      !json.contains("player") || !json["player"].isObject() ||
+      !json.contains("enemies") || !json["enemies"].isArray()){
+      qWarning("There is no board save - couldn't load the board.");
+      return;
+    }
+
+  level_ = json["level"].toInt();
+
+  // Clean the board and enemies before proceeding
+  ClearEnemies();
+  board_ = GenerateBlankBoard();
+
+  // Load the static tiles by setting them to the board reference
+  QJsonArray board_array = json["board"].toArray();
+  for (int l = 0; l < board_array.size(); l++) {
+      QJsonArray level_array = board_array[l].toArray();
+      for (int y = 0; y < level_array.size(); y++) {
+          QJsonArray row_array = level_array[y].toArray();
+          for (int x = 0; x < row_array.size(); x++) {
+              switch ((TileType)row_array[x].toInt()) {
+                case TileType::Empty:
+                  board_[l][y][x] = empty_tile_ref_;
+                  break;
+                case TileType::Wall:
+                  board_[l][y][x] = wall_tile_ref_;
+                  break;
+                case TileType::Exit:
+                  board_[l][y][x] = exit_tile_;
+                  break;
+                }
+            }
+        }
+    }
+
+  // Load the player - currently just set the position of the player tile
+  QJsonObject player_save = json["player"].toObject();
+  Position player_pos = Position(player_save["pos_x"].toInt(), player_save["pos_y"].toInt());
+
+  player_tile_->SetPosition(player_pos);
+  board_[entity_layer_id_][player_pos.y_][player_pos.x_] = player_tile_;
+
+  // Load the enemy tiles
+  QJsonArray enemies = json["enemies"].toArray();
+  for(int i = 0; i < enemies.size(); i++){
+      QJsonObject enemy_save = enemies[i].toObject();
+      Position enemy_pos = Position(enemy_save["pos_x"].toInt(), enemy_save["pos_y"].toInt());
+
+      EnemyTile * enemy = new EnemyTile(enemy_pos);
+      board_[entity_layer_id_][enemy_pos.y_][enemy_pos.x_] = enemy;
+      enemies_.push_back(enemy);
+    }
 }
 
+/*
+ * Save the current board to Json
+ *
+ * @param &json The Json object to save to
+ * */
 void Board::Write(QJsonObject &json) const
 {
-  json["level"] = level_;
+  // Save the static tiles into a 3D QJsonArray (tiles are saved by the integer in the TileType enum)
+  QJsonArray board_array;
+  for (const std::vector< std::vector<Tile*> > &level : board_) {
+        QJsonArray level_array;
+        for (const std::vector<Tile*> &row : level) {
+            QJsonArray row_array;
+            for (Tile* tile : row) {
+              row_array.append(QJsonValue((int)tile->get_type()));
+          }
+            level_array.append(row_array);
+       }
+        board_array.append(level_array);
+    }
+
+  // Save the enemies into an array of objects
+  QJsonArray enemies;
+  for(EnemyTile * enemy : enemies_){
+      QJsonObject enemy_save;
+      enemy_save["type"] = (int)enemy->get_type(); // Currently represents the enemy TileType
+      enemy_save["pos_x"] = enemy->get_position().x_;
+      enemy_save["pos_y"] = enemy->get_position().y_;
+      enemies.append(enemy_save);
+    }
+
+  // Save the player into an object
+  QJsonObject player_save;
+  player_save["pos_x"] =  QJsonValue((int)player_tile_->get_position().x_);
+  player_save["pos_y"] =  QJsonValue((int)player_tile_->get_position().y_);
+
+  json["board"] = board_array;
+  json["level"] = level_; // Save the current level the player was on
+  json["enemies"] = enemies;
+  json["player"] = player_save;
 }
 
 /*

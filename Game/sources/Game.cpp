@@ -31,8 +31,7 @@ Game::Game()
   connect(window_, &Window::LoadGameSignal, this, &Game::LoadGame);
 }
 
-bool Game::LoadGame()
-{
+bool Game::LoadGame(){
   // Have the option to save in two different formats:
   // JSON, or unreadable binary
   QFile loadFile(save_format_ == Json
@@ -44,11 +43,11 @@ bool Game::LoadGame()
           return false;
       }
 
-      QByteArray saveData = loadFile.readAll();
+      QByteArray save_data = loadFile.readAll();
 
       QJsonDocument loadDoc(save_format_ == Json
-          ? QJsonDocument::fromJson(saveData)
-          : QJsonDocument::fromBinaryData(saveData));
+          ? QJsonDocument::fromJson(save_data)
+          : QJsonDocument::fromBinaryData(save_data));
 
       Read(loadDoc.object());
 
@@ -57,8 +56,7 @@ bool Game::LoadGame()
       return true;
 }
 
-bool Game::SaveGame() const
-{
+bool Game::SaveGame() const{
   QFile saveFile(save_format_ == Json
          ? QStringLiteral("save.json")
          : QStringLiteral("save.dat"));
@@ -68,9 +66,9 @@ bool Game::SaveGame() const
          return false;
      }
 
-     QJsonObject gameObject;
-     Write(gameObject);
-     QJsonDocument saveDoc(gameObject);
+     QJsonObject game_object;
+     Write(game_object);
+     QJsonDocument saveDoc(game_object);
      saveFile.write(save_format_ == Json
          ? saveDoc.toJson()
          : saveDoc.toBinaryData());
@@ -78,18 +76,27 @@ bool Game::SaveGame() const
      return true;
 }
 
-void Game::Read(const QJsonObject &json)
-{
+/*
+ * Loads a previous game save from a json object
+ *
+ * @param &json The Json Object with the game save data
+ * */
+void Game::Read(const QJsonObject &json){
   if (json.contains("board") && json["board"].isObject()){
       board_->Read(json["board"].toObject());
+      GameLoop();
   }
 }
 
-void Game::Write(QJsonObject &json) const
-{
-  QJsonObject boardObject;
-  board_->Write(boardObject);
-  json["board"] = boardObject;
+/*
+ * Reads all data from a game into a json object
+ *
+ * @param &json The Json Object to write to
+ * */
+void Game::Write(QJsonObject &json) const{
+  QJsonObject board_object;
+  board_->Write(board_object);
+  json["board"] = board_object;
 }
 
 /*
@@ -113,6 +120,6 @@ void Game::GetInput(QKeyEvent* event){
 /*
     The game loop is what handles getting user input and updating the board
 */
-void Game::GameLoop(){
+void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
 }

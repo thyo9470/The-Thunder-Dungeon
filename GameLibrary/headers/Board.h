@@ -29,6 +29,10 @@ public:
 private:
   // number of object layers
   int layers_;
+
+  // The layer that contains enemies and the player
+  const int entity_layer_id_ = 1;
+
   // Number of rooms in each row and column
   int width_;
   int height_;
@@ -60,13 +64,15 @@ private:
 
   // Called at the start of a new level
   void NewLevel();
+  std::vector< std::vector< std::vector<Tile*> > > GenerateBlankBoard();
 
   // Create dungeon
   void GenerateDungeon();
 
-  // Spawna and move enemies
+  // Spawn and move enemies
   void SpawnEnemies();
   void MoveEnemies();
+  void ClearEnemies();
 
   // checks it an entity tile has collided with another object
   Tile* CheckCollision(EntityTile* entity);

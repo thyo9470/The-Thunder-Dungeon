@@ -26,7 +26,7 @@ public:
   void Write(QJsonObject &json) const;
 
   // Game loop used for input, update, render
-  void GameLoop();
+  void GameLoop() const;
 
   // updates game state
   void update();
@@ -35,7 +35,7 @@ private:
   Window * window_;
   Board  *board_;
   bool playing_;
-  SaveFormat save_format_ = SaveFormat::Json;
+  SaveFormat save_format_ = SaveFormat::Binary;
     //Player *player_;
 
 public slots:
