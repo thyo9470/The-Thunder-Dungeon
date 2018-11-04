@@ -8,7 +8,7 @@
 #include <QPushButton>
 
 #include "../headers/Game.h"
-#include "../headers/Board.h"
+#include "./headers/Board.h"
 
 #include <QTextStream>
 
