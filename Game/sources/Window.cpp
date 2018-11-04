@@ -68,6 +68,7 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
       }
   }
 }
+
 void Window::on_save_button_clicked()
 {
     emit SaveGameSignal();
