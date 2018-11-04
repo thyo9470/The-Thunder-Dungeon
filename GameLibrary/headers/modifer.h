@@ -21,7 +21,7 @@ enum class ModifierType{
  * Whether to apply the modifier as a percentage (stat * amount_)
  * or as an addition (stat + amount_)
  */
-enum class ModifierApplication{
+enum class ModifierOperation{
   Multiplicative,
   Additive,
 };
@@ -33,7 +33,7 @@ enum class ModifierApplication{
  */
 class Modifier{
 public:
-  Modifier(ModifierType type, ModifierApplication application, float effect):
+  Modifier(ModifierType type, ModifierOperation application, float effect):
     type_(type), application_type_(application), amount_(effect){}
 
   float GetModifiedStat(float stat, float min, float max);
@@ -41,7 +41,7 @@ public:
 
 private:
   ModifierType type_;
-  ModifierApplication application_type_;
+  ModifierOperation application_type_;
   float amount_;
 };
 

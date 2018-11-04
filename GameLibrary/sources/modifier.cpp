@@ -9,7 +9,7 @@
  */
 float Modifier::GetModifiedStat(float stat, float min, float max){
   float new_stat;
-  if(application_type_ == ModifierApplication::Additive){
+  if(application_type_ == ModifierOperation::Additive){
       new_stat = stat + amount_;
     }
   else{

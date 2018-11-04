@@ -30,6 +30,7 @@ private:
   float strength_;
   float speed_;
   float max_stat_value_ = 1000; // The maximum number a stat can be
+  float min_stat_value_ = 0;
   std::vector <Skill> skills;
   void ApplyModifier(Modifier mod);
 

@@ -42,22 +42,22 @@ void Entity::ApplyModifier(Modifier mod)
 {
   switch(mod.GetType()){
     case ModifierType::Health:
-      health_ = mod.GetModifiedStat(health_, 0, max_health_);
+      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_);
       break;
     case ModifierType::Magic:
-      magic_ = mod.GetModifiedStat(magic_, 0, max_magic_);
+      magic_ = mod.GetModifiedStat(magic_, min_stat_value_, max_magic_);
       break;
     case ModifierType::Speed:
-      speed_ = mod.GetModifiedStat(speed_, 0, max_stat_value_);
+      speed_ = mod.GetModifiedStat(speed_, min_stat_value_, max_stat_value_);
       break;
     case ModifierType::Strength:
-      strength_ = mod.GetModifiedStat(strength_, 0, max_stat_value_);
+      strength_ = mod.GetModifiedStat(strength_, min_stat_value_, max_stat_value_);
       break;
     case ModifierType::MaxHealth:
-      max_health_ = mod.GetModifiedStat(max_health_, 0, max_stat_value_);
+      max_health_ = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_);
       break;
     case ModifierType::MaxMagic:
-      max_magic_ = mod.GetModifiedStat(max_magic_, 0, max_stat_value_);
+      max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_);
       break;
     }
 
