@@ -3,7 +3,6 @@
 
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
-#include <QPropertyAnimation>
 #include <iostream>
 
 #include "./headers/Tile.h"

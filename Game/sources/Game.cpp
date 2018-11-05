@@ -27,7 +27,7 @@ Game::Game()
 
   board_ = new Board(4, rooms_wide, rooms_tall);
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
-  connect(fight_window_, &FightWindow::EndBattleSignal, this, &Game::EndBattle);
+  connect(fight_window_, &FightWindow::ButtonClickedSignal, this, &Game::EndBattle);
 
   window_->show();
 

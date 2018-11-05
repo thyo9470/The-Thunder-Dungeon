@@ -26,18 +26,18 @@ SOURCES += \
     sources\Board.cpp \
     sources\Tile.cpp \
     sources\Command.cpp \
-    sources/Tile.cpp \
-    sources/Command.cpp \
-    sources/Board.cpp
+    sources\Entity.cpp \
+    sources\Modifier.cpp
 
 HEADERS += \
         gamelibrary.h \
     headers\Board.h \
     headers\Tile.h \
     headers\Command.h \
-    headers/Board.h \
-    headers/Command.h \
-    headers/Tile.h
+    headers\Entity.h \
+    headers\Modifer.h \
+    headers\Skill.h
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

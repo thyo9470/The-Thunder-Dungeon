@@ -1,6 +1,11 @@
 #include <QtTest>
 
 #include "./headers/Board.h"
+#include "./headers/Entity.h"
+#include "./headers/Modifer.h"
+#include "./headers/Skill.h"
+#include <vector>
+#include <QJsonObject>
 
 class TestGame : public QObject
 {
@@ -9,6 +14,7 @@ class TestGame : public QObject
 private slots:
   void TestBoardInit();
   void TestBoardInit_data();
+  void TestSkillModifiers();
 };
 
 /*
@@ -36,6 +42,39 @@ void TestGame::TestBoardInit_data()
   QTest::newRow("small board") << 3 << 3 << 3;
   QTest::newRow("medium board") << 3 << 5 << 5;
   QTest::newRow("large board") << 3 << 10 << 10;
+}
+
+/**
+ * @brief TestGame::TestSkillModifiers
+ *
+ * Tests the functionalities of the ApplySkill() function
+ */
+void TestGame::TestSkillModifiers()
+{
+  QJsonObject entity_data;
+  entity_data["max_health"] = 100;
+  entity_data["max_magic"] = 100;
+  entity_data["strength"] = 100;
+  entity_data["speed"] = 100;
+
+  Entity hippo_goose(entity_data);
+
+  std::vector<Modifier> mods;
+  Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
+  Modifier drain_mod(ModifierType::Magic, ModifierOperation::Multiplicative, 0.9f);
+  Modifier strength_to_0(ModifierType::Strength, ModifierOperation::Additive, -120);
+  mods.push_back(damage_mod);
+  mods.push_back(drain_mod);
+  mods.push_back(strength_to_0);
+
+  // the 'target' parameter is irrelevant for this test
+  Skill attack_skill("", "", mods, Target::Self);
+
+  hippo_goose.ApplySkill(attack_skill);
+
+  QCOMPARE(hippo_goose.GetHealth(), 90);
+  QCOMPARE(hippo_goose.GetMagic(), 90);
+  QCOMPARE(hippo_goose.GetStrength(), 0);
 }
 
 QTEST_APPLESS_MAIN(TestGame)
