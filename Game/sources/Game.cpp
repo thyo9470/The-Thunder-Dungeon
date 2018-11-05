@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QJsonDocument>
+#include <QDebug>
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
@@ -15,14 +16,18 @@
 
 Game::Game()
 {
-  int x_rooms = 5;
-  int y_rooms = 5;
 
-  window_ = new Window(nullptr, ( x_rooms * 6 + 1 ) * 4 * 8, ( y_rooms * 6 + 1 ) * 4 * 8);
+  int rooms_wide = 5;
+  int rooms_tall = 5;
+
+  window_ = new Window();
+  fight_window_ = new FightWindow();
 
   playing_ = true;
 
-  board_ = new Board(3, x_rooms, y_rooms);
+  board_ = new Board(4, rooms_wide, rooms_tall);
+  connect(board_, &Board::StartBattle, this, &Game::StartBattle);
+  connect(fight_window_, &FightWindow::EndBattleSignal, this, &Game::EndBattle);
 
   window_->show();
 
@@ -117,9 +122,32 @@ void Game::GetInput(QKeyEvent* event){
   GameLoop();
 }
 
-/*
-    The game loop is what handles getting user input and updating the board
-*/
+/**
+ * @brief Game::GameLoop
+ *
+ * Updating the board
+ */
+
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
+}
+
+/**
+ * @brief Game::StartBattle
+ */
+
+void Game::StartBattle(){
+  qDebug() << "Start Battel";
+  window_->hide();
+  fight_window_->show();
+}
+
+/**
+ * @brief Game::StartBattle
+ */
+
+void Game::EndBattle(){
+  qDebug() << "Start Battel";
+  window_->show();
+  fight_window_->hide();
 }

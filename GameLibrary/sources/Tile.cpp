@@ -3,6 +3,7 @@
 #include "../headers/Board.h"
 #include <queue>
 #include <vector>
+#include <cmath>
 
 /*
   Convert a given TileType to a string
@@ -85,11 +86,25 @@ void EnemyTile::Move(std::vector< std::vector< std::vector<Tile*> > > &board)
 
   //Move the enemy
   pos_ = next;
-  board[1][next.y_][next.x_] = this;
+  board[Board::entity_layer_id_][next.y_][next.x_] = this;
 
   // Gets all the possible moves - ones not in walls
-  std::vector<Position> possible_moves;
-  if(board[0][pos_.y_ + 1][pos_.x_]->get_type() == TileType::Empty){
+  std::vector<Position> possible_moves = { Position(pos_.x_, pos_.y_+1), Position(pos_.x_+1, pos_.y_), Position(pos_.x_, pos_.y_-1), Position(pos_.x_-1, pos_.y_)};
+
+  for(int i = possible_moves.size()-1; i >= 0; i--){
+    Position p_move = possible_moves[i];
+    for(int l = 0; l < board.size(); l++){
+      if(l == Board::player_layer_id_){
+        continue;
+      }
+      if(board[l][p_move.y_][p_move.x_]->get_type() != TileType::Empty){
+          possible_moves.erase(possible_moves.begin() + i);
+          break;
+      }
+    }
+  }
+
+  /*if(board[0][pos_.y_ + 1][pos_.x_]->get_type() == TileType::Empty){
       possible_moves.push_back(Position(pos_.x_, pos_.y_ + 1));
     }
   if(board[0][pos_.y_ - 1][pos_.x_]->get_type() == TileType::Empty){
@@ -100,7 +115,7 @@ void EnemyTile::Move(std::vector< std::vector< std::vector<Tile*> > > &board)
     }
   if(board[0][pos_.y_][pos_.x_ - 1]->get_type() == TileType::Empty){
       possible_moves.push_back(Position(pos_.x_ - 1, pos_.y_));
-    }
+    }*/
 
   prev_moves_.push_back(next);
 
