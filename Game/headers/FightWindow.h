@@ -31,10 +31,10 @@ private:
     int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
 
 private slots:
-    void EndBattleSlot();
+    void ButtonClickedSlot();
 
 signals:
-    void EndBattleSignal();
+    void ButtonClickedSignal();
 
 };
 

@@ -60,7 +60,7 @@ void Board::NewLevel(){
 
   // place player tile
   player_tile_->SetPosition(Position(3,3));
-  temp_board[entity_layer_id_][3][3] = player_tile_;
+  temp_board[player_layer_id_][3][3] = player_tile_;
 
   // place exit tile
   temp_board[entity_layer_id_][height_res_-4][width_res_-4] = exit_tile_;
@@ -314,9 +314,9 @@ void Board::SpawnEnemies()
   ClearEnemies();
 
   // Spawn a bunch of enemies in a grid
-  Position start_room_pos = Position(3, 3);
+  Position start_room_pos = Position(9, 3);
   int room_spacing = 6;
-  Position end_room_pos = Position(width_ * 6 - 3, width_ * 6 - 3);
+  Position end_room_pos = Position(width_ * room_spacing - 3, width_ * room_spacing - 3);
   for(int i = start_room_pos.y_; i < end_room_pos.y_; i+=room_spacing){
       for(int j = start_room_pos.x_; j < end_room_pos.x_; j+=room_spacing){
           EnemyTile * enemy = new EnemyTile(Position(i, j));
@@ -340,8 +340,6 @@ void Board::MoveEnemies()
     case TileType::Enemy:
       emit StartBattle();
       break;
-    default:
-      MoveEnemies();
   }
 }
 
