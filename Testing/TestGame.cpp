@@ -57,7 +57,7 @@ void TestGame::TestSkillModifiers()
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
 
-  Entity octopus(entity_data);
+  Entity hippo_goose(entity_data);
 
   std::vector<Modifier> mods;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
@@ -67,13 +67,14 @@ void TestGame::TestSkillModifiers()
   mods.push_back(drain_mod);
   mods.push_back(strength_to_0);
 
-  Skill attack_skill("", "", mods);
+  // the 'target' parameter is irrelevant for this test
+  Skill attack_skill("", "", mods, Target::Self);
 
-  octopus.ApplySkill(attack_skill);
+  hippo_goose.ApplySkill(attack_skill);
 
-  QCOMPARE(octopus.GetHealth(), 90);
-  QCOMPARE(octopus.GetMagic(), 90);
-  QCOMPARE(octopus.GetStrength(), 0);
+  QCOMPARE(hippo_goose.GetHealth(), 90);
+  QCOMPARE(hippo_goose.GetMagic(), 90);
+  QCOMPARE(hippo_goose.GetStrength(), 0);
 }
 
 QTEST_APPLESS_MAIN(TestGame)
