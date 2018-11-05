@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<stdlib.h>
 #include<QJsonArray>
+#include<QDebug>
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
@@ -62,7 +63,7 @@ void Board::NewLevel(){
   temp_board[entity_layer_id_][3][3] = player_tile_;
 
   // place exit tile
-  temp_board[2][height_res_-4][width_res_-4] = exit_tile_;
+  temp_board[entity_layer_id_][height_res_-4][width_res_-4] = exit_tile_;
 
   board_ = temp_board;
   GenerateDungeon();
@@ -333,7 +334,15 @@ void Board::MoveEnemies()
   for(EnemyTile * enemy : enemies_){
       board_[entity_layer_id_][enemy->get_position().y_][enemy->get_position().x_] = empty_tile_ref_;
       enemy->Move(board_);
-    }
+  }
+  Tile* test = CheckCollision(player_tile_);
+  switch(test->get_type()){
+    case TileType::Enemy:
+      emit StartBattle();
+      break;
+    default:
+      MoveEnemies();
+  }
 }
 
 /*
@@ -354,7 +363,7 @@ void Board::ClearEnemies()
 void Board::MovePlayer(ActionType action_type){
   int type = static_cast<int>(action_type);
   Position old_pos =  player_tile_->get_position(); 
-  board_[entity_layer_id_][old_pos.y_][old_pos.x_] = empty_tile_ref_;
+  board_[player_layer_id_][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(type){
     case 101: // up
       if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall &&
@@ -385,13 +394,19 @@ void Board::MovePlayer(ActionType action_type){
       break;
   }
   Position new_pos =  player_tile_->get_position(); 
-  board_[entity_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
+  board_[player_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
+  // test for collision
   Tile* test = CheckCollision(player_tile_);
-  if((*test) == TileType::Exit){
-    NewLevel();
+  switch(test->get_type()){
+    case TileType::Exit:
+      NewLevel();
+      break;
+    case TileType::Enemy:
+      emit StartBattle();
+      break;
+    default:
+      MoveEnemies();
   }
-
-  MoveEnemies();
 }
 
 /*
@@ -443,7 +458,7 @@ void Board::Read(const QJsonObject &json)
   Position player_pos = Position(player_save["pos_x"].toInt(), player_save["pos_y"].toInt());
 
   player_tile_->SetPosition(player_pos);
-  board_[entity_layer_id_][player_pos.y_][player_pos.x_] = player_tile_;
+  board_[player_layer_id_][player_pos.y_][player_pos.x_] = player_tile_;
 
   // Load the enemy tiles
   QJsonArray enemies = json["enemies"].toArray();

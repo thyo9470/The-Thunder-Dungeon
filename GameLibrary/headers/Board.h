@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <QJsonObject>
+#include <QObject>
 
 #include "Tile.h"
 #include "Command.h"
@@ -12,8 +13,8 @@
 
 enum class ActionType {Up=101, Right=102, Down=103, Left=104, TEST=999};
 
-class Board{
-
+class Board : public QObject {
+  Q_OBJECT
 
 public:
   Board(int layers, int width, int height);
@@ -26,12 +27,17 @@ public:
   void Read(const QJsonObject &json);
   void Write(QJsonObject &json) const;
 
+  const int static player_layer_id_ = 1;
+  const int static entity_layer_id_ = 2;
+
+signals:
+  void StartBattle();
+
 private:
   // number of object layers
   int layers_;
 
   // The layer that contains enemies and the player
-  const int entity_layer_id_ = 1;
 
   // Number of rooms in each row and column
   int width_;

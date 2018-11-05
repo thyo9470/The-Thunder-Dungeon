@@ -3,9 +3,12 @@
 
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
+#include <QPropertyAnimation>
 #include <iostream>
 
 #include "./headers/Tile.h"
+
+
 
 Window::Window(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),
@@ -27,6 +30,7 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
 
     // Hold all the images
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
+
 }
 
 Window::~Window()

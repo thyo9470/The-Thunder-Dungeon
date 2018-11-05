@@ -6,6 +6,7 @@
 #include <QApplication>
 
 #include "./headers/Board.h"
+#include "FightWindow.h"
 #include "Window.h"
 
 class Game : public QObject{
@@ -18,10 +19,6 @@ public:
 
   Game();
 
-  // For data persistence
-  bool LoadGame();
-  bool SaveGame() const;
-
   void Read(const QJsonObject &json);
   void Write(QJsonObject &json) const;
 
@@ -33,6 +30,7 @@ public:
 
 private:
   Window * window_;
+  FightWindow * fight_window_;
   Board  *board_;
   bool playing_;
   SaveFormat save_format_ = SaveFormat::Binary;
@@ -40,6 +38,11 @@ private:
 
 public slots:
   void GetInput(QKeyEvent* event);
+  // For data persistence
+  bool LoadGame();
+  bool SaveGame() const;
+  void StartBattle();
+  void EndBattle();
 
 };
 
