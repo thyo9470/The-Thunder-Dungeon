@@ -79,6 +79,7 @@ private:
   void SpawnEnemies();
   void MoveEnemies();
   void ClearEnemies();
+  void DeleteEnemy(Tile* enemy, Position pos);
 
   // checks it an entity tile has collided with another object
   Tile* CheckCollision(EntityTile* entity);

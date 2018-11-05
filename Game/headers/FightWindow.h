@@ -1,6 +1,8 @@
 #ifndef FIGHTWINDOW_H
 #define FIGHTWINDOW_H
 
+#include "BattleSim.h"
+
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QKeyEvent>
@@ -19,6 +21,8 @@ public:
 
     Ui::FightWindow * get_ui(){return ui;}
 
+    void UpdateFightWindow(BattleSim* battle_sim);
+
 private:
 
     Ui::FightWindow *ui;
@@ -31,10 +35,10 @@ private:
     int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
 
 private slots:
-    void ButtonClickedSlot();
+    void ButtonPressedSlot();
 
 signals:
-    void ButtonClickedSignal();
+    void ButtonPressedSignal(int skill_id);
 
 };
 

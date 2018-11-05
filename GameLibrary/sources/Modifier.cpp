@@ -1,4 +1,4 @@
-#include "../headers/Modifer.h"
+#include "../headers/Modifier.h"
 
 /**
  * @brief Modifier::GetModifiedStat

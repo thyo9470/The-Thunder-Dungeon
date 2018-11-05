@@ -2,7 +2,7 @@
 #define SKILL_H
 
 #include "iostream"
-#include "Modifer.h"
+#include "Modifier.h"
 #include <vector>
 
 /**

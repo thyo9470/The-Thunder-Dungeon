@@ -17,6 +17,17 @@
 Game::Game()
 {
 
+  // make player
+  QJsonObject entity_data;
+  entity_data["max_health"] = 100;
+  entity_data["max_magic"] = 100;
+  entity_data["strength"] = 100;
+  entity_data["speed"] = 100;
+
+  player_ = new Entity(entity_data);
+
+  // setup ui
+
   int rooms_wide = 5;
   int rooms_tall = 5;
 
@@ -25,15 +36,19 @@ Game::Game()
 
   playing_ = true;
 
+  // setup board
+
   board_ = new Board(4, rooms_wide, rooms_tall);
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
-  connect(fight_window_, &FightWindow::ButtonClickedSignal, this, &Game::EndBattle);
 
   window_->show();
 
-  connect(window_, &Window::KeyPressSignal, this, &Game::GetInput);
+  connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
   connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
   connect(window_, &Window::LoadGameSignal, this, &Game::LoadGame);
+
+
+  connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
 }
 
 bool Game::LoadGame(){
@@ -107,7 +122,7 @@ void Game::Write(QJsonObject &json) const{
 /*
   Recieved the input from the player, and moves the game foward
 */
-void Game::GetInput(QKeyEvent* event){
+void Game::GetInputBoard(QKeyEvent* event){
   if(event->key() == Qt::Key_W){
     board_->MovePlayer(ActionType::Up);
   }else if(event->key() == Qt::Key_D){
@@ -120,6 +135,19 @@ void Game::GetInput(QKeyEvent* event){
     board_->MovePlayer(ActionType::TEST);
   }
   GameLoop();
+}
+
+void Game::GetInputBattleSim(int skill_id){
+  battle_sim_->PlayerTurn(skill_id);
+  fight_window_->UpdateFightWindow(battle_sim_);
+  qDebug() << battle_sim_->GetEnemy()->GetHealth();
+  if(battle_sim_->GetPlayer()->GetHealth() == 0){
+    qDebug() << "YOU DEAD!!";
+    EndBattle();
+  }else if(battle_sim_->GetEnemy()->GetHealth() == 0){
+    qDebug() << "YOU WIN!!";
+    EndBattle();
+  }
 }
 
 /**
@@ -138,6 +166,8 @@ void Game::GameLoop() const{
 
 void Game::StartBattle(){
   qDebug() << "Start Battel";
+  battle_sim_ = new BattleSim(player_);
+  fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();
   fight_window_->show();
 }

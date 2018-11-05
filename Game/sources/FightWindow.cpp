@@ -23,11 +23,11 @@ FightWindow::FightWindow(QWidget *parent) :
   // Hold all the images
   sprite_sheet_ = QPixmap(":/images/Sprites.png");
 
-  connect(ui->skillButton_1, &QPushButton::pressed, this, &FightWindow::ButtonClickedSlot);
-  connect(ui->skillButton_2, &QPushButton::pressed, this, &FightWindow::ButtonClickedSlot);
-  connect(ui->skillButton_3, &QPushButton::pressed, this, &FightWindow::ButtonClickedSlot);
-  connect(ui->skillButton_4, &QPushButton::pressed, this, &FightWindow::ButtonClickedSlot);
-  connect(ui->runButton, &QPushButton::pressed, this, &FightWindow::ButtonClickedSlot);
+  connect(ui->skillButton_1, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->skillButton_2, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->skillButton_3, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->skillButton_4, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->runButton, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
 
 }
 
@@ -35,11 +35,29 @@ FightWindow::~FightWindow(){
     delete ui;
 }
 
-void FightWindow::ButtonClickedSlot(){
+void FightWindow::ButtonPressedSlot(){
   QObject *senderObj = sender(); // This will give Sender object
-  int skill_index = senderObj->property("skill").value<int>();  //objectName();
+  int skill_id = senderObj->property("skill").value<int>();  //objectName();
 
-  if(skill_index == 4){
-    emit ButtonClickedSignal();
+  emit ButtonPressedSignal(skill_id);
+}
+
+void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
+  //update log
+  std::vector<std::string> log = battle_sim->GetLog();
+  std::string log_formatted = "";
+  for(std::string message : log){
+    log_formatted += "\n" + message;
   }
+  ui->dialogLabel->setText(QString::fromStdString(log_formatted));
+
+  //update player info
+  Entity* player = battle_sim->GetPlayer();
+  ui->playerHealthBar->setValue(player->GetHealthPercent());
+  ui->playerMagicBar->setValue(player->GetMagicPercent());
+
+  //update enemy info
+  Entity* enemy = battle_sim->GetEnemy();
+  ui->enemyHealthBar->setValue(enemy->GetHealthPercent());
+  ui->enemyMagicBar->setValue(enemy->GetMagicPercent());
 }

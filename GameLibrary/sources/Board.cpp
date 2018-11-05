@@ -354,6 +354,17 @@ void Board::ClearEnemies()
   enemies_.clear();
 }
 
+void Board::DeleteEnemy(Tile* enemy, Position pos){
+  board_[entity_layer_id_][pos.y_][pos.x_] = empty_tile_ref_;
+
+  for(int i = 0; i < enemies_.size(); i++){
+    if(enemies_[i] == enemy){
+      enemies_.erase(enemies_.begin() + i);
+      break;
+    }
+  }
+}
+
 /*
     Used to move the player that is cotrolled by the user
     Currently also calls MoveEnemies, which moves all the enemies by the player
@@ -400,6 +411,7 @@ void Board::MovePlayer(ActionType action_type){
       NewLevel();
       break;
     case TileType::Enemy:
+      DeleteEnemy(test, new_pos);
       emit StartBattle();
       break;
     default:

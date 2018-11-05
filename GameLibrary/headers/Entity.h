@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <vector>
 #include "Skill.h"
-#include "Modifer.h"
+#include "Modifier.h"
 
 /**
  * @brief The Entity class
@@ -16,7 +16,11 @@ class Entity
 public:
   Entity(QJsonObject entity_stats);
   float GetHealth() { return health_; }
+  float GetMaxHealth() {return max_health_; }
+  int GetHealthPercent() {return (health_/max_health_) * 100;}
   float GetMagic(){ return magic_; }
+  float GetMaxMagic() {return max_magic_; }
+  int GetMagicPercent() {return (magic_/max_magic_) * 100; }
   float GetSpeed(){ return speed_; }
   float GetStrength() { return strength_; }
   std::vector<Skill> GetSkills(){ return skills; }

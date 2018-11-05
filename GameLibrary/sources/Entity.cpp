@@ -20,6 +20,19 @@ Entity::Entity(QJsonObject json)
   if(json.contains("speed") && json["speed"].toInt()){
       speed_ = json["speed"].toInt();
     }
+
+  std::vector<Modifier> mods;
+  Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
+  Modifier drain_mod(ModifierType::Magic, ModifierOperation::Multiplicative, 0.9f);
+  Modifier strength_to_0(ModifierType::Strength, ModifierOperation::Additive, -120);
+  mods.push_back(damage_mod);
+  mods.push_back(drain_mod);
+  mods.push_back(strength_to_0);
+
+  // the 'target' parameter is irrelevant for this test
+  Skill basic_skill("Basic", "damage, grain, str to 0", mods, Target::Enemy);
+
+  skills.push_back(basic_skill);
 }
 
 /**
