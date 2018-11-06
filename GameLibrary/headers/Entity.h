@@ -15,6 +15,7 @@ class Entity
 {
 public:
   Entity(QJsonObject entity_stats);
+  int GetLevel() {return level_;}
   float GetHealth() { return health_; }
   float GetMaxHealth() {return max_health_; }
   int GetHealthPercent() {return (health_/max_health_) * 100;}
@@ -27,6 +28,7 @@ public:
   void ApplySkill(Skill skill);
 
 private:
+  int level_;
   float max_health_;
   float max_magic_;
   float health_;

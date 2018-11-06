@@ -342,7 +342,7 @@ void Board::MoveEnemies()
       emit StartBattle();
       break;
   }
-}
+}ss
 
 /*
  * Safely remove all enemies from the board

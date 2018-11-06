@@ -56,6 +56,14 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   ui->playerHealthBar->setValue(player->GetHealthPercent());
   ui->playerMagicBar->setValue(player->GetMagicPercent());
 
+  // update skill info
+  std::vector<Skill> player_skills = player->GetSkills();
+  std::vector<QPushButton*> button_skills = {ui->skillButton_1, ui->skillButton_2, ui->skillButton_3, ui->skillButton_4};
+  for(unsigned int i = 0; i < player_skills.size(); i++){
+    button_skills[i]->setText(QString::fromStdString(player_skills[i].GetName()));
+    button_skills[i]->setToolTip(QString::fromStdString(player_skills[i].GetDescription()));
+  }
+
   //update enemy info
   Entity* enemy = battle_sim->GetEnemy();
   ui->enemyHealthBar->setValue(enemy->GetHealthPercent());
