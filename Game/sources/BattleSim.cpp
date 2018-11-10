@@ -19,8 +19,10 @@ BattleSim::BattleSim(Entity* player){
   entity_data["max_magic"] = enemy_level * 10;
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
+  entity_data["sprite_index"] = 3;
 
   enemy_ = new Entity(entity_data);
+
 }
 
 BattleSim::~BattleSim(){
@@ -35,8 +37,7 @@ BattleSim::~BattleSim(){
   @param  (int skill) The skill being used
   */
 void BattleSim::PlayerTurn(int skill_id){
-  // check if running
-
+  // check if runnings
 
   std::vector<Skill> possible_skills= player_->GetSkills();
   if(skill_id == 4){

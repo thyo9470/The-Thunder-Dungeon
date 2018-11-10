@@ -14,15 +14,30 @@ FightWindow::FightWindow(QWidget *parent) :
 
   // Initialize the scene, which will hold all the objects to render
   scene_ = new QGraphicsScene();
-  ui->graphicsView->setScene(scene_);
+  ui->backgroundView->setScene(scene_);
 
   // Keep scrollbars from appearing
-  ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  ui->backgroundView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  ui->backgroundView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   // Hold all the images
   sprite_sheet_ = QPixmap(":/images/Sprites.png");
 
+  //load backgroundr
+  QLabel* background = new QLabel();
+  background->setGeometry(10, 10, 781, 421);
+  background->setPixmap(QPixmap(":/images/Crypte.png"));
+  background->setScaledContents(true);
+  scene_->addWidget(background);
+
+  //set player and enemy position
+  player_position_x_ = 100;
+  player_position_y_ = 6.0*scene_->height()/10.0;
+
+  enemy_position_x_ = scene_->width()-170;
+  enemy_position_y_ = 6.0*scene_->height()/10.0;
+
+  // connect pressed button
   connect(ui->skillButton_1, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->skillButton_2, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->skillButton_3, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
@@ -51,7 +66,7 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   }
   ui->dialogLabel->setText(QString::fromStdString(log_formatted));
 
-  //update player info
+  //updatee player info
   Entity* player = battle_sim->GetPlayer();
   ui->playerHealthBar->setValue(player->GetHealthPercent());
   ui->playerMagicBar->setValue(player->GetMagicPercent());
@@ -64,8 +79,23 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
     button_skills[i]->setToolTip(QString::fromStdString(player_skills[i].GetDescription()));
   }
 
+  int row = 0;
+  // Create and add the tile to the scene
+  QGraphicsPixmapItem * pixmap_player = new QGraphicsPixmapItem();
+  pixmap_player->setPixmap(sprite_sheet_.copy(player->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  pixmap_player->setPos( player_position_x_ , player_position_y_);
+  pixmap_player->setScale(pixmap_player->scale() * tile_scale_);
+  scene_->addItem(pixmap_player);
+
   //update enemy info
   Entity* enemy = battle_sim->GetEnemy();
   ui->enemyHealthBar->setValue(enemy->GetHealthPercent());
   ui->enemyMagicBar->setValue(enemy->GetMagicPercent());
+
+  // Create and add the tile to the scene
+  QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();
+  pixmap_enemy->setPixmap(sprite_sheet_.copy(enemy->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
+  pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);
+  scene_->addItem(pixmap_enemy);
 }

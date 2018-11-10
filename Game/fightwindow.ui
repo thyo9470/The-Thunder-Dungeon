@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="backgroundView">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -135,6 +135,9 @@
     <property name="value">
      <number>55</number>
     </property>
+    <property name="format">
+     <string>%p%ss</string>
+    </property>
    </widget>
    <widget class="QProgressBar" name="enemyHealthBar">
     <property name="geometry">
@@ -147,6 +150,9 @@
     </property>
     <property name="value">
      <number>24</number>
+    </property>
+    <property name="format">
+     <string>%p%</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="playerMagicBar">
@@ -161,6 +167,9 @@
     <property name="value">
      <number>24</number>
     </property>
+    <property name="format">
+     <string>%p%</string>
+    </property>
    </widget>
    <widget class="QProgressBar" name="enemyMagicBar">
     <property name="geometry">
@@ -174,6 +183,9 @@
     <property name="value">
      <number>10</number>
     </property>
+    <property name="format">
+     <string>%p%</string>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -183,6 +195,9 @@
       <width>81</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:rgb(255, 255, 255)</string>
     </property>
     <property name="text">
      <string>Player HP</string>
@@ -197,6 +212,9 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color:rgb(255, 255, 255)</string>
+    </property>
     <property name="text">
      <string>Player MP</string>
     </property>
@@ -209,6 +227,9 @@
       <width>81</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:rgb(255, 255, 255)</string>
     </property>
     <property name="text">
      <string>Enemy MP</string>
@@ -225,6 +246,9 @@
       <width>81</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:rgb(255, 255, 255)</string>
     </property>
     <property name="text">
      <string>Enemy HP</string>

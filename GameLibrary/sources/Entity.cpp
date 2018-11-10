@@ -25,6 +25,11 @@ Entity::Entity(QJsonObject json)
     }else{
       level_ = 1;
     }
+ if(json.contains("sprite_index") && json["sprite_index"].toInt()){
+      sprite_index_ = json["sprite_index"].toInt();
+   }else{
+     sprite_index_ = 4;
+   }
 
   std::vector<Modifier> mods;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
@@ -37,7 +42,7 @@ Entity::Entity(QJsonObject json)
   // the 'target' parameter is irrelevant for this test
   Skill basic_skill("Strike", "Basic Attack: \n10 damage", mods, Target::Enemy);
 
-  skills.push_back(basic_skill);
+  skills_.push_back(basic_skill);
 }
 
 /**
@@ -76,6 +81,9 @@ void Entity::ApplyModifier(Modifier mod)
       break;
     case ModifierType::MaxMagic:
       max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_);
+      break;
+     case ModifierType::Damage:
+      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_);
       break;
     }
 

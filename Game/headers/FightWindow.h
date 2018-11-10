@@ -32,10 +32,16 @@ private:
 
     int sprite_size_ = 8; // The size of a sprite in pixels
     int sprite_sheet_size_ = 16; // The width of the sprite sheet in number of sprites
-    int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
+    int tile_scale_ = 10; // The scale factor to increase the size of the sprites rendered
+
+    double player_position_x_;
+    double player_position_y_;
+    double enemy_position_x_;
+    double enemy_position_y_;
 
 private slots:
     void ButtonPressedSlot();
+
 
 signals:
     void ButtonPressedSignal(int skill_id);

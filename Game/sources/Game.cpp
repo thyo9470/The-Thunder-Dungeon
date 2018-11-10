@@ -23,6 +23,7 @@ Game::Game()
   entity_data["max_magic"] = 100;
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
+  entity_data["sprite_index"] = 2;
 
   player_ = new Entity(entity_data);
 
@@ -158,6 +159,7 @@ void Game::GetInputBattleSim(int skill_id){
 
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
+  player_->SetLevel(board_->GetLevel());
 }
 
 /**
@@ -165,7 +167,6 @@ void Game::GameLoop() const{
  */
 
 void Game::StartBattle(){
-  qDebug() << "Start Battel";
   battle_sim_ = new BattleSim(player_);
   fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();
@@ -177,7 +178,6 @@ void Game::StartBattle(){
  */
 
 void Game::EndBattle(){
-  qDebug() << "Start Battel";
   window_->show();
   fight_window_->hide();
 }

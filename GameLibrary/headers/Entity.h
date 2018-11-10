@@ -24,8 +24,10 @@ public:
   int GetMagicPercent() {return (magic_/max_magic_) * 100; }
   float GetSpeed(){ return speed_; }
   float GetStrength() { return strength_; }
-  std::vector<Skill> GetSkills(){ return skills; }
+  std::vector<Skill> GetSkills() { return skills_; }
+  int get_sprite_index() {return sprite_index_;}
   void ApplySkill(Skill skill);
+  void SetLevel(int level) {level_ = level;}
 
 private:
   int level_;
@@ -37,8 +39,9 @@ private:
   float speed_;
   float max_stat_value_ = 1000; // The maximum number a stat can be
   float min_stat_value_ = 0;
-  std::vector <Skill> skills;
+  std::vector <Skill> skills_;
   void ApplyModifier(Modifier mod);
+  int sprite_index_;
 
 };
 
