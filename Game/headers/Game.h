@@ -5,7 +5,10 @@
 
 #include <QApplication>
 
+#include <headers/Entity.h>
+
 #include "./headers/Board.h"
+#include "BattleSim.h"
 #include "FightWindow.h"
 #include "Window.h"
 
@@ -32,12 +35,14 @@ private:
   Window * window_;
   FightWindow * fight_window_;
   Board  *board_;
+  BattleSim *battle_sim_;
   bool playing_;
   SaveFormat save_format_ = SaveFormat::Binary;
-    //Player *player_;
+  Entity *player_;
 
 public slots:
-  void GetInput(QKeyEvent* event);
+  void GetInputBoard(QKeyEvent* event);
+  void GetInputBattleSim(int skill_id);
   // For data persistence
   bool LoadGame();
   bool SaveGame() const;

@@ -338,6 +338,7 @@ void Board::MoveEnemies()
   Tile* test = CheckCollision(player_tile_);
   switch(test->get_type()){
     case TileType::Enemy:
+      DeleteEnemy(player_tile_->get_position());
       emit StartBattle();
       break;
   }
@@ -352,6 +353,16 @@ void Board::ClearEnemies()
     delete enemies_[i];
   }
   enemies_.clear();
+}
+
+void Board::DeleteEnemy(Position pos){
+  board_[entity_layer_id_][pos.y_][pos.x_] = empty_tile_ref_;
+
+  for(int i = 0; i < enemies_.size(); i++){
+    if(enemies_[i]->get_position() == pos){
+      enemies_.erase(enemies_.begin() + i);
+    }
+  }
 }
 
 /*
@@ -400,6 +411,7 @@ void Board::MovePlayer(ActionType action_type){
       NewLevel();
       break;
     case TileType::Enemy:
+      DeleteEnemy(player_tile_->get_position());
       emit StartBattle();
       break;
     default:

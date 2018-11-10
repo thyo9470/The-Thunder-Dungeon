@@ -20,6 +20,7 @@ public:
   Board(int layers, int width, int height);
 
   std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
+  int GetLevel() {return level_;}
 
   // Move Player
   void MovePlayer(ActionType action_type);
@@ -79,6 +80,7 @@ private:
   void SpawnEnemies();
   void MoveEnemies();
   void ClearEnemies();
+  void DeleteEnemy(Position pos);
 
   // checks it an entity tile has collided with another object
   Tile* CheckCollision(EntityTile* entity);

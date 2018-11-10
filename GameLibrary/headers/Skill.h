@@ -2,7 +2,7 @@
 #define SKILL_H
 
 #include "iostream"
-#include "Modifer.h"
+#include "Modifier.h"
 #include <vector>
 
 /**
@@ -27,6 +27,8 @@ public:
 
   std::vector<Modifier> GetModifiers() { return modifiers_; }
   Target GetTarget() { return target_; }
+  std::string GetName() {return skill_name_;}
+  std::string GetDescription() {return skill_description_;}
 
 private:
   std::string skill_name_;

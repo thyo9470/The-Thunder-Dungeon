@@ -3,5 +3,6 @@
         <file>images/Background.png</file>
         <file>images/Tiles.png</file>
         <file>images/Sprites.png</file>
+        <file>images/Crypte.png</file>
     </qresource>
 </RCC>
