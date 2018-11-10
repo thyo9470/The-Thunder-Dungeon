@@ -29,6 +29,8 @@ public:
   void ApplySkill(Skill skill);
   void SetLevel(int level) {level_ = level;}
 
+  void Write(QJsonObject &json) const;
+
 private:
   int level_;
   float max_health_;

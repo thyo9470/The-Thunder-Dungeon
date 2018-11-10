@@ -69,7 +69,24 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
           pixmap->setScale(pixmap->scale() * tile_scale_);
           scene_->addItem(pixmap);
       }
-  }
+    }
+}
+
+/**
+ * Updates the sidebar that shows the player health, magic, and speed - called whenever a battle is finished
+ *
+ * @param player
+ */
+void Window::UpdatePlayerStats(Entity &player)
+{
+  ui->playerHealth->setText("Health: " + QString::number(player.GetHealth()) + " / " + QString::number(player.GetMaxHealth()));
+  ui->playerMagic->setText("Magic: " + QString::number(player.GetMagic()) + " / " + QString::number((player.GetMaxMagic())));
+  ui->playerSpeed->setText("Speed: " + QString::number(player.GetSpeed()));
+}
+
+void Window::UpdateLevel(int level)
+{
+  ui->currentLevel->setText("Current Level: " + QString::number(level));
 }
 
 void Window::on_save_button_clicked()

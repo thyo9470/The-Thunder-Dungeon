@@ -32,8 +32,11 @@ Game::Game()
   int rooms_wide = 5;
   int rooms_tall = 5;
 
-  window_ = new Window();
-  fight_window_ = new FightWindow();
+  window_ = new Window(); // Represents the board window
+  fight_window_ = new FightWindow(); // Represents the fight scene window
+
+  // Update the window to show the player stats
+  window_->UpdatePlayerStats(*player_);
 
   playing_ = true;
 
@@ -52,6 +55,13 @@ Game::Game()
   connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
 }
 
+/**
+ * @brief Game::LoadGame
+ *
+ * Opens the json read file if it exists, and loads the game with the data
+ *
+ * @return
+ */
 bool Game::LoadGame(){
   // Have the option to save in two different formats:
   // JSON, or unreadable binary
@@ -72,11 +82,20 @@ bool Game::LoadGame(){
 
       Read(loadDoc.object());
 
-      QTextStream(stdout) << "Loaded save using "
-                          << (save_format_ != Json ? "binary " : "") << "JSON...\n";
+      // Visually updates after reading
+      GameLoop();
+      window_->UpdatePlayerStats(*player_);
+
       return true;
 }
 
+/**
+ * @brief Game::SaveGame
+ *
+ * Saves the game by creating a new file and writing the json object to it
+ *
+ * @return
+ */
 bool Game::SaveGame() const{
   QFile saveFile(save_format_ == Json
          ? QStringLiteral("save.json")
@@ -103,10 +122,14 @@ bool Game::SaveGame() const{
  * @param &json The Json Object with the game save data
  * */
 void Game::Read(const QJsonObject &json){
-  if (json.contains("board") && json["board"].isObject()){
-      board_->Read(json["board"].toObject());
-      GameLoop();
+  if (!json.contains("board") || !json["board"].isObject() ||
+      !json.contains("player") || !json["player"].isObject()){
+      qWarning("Load failed: Game data is either missing or corrupted.");
+      return;
   }
+  board_->Read(json["board"].toObject());
+  delete player_;
+  player_ = new Entity(json["player"].toObject());
 }
 
 /*
@@ -118,6 +141,10 @@ void Game::Write(QJsonObject &json) const{
   QJsonObject board_object;
   board_->Write(board_object);
   json["board"] = board_object;
+
+  QJsonObject player_object;
+  player_->Write(player_object);
+  json["player"] = player_object;
 }
 
 /*
@@ -138,6 +165,13 @@ void Game::GetInputBoard(QKeyEvent* event){
   GameLoop();
 }
 
+/**
+ * @brief Game::GetInputBattleSim
+ *
+ * Gets called whenever the input buttons are pressed in the battle sim e.g. when a skill button is pressed
+ *
+ * @param skill_id
+ */
 void Game::GetInputBattleSim(int skill_id){
   battle_sim_->PlayerTurn(skill_id);
   fight_window_->UpdateFightWindow(battle_sim_);
@@ -160,6 +194,7 @@ void Game::GetInputBattleSim(int skill_id){
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
   player_->SetLevel(board_->GetLevel());
+  window_->UpdateLevel(board_->GetLevel());
 }
 
 /**
@@ -180,4 +215,5 @@ void Game::StartBattle(){
 void Game::EndBattle(){
   window_->show();
   fight_window_->hide();
+  window_->UpdatePlayerStats(*player_);
 }
