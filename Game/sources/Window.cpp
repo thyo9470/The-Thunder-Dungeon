@@ -79,8 +79,8 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
  */
 void Window::UpdatePlayerStats(Entity &player)
 {
-  ui->playerHealth->setText("Health: " + QString::number(player.GetHealthPercent()));
-  ui->playerMagic->setText("Magic: " + QString::number(player.GetMagicPercent()));
+  ui->playerHealth->setText("Health: " + QString::number(player.GetHealth()) + " / " + QString::number(player.GetMaxHealth()));
+  ui->playerMagic->setText("Magic: " + QString::number(player.GetMagic()) + " / " + QString::number((player.GetMaxMagic())));
   ui->playerSpeed->setText("Speed: " + QString::number(player.GetSpeed()));
 }
 
