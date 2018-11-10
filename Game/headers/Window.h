@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 
 #include "./headers/Tile.h"
+#include "./headers/Entity.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +19,8 @@ class Window : public QMainWindow
 public:
     explicit Window(QWidget *parent = nullptr, int window_x = 496, int window_y = 496);
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
+    void UpdatePlayerStats(Entity &entity);
+    void UpdateLevel(int level);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 

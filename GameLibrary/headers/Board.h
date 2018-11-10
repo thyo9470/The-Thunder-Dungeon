@@ -19,6 +19,8 @@ class Board : public QObject {
 public:
   Board(int layers, int width, int height);
 
+  int GetLevel() {return level_;}
+
   std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
 
   // Move Player

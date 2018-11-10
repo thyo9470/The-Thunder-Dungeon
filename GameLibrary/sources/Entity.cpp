@@ -1,29 +1,38 @@
 #include "../headers/Entity.h"
 
 /**
- * @brief Entity::Entity
+ * Initialize and entity using a json object to initialize all of its parameters
+ * We don't need a read functioin because we can create a new entity from the same json
  * @param json The json object to read data from and initialize the stats
  */
 Entity::Entity(QJsonObject json)
 {
-  if(json.contains("max_health") && json["max_health"].toInt()){
-      max_health_ = json["max_health"].toInt();
-      health_ = json["max_health"].toInt();
+  if(json.contains("max_health") && json["max_health"].isDouble()){
+      max_health_ = json["max_health"].toDouble();
     }
-  if(json.contains("max_magic") && json["max_magic"].toInt()){
-      max_magic_ = json["max_magic"].toInt();
-      magic_ = json["max_magic"].toInt();
+  if(json.contains("max_magic") && json["max_magic"].isDouble()){
+      max_magic_ = json["max_magic"].toDouble();
     }
-  if(json.contains("strength") && json["strength"].toInt()){
-      strength_ = json["strength"].toInt();
-    }
-  if(json.contains("speed") && json["speed"].toInt()){
-      speed_ = json["speed"].toInt();
+  if(json.contains("speed") && json["speed"].isDouble()){
+      speed_ = json["speed"].toDouble();
     }
   if(json.contains("level") && json["level"].toInt()){
       level_ = json["level"].toInt();
-    }else{
+    }
+  else{
       level_ = 1;
+    }
+  if(json.contains("health") && json["health"].isDouble()){
+      health_ = json["health"].toDouble();
+    }
+  else{
+      health_ = max_health_;
+    }
+  if(json.contains("magic") && json["magic"].isDouble()){
+      magic_ = json["magic"].toDouble();
+    }
+  else{
+      magic_ = max_magic_;
     }
 
   std::vector<Modifier> mods;
@@ -49,6 +58,24 @@ void Entity::ApplySkill(Skill skill)
   for(Modifier mod : skill.GetModifiers()){
       ApplyModifier(mod);
     }
+}
+
+
+/**
+ * Saves the atomic attributes of an entity
+ * We are not saving the skills because we are going to attempt to use a database to save and load the skills
+ * and save a skill using just its id
+ *
+ * @param json
+ */
+void Entity::Write(QJsonObject &json) const
+{
+  json["level"] = level_;
+  json["max_health"] = max_health_;
+  json["max_magic"] = max_magic_;
+  json["health"] = health_;
+  json["magic"] = magic_;
+  json["speed"] = speed_;
 }
 
 /**

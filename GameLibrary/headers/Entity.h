@@ -27,6 +27,8 @@ public:
   std::vector<Skill> GetSkills(){ return skills; }
   void ApplySkill(Skill skill);
 
+  void Write(QJsonObject &json) const;
+
 private:
   int level_;
   float max_health_;
