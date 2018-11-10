@@ -1,5 +1,5 @@
 # Checkpoint 4
-#### 2) Guide to current functionalities:
+#### 0) Guide to current functionalities:
 - "wasd" keys to move around on the board
 - Click the 'save' button to save a game state, and the 'load' button to load a game state
 - When battling an enemy, click a skill button to activate a skill, or 'run' to attempt to run away
@@ -53,7 +53,7 @@
 
 Overall, we have had to slim down some features because of their complexity. We are slightly behind because we haven't written thorough test cases, and we haven't implemented items. With more test cases, hopefully we will also include TravisCI.
 
-#### 2) Screenshots:
+#### 4) Screenshots:
 ![Class Composition](https://docs.google.com/drawings/d/e/2PACX-1vQrfcu6v2jyOQ42V3YtGEZHcU6cZK9IEUcNFRKwhaGztiwEENUXf6QrWTqffoCGkia8X-5r8OHV8c0H/pub?w=960&h=720)
 
 Note that the window normally stays in place: only during recording does the window seem to move around.
