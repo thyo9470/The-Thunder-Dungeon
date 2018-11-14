@@ -34,7 +34,7 @@ private:
   BattleState state_;
 
   void EnemyTurn();
-  bool IsBattleOver();
+  void IsBattleOver();
   void UpdateLog(std::string new_message);
 
 };

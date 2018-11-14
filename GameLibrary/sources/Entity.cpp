@@ -34,24 +34,43 @@ Entity::Entity(QJsonObject json)
   else{
       level_ = 1;
     }
- if(json.contains("sprite_index") && json["sprite_index"].toInt()){
+  if(json.contains("sprite_index") && json["sprite_index"].toInt()){
       sprite_index_ = json["sprite_index"].toInt();
    }else{
      sprite_index_ = 4; // default is a set of stairs
    }
+  if(json.contains("IsPlayer") && json["IsPlayer"].toBool()){
+    IsPlayer_ = json["IsPlayer"].toBool();
+  }else{
+    IsPlayer_ = false;
+  }
 
-  std::vector<Modifier> mods;
+  std::vector<Modifier> strike_mods;
+  int strike_cost = 10;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
-  //Modifier drain_mod(ModifierType::Magic, ModifierOperation::Multiplicative, 0.9f);
-  //Modifier strength_to_0(ModifierType::Strength, ModifierOperation::Additive, -120);
-  mods.push_back(damage_mod);
-  //mods.push_back(drain_mod);
-  //mods.push_back(strength_to_0);
+  strike_mods.push_back(damage_mod);
 
-  // the 'target' parameter is irrelevant for this test
-  Skill basic_skill("Strike", "Basic Attack: \n10 damage", mods, Target::Enemy);
+  std::vector<Modifier> drain_mods;
+  int drain_cost = 10;
+  Modifier magic_mod(ModifierType::Magic, ModifierOperation::Additive, -10);
+  drain_mods.push_back(magic_mod);
 
-  skills_.push_back(basic_skill);
+  std::vector<Modifier> recover_mods;
+  int recover_cost = 0;
+  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 10);
+  recover_mods.push_back(recover_mod);
+
+  Skill strike_skill("Strike", "Basic Attack: \n10 damage", strike_mods, strike_cost, Target::Enemy);
+  Skill drain_skill("Drain", "Enemy loses \n10 magic", drain_mods, drain_cost, Target::Enemy);
+  Skill recover_skill("Recover", "Regain 10 magic", recover_mods, recover_cost, Target::Self);
+
+  skills_.push_back(strike_skill);
+  skills_.push_back(drain_skill);
+  skills_.push_back(recover_skill);
+}
+
+void Entity::UseSkill(Skill skill){
+  magic_ -= skill.GetMagicCost();
 }
 
 /**

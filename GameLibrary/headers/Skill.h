@@ -12,7 +12,8 @@
  */
 enum class Target {
   Self,
-  Enemy
+  Enemy,
+  Player
 };
 
 /**
@@ -22,18 +23,20 @@ enum class Target {
  */
 class Skill{
 public:
-  Skill(std::string skill_name,  std::string skill_description, std::vector<Modifier> modifiers, Target target):
-    skill_name_(skill_name), skill_description_(skill_description), modifiers_(modifiers), target_(target){}
+  Skill(std::string skill_name,  std::string skill_description, std::vector<Modifier> modifiers, int magic_cost, Target target):
+    skill_name_(skill_name), skill_description_(skill_description), modifiers_(modifiers), magic_cost_(magic_cost), target_(target){}
 
   std::vector<Modifier> GetModifiers() { return modifiers_; }
   Target GetTarget() { return target_; }
   std::string GetName() {return skill_name_;}
   std::string GetDescription() {return skill_description_;}
+  int GetMagicCost() {return magic_cost_;}
 
 private:
   std::string skill_name_;
   std::string skill_description_;
   std::vector<Modifier> modifiers_;
+  int magic_cost_;
   Target target_;
 };
 

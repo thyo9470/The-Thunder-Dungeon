@@ -68,7 +68,7 @@ void TestGame::TestSkillModifiers()
   mods.push_back(strength_to_0);
 
   // the 'target' parameter is irrelevant for this test
-  Skill attack_skill("", "", mods, Target::Self);
+  Skill attack_skill("", "", mods, 10, Target::Self);
 
   hippo_goose.ApplySkill(attack_skill);
 

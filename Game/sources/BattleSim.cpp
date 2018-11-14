@@ -6,6 +6,7 @@
 #include <headers/Entity.h>
 
 #include "../headers/BattleSim.h"
+#include "headers/BattleAgent.h"
 
 BattleSim::BattleSim(Entity* player){
   player_ = player;
@@ -47,33 +48,79 @@ void BattleSim::PlayerTurn(int skill_id){
     UpdateLog("You do not have a skill on this slot");
   }else{
     Skill cur_skill = possible_skills[skill_id];
+    if(player_->GetMagic() < cur_skill.GetMagicCost()){
+      UpdateLog("You do not have enough magic!");
+      return;
+    }
     if(cur_skill.GetTarget() == Target::Self){
-      UpdateLog("OUCH! You hurt yourself");
       player_->ApplySkill(cur_skill);
     }else{
-      UpdateLog("You used " + cur_skill.GetName());
       enemy_->ApplySkill(cur_skill);
     }
+    UpdateLog("You used " + cur_skill.GetName());
+    player_->UseSkill(cur_skill);
     EnemyTurn();
   }
 }
 
+/**
+ * @brief BattleSim::EnemyTurn
+ *
+ * Takes the enemies turn in battle sim
+ */
 void BattleSim::EnemyTurn(){
   if(enemy_->GetHealth() > 0){
     std::vector<Skill> possible_skills= player_->GetSkills();
-    int skill_choice = rand() % possible_skills.size();
-    player_->ApplySkill(possible_skills[skill_choice]);
+    std::vector<double> skill_values = std::vector<double>();
+
+    BattleAgent enemy_agent(player_, enemy_);
+
+    Skill cur_skill = enemy_agent.GetBestMove(enemy_);
+
+    if(enemy_->GetMagic() >= cur_skill.GetMagicCost()){
+
+        if(cur_skill.GetTarget() == Target::Self){
+          enemy_->ApplySkill(cur_skill);
+          enemy_->UseSkill(cur_skill);
+        }else{
+          player_->ApplySkill(cur_skill);
+          enemy_->UseSkill(cur_skill);
+        }
+        UpdateLog("The enemy used " + cur_skill.GetName());
+      }else{
+        UpdateLog("The enemy tried but didn't have enough magic");
+      }
+
+
+
   }
   IsBattleOver();
 }
 
-bool BattleSim::IsBattleOver(){
-  if(player_->GetHealth() == 0 || enemy_->GetHealth() == 0 || state_ == BattleState::End){
+/**
+ * @brief BattleSim::IsBattleOver
+ *
+ * Updates the state of the battle if it is the end
+ *
+ */
+
+void BattleSim::IsBattleOver(){
+  if(player_->GetHealth() == 0){
+    UpdateLog("You Lost!!");
     state_ = BattleState::End;
-    return true;
+  }else if(enemy_->GetHealth() == 0){
+    UpdateLog("You Win!!");
+    state_ = BattleState::End;
   }
-  return false;
 }
+
+/**
+ * @brief BattleSim::UpdateLog
+ *
+ * Adds a message to the battle sim log found to the right of the player's actions
+ *
+ * @param new_message - message you want displayed in battle log
+ */
 
 void BattleSim::UpdateLog(std::string new_message){
   if(log_.size() > 4){
