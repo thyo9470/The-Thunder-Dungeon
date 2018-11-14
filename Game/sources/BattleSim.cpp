@@ -64,6 +64,15 @@ void BattleSim::EnemyTurn(){
     int skill_choice = rand() % possible_skills.size();
     player_->ApplySkill(possible_skills[skill_choice]);
   }
+  IsBattleOver();
+}
+
+bool BattleSim::IsBattleOver(){
+  if(player_->GetHealth() == 0 || enemy_->GetHealth() == 0 || state_ == BattleState::End){
+    state_ = BattleState::End;
+    return true;
+  }
+  return false;
 }
 
 void BattleSim::UpdateLog(std::string new_message){

@@ -30,6 +30,10 @@ FightWindow::FightWindow(QWidget *parent) :
   background->setScaledContents(true);
   scene_->addWidget(background);
 
+  // hide exit button
+  ui->exitButton->setVisible(false);
+  ui->exitButton->setEnabled(false);
+
   //set player and enemy position
   player_position_x_ = 100;
   player_position_y_ = 6.0*scene_->height()/10.0;
@@ -43,6 +47,7 @@ FightWindow::FightWindow(QWidget *parent) :
   connect(ui->skillButton_3, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->skillButton_4, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->runButton, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->exitButton, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
 
 }
 
@@ -58,6 +63,14 @@ void FightWindow::ButtonPressedSlot(){
 }
 
 void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
+  if(battle_sim->GetState() == BattleState::End){
+    ui->exitButton->setVisible(true);
+    ui->exitButton->setEnabled(true);
+    }else if(battle_sim->GetState() == BattleState::Active){
+    ui->exitButton->setVisible(false);
+    ui->exitButton->setEnabled(false);
+    }
+
   //update log
   std::vector<std::string> log = battle_sim->GetLog();
   std::string log_formatted = "";
@@ -68,8 +81,10 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   //updatee player info
   Entity* player = battle_sim->GetPlayer();
-  ui->playerHealthBar->setValue(player->GetHealthPercent());
-  ui->playerMagicBar->setValue(player->GetMagicPercent());
+  ui->playerHealthBar->setMaximum(player->GetMaxHealth());
+  ui->playerHealthBar->setValue(player->GetHealth());
+  ui->playerMagicBar->setMaximum(player->GetMaxMagic());
+  ui->playerMagicBar->setValue(player->GetMagic());
 
   // update skill info
   std::vector<Skill> player_skills = player->GetSkills();
@@ -89,8 +104,10 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   //update enemy info
   Entity* enemy = battle_sim->GetEnemy();
-  ui->enemyHealthBar->setValue(enemy->GetHealthPercent());
-  ui->enemyMagicBar->setValue(enemy->GetMagicPercent());
+  ui->enemyHealthBar->setMaximum(enemy->GetMaxHealth());
+  ui->enemyHealthBar->setValue(enemy->GetHealth());
+  ui->enemyMagicBar->setMaximum(enemy->GetMaxMagic());
+  ui->enemyMagicBar->setValue(enemy->GetMagic());
 
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();

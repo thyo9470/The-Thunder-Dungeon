@@ -173,16 +173,14 @@ void Game::GetInputBoard(QKeyEvent* event){
  * @param skill_id
  */
 void Game::GetInputBattleSim(int skill_id){
-  battle_sim_->PlayerTurn(skill_id);
-  fight_window_->UpdateFightWindow(battle_sim_);
-  qDebug() << battle_sim_->GetEnemy()->GetHealth();
-  if(battle_sim_->GetPlayer()->GetHealth() == 0){
-    qDebug() << "YOU DEAD!!";
-    EndBattle();
-  }else if(battle_sim_->GetEnemy()->GetHealth() == 0){
-    qDebug() << "YOU WIN!!";
-    EndBattle();
+  BattleState battle_state = battle_sim_->GetState();
+  if(battle_state == BattleState::Active){
+    battle_sim_->PlayerTurn(skill_id);
+  }else if(battle_state == BattleState::End){
+     battle_sim_->DeactivateBattle();
+     EndBattle();
   }
+  fight_window_->UpdateFightWindow(battle_sim_);
 }
 
 /**
@@ -203,6 +201,7 @@ void Game::GameLoop() const{
 
 void Game::StartBattle(){
   battle_sim_ = new BattleSim(player_);
+  battle_sim_->ActivateBattle();
   fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();
   fight_window_->show();

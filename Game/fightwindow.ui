@@ -136,7 +136,7 @@
      <number>55</number>
     </property>
     <property name="format">
-     <string>%p%</string>
+     <string>%v/%m</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="enemyHealthBar">
@@ -152,7 +152,7 @@
      <number>24</number>
     </property>
     <property name="format">
-     <string>%p%</string>
+     <string>%v/%m</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="playerMagicBar">
@@ -168,7 +168,7 @@
      <number>24</number>
     </property>
     <property name="format">
-     <string>%p%</string>
+     <string>%v/%m</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="enemyMagicBar">
@@ -184,7 +184,7 @@
      <number>10</number>
     </property>
     <property name="format">
-     <string>%p%</string>
+     <string>%v/%m</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -255,6 +255,25 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exitButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>190</y>
+      <width>141</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Exit to Board</string>
+    </property>
+    <property name="skill" stdset="0">
+     <number>-1</number>
     </property>
    </widget>
   </widget>
