@@ -18,4 +18,4 @@ DEPENDPATH += $$PWD/../GameLibrary
 
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../GameLibrary/release/GameLibrary.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../GameLibrary/debug/GameLibrary.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../GameLibrary/libGameLibrary.a
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../GameLibrary/usr/lib/libGameLibrary.a

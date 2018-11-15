@@ -39,6 +39,6 @@ HEADERS += \
     headers/Modifier.h
 
 unix {
-    target.path = /
+    target.path = /usr/lib
     INSTALLS += target
 }
