@@ -10,7 +10,5 @@ script:
     - qmake -qt=qt5 -v
     - qmake -qt=qt5
     - make
-    - ./Testing
-    - ./Makefile
     - cd Testing
     - ./Testing
