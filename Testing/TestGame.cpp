@@ -4,6 +4,7 @@
 #include "headers/Entity.h"
 #include "headers/Modifier.h"
 #include "headers/Skill.h"
+#include "headers/Tile.h"
 #include <vector>
 #include <QJsonObject>
 

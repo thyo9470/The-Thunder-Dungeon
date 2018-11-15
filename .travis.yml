@@ -1,4 +1,11 @@
 language: cpp
+sudo: required
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - libusb-1.0-0-dev
 
 before_install:
     - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
