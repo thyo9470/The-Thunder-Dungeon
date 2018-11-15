@@ -1,9 +1,9 @@
-#include <QtTest>
+#include <QtTest/QtTest>
 
-#include "./headers/Board.h"
-#include "./headers/Entity.h"
-#include "./headers/Modifier.h"
-#include "./headers/Skill.h"
+#include "headers/Board.h"
+#include "headers/Entity.h"
+#include "headers/Modifier.h"
+#include "headers/Skill.h"
 #include <vector>
 #include <QJsonObject>
 
