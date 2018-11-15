@@ -5,7 +5,7 @@ before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev
 script:
-    - cd /Testing
+    - cd Testing
     - qmake -qt=qt5 -v
     - qmake -qt=qt5
     - make
