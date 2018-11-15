@@ -57,5 +57,5 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/release
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/debug/ -lGameLibrary
 
 unix {
-LIBS += -L$$OUT_PWD/../QtQuickSampleLib -lQtQuickSampleLib
+LIBS += -L$$OUT_PWD/../GameLibrary -lGameLibrary
 }
