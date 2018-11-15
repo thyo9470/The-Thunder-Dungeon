@@ -73,9 +73,9 @@ void TestGame::TestSkillModifiers()
 
   hippo_goose.ApplySkill(attack_skill);
 
-  QCOMPARE(hippo_goose.GetHealth(), 90);
-  QCOMPARE(hippo_goose.GetMagic(), 90);
-  QCOMPARE(hippo_goose.GetStrength(), 0);
+  QCOMPARE(hippo_goose.GetHealth(), static_cast<float>(90));
+  QCOMPARE(hippo_goose.GetMagic(), static_cast<float>(90));
+  QCOMPARE(hippo_goose.GetStrength(), static_cast<float>(0));
 }
 
 QTEST_APPLESS_MAIN(TestGame)
