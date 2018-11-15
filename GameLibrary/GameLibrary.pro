@@ -23,11 +23,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         gamelibrary.cpp \
-    sources\Board.cpp \
-    sources\Tile.cpp \
-    sources\Command.cpp \
-    sources\Entity.cpp \
-    sources\Modifier.cpp \
     sources/Tile.cpp \
     sources/Entity.cpp \
     sources/Command.cpp \
@@ -36,12 +31,6 @@ SOURCES += \
 
 HEADERS += \
         gamelibrary.h \
-    headers\Board.h \
-    headers\Tile.h \
-    headers\Command.h \
-    headers\Entity.h \
-    headers\Modifer.h \
-    headers\Skill.h \
     headers/Tile.h \
     headers/Command.h \
     headers/Board.h \
@@ -50,6 +39,6 @@ HEADERS += \
     headers/Modifier.h
 
 unix {
-    target.path = /usr/lib
+    target.path = /
     INSTALLS += target
 }
