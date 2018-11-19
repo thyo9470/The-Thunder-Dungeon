@@ -30,7 +30,7 @@ struct Position{
   } 
 };
 
-enum class TileType {Empty, Wall, Player, Enemy, Exit};
+enum class TileType {Empty, Wall, Player, Enemy, Exit, Void};
 
 std::string TileTypeToString(TileType tile);
 
@@ -105,6 +105,12 @@ private:
   std::vector<Position> next_moves_;
   std::vector<Position> prev_moves_;
 
+};
+
+class VoidTile:public Tile{
+
+public:
+  VoidTile():Tile(TileType::Void){}
 };
 
 

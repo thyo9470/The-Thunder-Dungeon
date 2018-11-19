@@ -50,6 +50,7 @@ private:
 
   // Pointers to Tile objects for flyweight
   Tile* empty_tile_ref_;
+  Tile* void_tile_ref_;
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
   Tile* exit_tile_;
@@ -75,6 +76,7 @@ private:
 
   // Create dungeon
   void GenerateDungeon();
+  void FormatDungeon();
 
   // Spawn and move enemies
   void SpawnEnemies();

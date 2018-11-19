@@ -39,11 +39,6 @@ Entity::Entity(QJsonObject json)
    }else{
      sprite_index_ = 4; // default is a set of stairs
    }
-  if(json.contains("IsPlayer") && json["IsPlayer"].toBool()){
-    IsPlayer_ = json["IsPlayer"].toBool();
-  }else{
-    IsPlayer_ = false;
-  }
 
   std::vector<Modifier> strike_mods;
   int strike_cost = 10;
@@ -51,13 +46,13 @@ Entity::Entity(QJsonObject json)
   strike_mods.push_back(damage_mod);
 
   std::vector<Modifier> drain_mods;
-  int drain_cost = 10;
+  int drain_cost = -5;
   Modifier magic_mod(ModifierType::Magic, ModifierOperation::Additive, -10);
   drain_mods.push_back(magic_mod);
 
   std::vector<Modifier> recover_mods;
   int recover_cost = 0;
-  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 10);
+  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 20);
   recover_mods.push_back(recover_mod);
 
   Skill strike_skill("Strike", "Basic Attack: \n10 damage", strike_mods, strike_cost, Target::Enemy);

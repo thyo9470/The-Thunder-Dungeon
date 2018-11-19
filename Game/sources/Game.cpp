@@ -24,7 +24,6 @@ Game::Game()
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
   entity_data["sprite_index"] = 2;
-  entity_data["IsPlayer"] = true;
 
   player_ = new Entity(entity_data);
 

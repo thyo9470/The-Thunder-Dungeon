@@ -12,8 +12,7 @@
  */
 enum class Target {
   Self,
-  Enemy,
-  Player
+  Enemy
 };
 
 /**

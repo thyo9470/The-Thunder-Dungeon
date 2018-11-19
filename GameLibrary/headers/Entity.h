@@ -24,7 +24,6 @@ public:
   int GetMagicPercent() {return (magic_/max_magic_) * 100; }
   float GetSpeed(){ return speed_; }
   float GetStrength() { return strength_; }
-  bool IsPlayer() {return IsPlayer_;}
   std::vector<Skill> GetSkills() { return skills_; }
   int get_sprite_index() {return sprite_index_;}
   void UseSkill(Skill skill);
@@ -46,7 +45,6 @@ private:
   std::vector <Skill> skills_;
   void ApplyModifier(Modifier mod);
   int sprite_index_;
-  bool IsPlayer_;
 
 };
 

@@ -4,7 +4,9 @@
 #include <QApplication>
 #include <vector>
 
+
 #include <headers/Entity.h>
+#include "headers/BattleAgent.h"
 
 enum class BattleState {Active, End, Inactive};
 
@@ -30,6 +32,7 @@ public slots:
 private:
   Entity* player_;
   Entity* enemy_;
+  BattleAgent* agent_;
   std::vector<std::string> log_;
   BattleState state_;
 

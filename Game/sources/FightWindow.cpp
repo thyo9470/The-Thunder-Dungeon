@@ -22,11 +22,14 @@ FightWindow::FightWindow(QWidget *parent) :
 
   // Hold all the images
   sprite_sheet_ = QPixmap(":/images/Sprites.png");
+  player_sheet_ = QPixmap(":/images/Player.png");
+  slime_sheet_ = QPixmap(":/images/Slime.png");
 
   //load backgroundr
   QLabel* background = new QLabel();
   background->setGeometry(10, 10, 781, 421);
-  background->setPixmap(QPixmap(":/images/Crypte.png"));
+  //background->setPixmap(QPixmap(":/images/Crypte.png"));
+  background->setPixmap(QPixmap(":/images/souterrain.png"));
   background->setScaledContents(true);
   scene_->addWidget(background);
 
@@ -36,10 +39,13 @@ FightWindow::FightWindow(QWidget *parent) :
 
   //set player and enemy position
   player_position_x_ = 100;
-  player_position_y_ = 6.0*scene_->height()/10.0;
+  //player_position_y_ = 6.0*scene_->height()/10.0;
+  player_position_y_ = 5.0*scene_->height()/10.0;
 
-  enemy_position_x_ = scene_->width()-170;
-  enemy_position_y_ = 6.0*scene_->height()/10.0;
+  //enemy_position_x_ = scene_->width()-170;
+  enemy_position_x_ = scene_->width()-230;
+  //enemy_position_y_ = 6.0*scene_->height()/10.0;
+  enemy_position_y_ = 5.3*scene_->height()/10.0;
 
   // connect pressed button
   connect(ui->skillButton_1, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
@@ -62,7 +68,16 @@ void FightWindow::ButtonPressedSlot(){
   emit ButtonPressedSignal(skill_id);
 }
 
+/**
+ * @brief FightWindow::UpdateFightWindow
+ *
+ * Updates the fight window GUI
+ *
+ * @param battle_sim - The current state of the battle_sim
+ */
+
 void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
+  // if it's the end of a battle show exit button otherwise hide it
   if(battle_sim->GetState() == BattleState::End){
     ui->exitButton->setVisible(true);
     ui->exitButton->setEnabled(true);
@@ -97,7 +112,8 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   int row = 0;
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_player = new QGraphicsPixmapItem();
-  pixmap_player->setPixmap(sprite_sheet_.copy(player->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  //pixmap_player->setPixmap(sprite_sheet_.copy(player->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  pixmap_player->setPixmap(player_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_player->setPos( player_position_x_ , player_position_y_);
   pixmap_player->setScale(pixmap_player->scale() * tile_scale_);
   scene_->addItem(pixmap_player);
@@ -111,7 +127,8 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();
-  pixmap_enemy->setPixmap(sprite_sheet_.copy(enemy->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  //pixmap_enemy->setPixmap(sprite_sheet_.copy(enemy->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
+  pixmap_enemy->setPixmap(slime_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
   pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);
   scene_->addItem(pixmap_enemy);

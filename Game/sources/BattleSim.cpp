@@ -2,11 +2,11 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <QDebug>
+#include <cmath>
 
 #include <headers/Entity.h>
 
 #include "../headers/BattleSim.h"
-#include "headers/BattleAgent.h"
 
 BattleSim::BattleSim(Entity* player){
   player_ = player;
@@ -14,15 +14,18 @@ BattleSim::BattleSim(Entity* player){
   // make enemy
   QJsonObject entity_data;
   int enemy_level =  player->GetLevel() + ( qrand() % 5 - 2 );
+  //int enemy_level = 10;
   enemy_level = (enemy_level<1)?1:enemy_level;
   entity_data["level"] = enemy_level;
-  entity_data["max_health"] = enemy_level * 10;
-  entity_data["max_magic"] = enemy_level * 10;
+  entity_data["max_health"] = floor(log(enemy_level+1)/log(1.017)); // FIX FLOATING NUMBERS
+  entity_data["max_magic"] = floor(log(enemy_level+1)/log(1.017)); // FIX FLOATING NUMBERS
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
   entity_data["sprite_index"] = 3;
 
   enemy_ = new Entity(entity_data);
+
+  agent_ = new BattleAgent(player_, enemy_);
 
 }
 
@@ -42,8 +45,14 @@ void BattleSim::PlayerTurn(int skill_id){
 
   std::vector<Skill> possible_skills= player_->GetSkills();
   if(skill_id == 4){
-    UpdateLog("Tried running");
-    EnemyTurn();
+    int flip =  rand() % 2 + 1;
+    if(flip == 1){
+      EndBattle();
+      UpdateLog("You got away!");
+    }else{
+      UpdateLog("Tried running");
+      EnemyTurn();
+    }
   }else if(skill_id >= possible_skills.size()){
     UpdateLog("You do not have a skill on this slot");
   }else{
@@ -59,6 +68,7 @@ void BattleSim::PlayerTurn(int skill_id){
     }
     UpdateLog("You used " + cur_skill.GetName());
     player_->UseSkill(cur_skill);
+    agent_->AddSkill(cur_skill);
     EnemyTurn();
   }
 }
@@ -73,9 +83,7 @@ void BattleSim::EnemyTurn(){
     std::vector<Skill> possible_skills= player_->GetSkills();
     std::vector<double> skill_values = std::vector<double>();
 
-    BattleAgent enemy_agent(player_, enemy_);
-
-    Skill cur_skill = enemy_agent.GetBestMove(enemy_);
+    Skill cur_skill = agent_->GetEnemyMove(25);
 
     if(enemy_->GetMagic() >= cur_skill.GetMagicCost()){
 
