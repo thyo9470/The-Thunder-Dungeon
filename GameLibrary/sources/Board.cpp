@@ -325,7 +325,6 @@ void Board::FormatDungeon(){
       }
 
       if(!is_wall){
-        std::cout << "ou" << std::endl;
         board_[0][y][x] = void_tile_ref_;
       }
 

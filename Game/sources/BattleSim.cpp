@@ -8,7 +8,9 @@
 
 #include "../headers/BattleSim.h"
 
-BattleSim::BattleSim(Entity* player){
+BattleSim::BattleSim(Entity* player, int minimax_depth){
+  minimax_depth_ = minimax_depth;
+
   player_ = player;
 
   // make enemy
@@ -83,7 +85,7 @@ void BattleSim::EnemyTurn(){
     std::vector<Skill> possible_skills= player_->GetSkills();
     std::vector<double> skill_values = std::vector<double>();
 
-    Skill cur_skill = agent_->GetEnemyMove(25);
+    Skill cur_skill = agent_->GetEnemyMove(minimax_depth_);
 
     if(enemy_->GetMagic() >= cur_skill.GetMagicCost()){
 

@@ -32,6 +32,9 @@ Game::Game()
   int rooms_wide = 5;
   int rooms_tall = 5;
 
+  // set difficulty
+  difficulty = Difficulty::Medium;
+
   window_ = new Window(); // Represents the board window
   fight_window_ = new FightWindow(); // Represents the fight scene window
 
@@ -53,6 +56,7 @@ Game::Game()
 
 
   connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
+
 }
 
 /**
@@ -200,7 +204,31 @@ void Game::GameLoop() const{
  */
 
 void Game::StartBattle(){
-  battle_sim_ = new BattleSim(player_);
+
+
+  // set difficulty of the battle
+  int minimax_depth = 0;
+
+  switch (difficulty) {
+    case Difficulty::Easy:
+      std::cout << "Easy" << std::endl;
+      minimax_depth = 3;
+      break;
+    case Difficulty::Medium:
+      std::cout << "Medium" << std::endl;
+      minimax_depth = 6;
+      break;
+    case Difficulty::Hard:
+      std::cout << "Hard" << std::endl;
+      minimax_depth = 9;
+      break;
+    case Difficulty::Extreme:
+      std::cout << "Extremes" << std::endl;
+      minimax_depth = 12;
+      break;
+  }
+
+  battle_sim_ = new BattleSim(player_, minimax_depth);
   battle_sim_->ActivateBattle();
   fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();

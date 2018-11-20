@@ -256,20 +256,22 @@ double BattleAgent::StateValue(Entity& player, Entity& enemy){
   // get player's score (+)
 
   double player_score = player.GetHealthPercent();
-                      + player.GetMagic();
+                      + player.GetMagicPercent();
 
   // get enemy's score (-)
 
   double enemy_score = enemy.GetHealthPercent();
-                     + enemy.GetMagic();
+                     + enemy.GetMagicPercent();
+
+  if(enemy.GetMagic() < 0){
+    enemy_score -= 100;
+  }
 
   if(enemy.GetHealth() <= 0){
-    std::cout << "cant win" << std::endl;
     enemy_score -= 1000;
   }
 
   if(player.GetHealth() <= 0){
-    std::cout << "dwin" << std::endl;
     player_score -= 1000;
   }
 
