@@ -1,10 +1,11 @@
-#include <QtTest>
+#include <QtTest/QtTest>
 
-#include "./headers/Board.h"
-#include "./headers/Entity.h"
-#include "./headers/Modifier.h"
-#include "./headers/Skill.h"
-#include "./headers/BattleAgent.h"
+#include "headers/Board.h"
+#include "headers/Entity.h"
+#include "headers/Modifier.h"
+#include "headers/Skill.h"
+#include "headers/Tile.h"
+#include "headers/BattleAgent.h"
 #include <vector>
 #include <QJsonObject>
 
@@ -64,19 +65,16 @@ void TestGame::TestSkillModifiers()
   std::vector<Modifier> mods;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
   Modifier drain_mod(ModifierType::Magic, ModifierOperation::Multiplicative, 0.9f);
-  Modifier strength_to_0(ModifierType::Strength, ModifierOperation::Additive, -120);
   mods.push_back(damage_mod);
   mods.push_back(drain_mod);
-  mods.push_back(strength_to_0);
 
   // the 'target' parameter is irrelevant for this test
   Skill attack_skill("", "", mods, 10, Target::Self);
 
   hippo_goose.ApplySkill(attack_skill);
 
-  QCOMPARE(hippo_goose.GetHealth(), 90);
-  QCOMPARE(hippo_goose.GetMagic(), 90);
-  QCOMPARE(hippo_goose.GetStrength(), 0);
+  QCOMPARE(hippo_goose.GetHealth(), static_cast<float>(90));
+  QCOMPARE(hippo_goose.GetMagic(), static_cast<float>(90));
 }
 
 
