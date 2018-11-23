@@ -65,10 +65,8 @@ void TestGame::TestSkillModifiers()
   std::vector<Modifier> mods;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
   Modifier drain_mod(ModifierType::Magic, ModifierOperation::Multiplicative, 0.9f);
-  Modifier strength_to_0(ModifierType::Strength, ModifierOperation::Additive, -120);
   mods.push_back(damage_mod);
   mods.push_back(drain_mod);
-  mods.push_back(strength_to_0);
 
   // the 'target' parameter is irrelevant for this test
   Skill attack_skill("", "", mods, 10, Target::Self);
@@ -77,7 +75,6 @@ void TestGame::TestSkillModifiers()
 
   QCOMPARE(hippo_goose.GetHealth(), static_cast<float>(90));
   QCOMPARE(hippo_goose.GetMagic(), static_cast<float>(90));
-  QCOMPARE(hippo_goose.GetStrength(), static_cast<float>(0));
 }
 
 
