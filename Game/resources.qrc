@@ -4,5 +4,11 @@
         <file>images/Tiles.png</file>
         <file>images/Sprites.png</file>
         <file>images/Crypte.png</file>
+        <file>images/tiles_dungeon_v1.1.png</file>
+        <file>images/chara_slime.png</file>
+        <file>images/chara_hero.png</file>
+        <file>images/Player.png</file>
+        <file>images/Slime.png</file>
+        <file>images/souterrain.png</file>
     </qresource>
 </RCC>

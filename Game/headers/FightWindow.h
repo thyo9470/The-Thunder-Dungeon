@@ -34,6 +34,13 @@ private:
     int sprite_sheet_size_ = 16; // The width of the sprite sheet in number of sprites
     int tile_scale_ = 10; // The scale factor to increase the size of the sprites rendered
 
+    QPixmap slime_sheet_; // Loads all of the sprites
+    QPixmap player_sheet_; // Loads all of the sprites
+
+    int dungeon_sprite_size_ = 16; // The size of a sprite in pixels
+    int dungeon_sheet_size_ = 20; // The width of the sprite sheet in number of sprites
+    int dungeon_tile_scale_ = 10; // The scale factor to increase the size of the sprites rendered
+
     double player_position_x_;
     double player_position_y_;
     double enemy_position_x_;
