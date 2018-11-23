@@ -29,7 +29,8 @@ SOURCES += \
     sources/Command.cpp \
     sources/Board.cpp \
     sources/Modifier.cpp \
-    sources/BattleAgent.cpp
+    sources/BattleAgent.cpp \
+    sources/Item.cpp
 
 HEADERS += \
         gamelibrary.h \
@@ -39,7 +40,8 @@ HEADERS += \
     headers/Entity.h \
     headers/Skill.h \
     headers/Modifier.h \
-    headers/BattleAgent.h
+    headers/BattleAgent.h \
+    headers/Item.h
 
 unix {
     target.path = /usr/lib

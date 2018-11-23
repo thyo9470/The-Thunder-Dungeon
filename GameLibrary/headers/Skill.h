@@ -22,6 +22,7 @@ enum class Target {
  */
 class Skill{
 public:
+  Skill(){} // Default constructor because items and skills require default constructors when using maps (in entity)
   Skill(std::string skill_name,  std::string skill_description, std::vector<Modifier> modifiers, int magic_cost, Target target):
     skill_name_(skill_name), skill_description_(skill_description), modifiers_(modifiers), magic_cost_(magic_cost), target_(target){}
 

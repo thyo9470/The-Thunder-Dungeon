@@ -124,33 +124,6 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
 
     }
   }
-
-
-
-  /*for(int y = 0; y < tile_info[0].size(); y++){
-      for(int x = 0; x < tile_info[0][y].size(); x++){
-          // find the tile type to get sprite of
-          Tile tile = tile_info[0][y][x]->get_type();
-          for(unsigned int l = 0; l < tile_info.size(); l++){
-              Tile cur_sq = (*tile_info[l][y][x]);
-              if((cur_sq == TileType::Empty) == false){
-                tile = tile_info[l][y][x]->get_type();
-              }
-            }
-          int tile_num = static_cast<int>( tile.get_type() );
-
-          int tile_pos_x = tile_num % sprite_sheet_size_;
-          int tile_pos_y = 0;//tile % sprite_sheet_size_;
-
-
-          // Create and add the tile to the scene
-          QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
-          pixmap->setPixmap(sprite_sheet_.copy(tile_pos_x * sprite_size_, tile_pos_y * sprite_size_, sprite_size_, sprite_size_));
-          pixmap->setPos(x * sprite_size_ * tile_scale_, y * sprite_size_ * tile_scale_);
-          pixmap->setScale(pixmap->scale() * tile_scale_);
-          scene_->addItem(pixmap);
-      }
-    }*/
 }
 
 QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){

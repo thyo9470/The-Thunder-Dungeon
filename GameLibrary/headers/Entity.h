@@ -3,8 +3,10 @@
 
 #include <QJsonObject>
 #include <vector>
+#include <map>
 #include "Skill.h"
 #include "Modifier.h"
+#include "Item.h"
 
 /**
  * @brief The Entity class
@@ -32,6 +34,7 @@ public:
 
   void Write(QJsonObject &json) const;
 
+  void EquipItem(Item item);
 private:
   int level_;
   float max_health_;
@@ -43,7 +46,11 @@ private:
   float max_stat_value_ = 1000; // The maximum number a stat can be
   float min_stat_value_ = 0;
   std::vector <Skill> skills_;
-  void ApplyModifier(Modifier mod);
+
+  // We have four equipment slots
+  std::map<EquipType, Item> equipment_;
+  void ApplyModifier(Modifier mod, bool reverse = false);
+  void UpdateSkills();
   int sprite_index_;
 
 };

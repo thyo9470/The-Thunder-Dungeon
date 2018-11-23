@@ -98,33 +98,83 @@ void Entity::Write(QJsonObject &json) const
 }
 
 /**
+ * @brief Entity::EquipItem
+ *
+ * Equips an item to its equip slot, and updates the players stats
+ * it removes the previous if there is any
+ *
+ * @param item
+ */
+void Entity::EquipItem(Item item)
+{
+
+  std::map<EquipType, Item>::iterator it = equipment_.find(item.GetEquipType());
+
+  // If there was an item already equipped
+  if(it != equipment_.end()){
+
+      // Remove the equipped item's modifiers
+      for(Modifier mod : it->second.GetModifiers()){
+          ApplyModifier(mod, true);
+        }
+      it->second = item;
+    }
+  else{
+      equipment_[item.GetEquipType()] = item;
+    }
+
+  // Apply the item's modifiers
+  for(Modifier mod : item.GetModifiers()){
+      ApplyModifier(mod);
+    }
+
+  UpdateSkills();
+}
+
+/**
+ * @brief Entity::UpdateSkills
+ *
+ * Remakes the skills_ array from the equipped items
+ */
+void Entity::UpdateSkills()
+{
+  skills_.clear();
+
+  std::map<EquipType, Item>::iterator it;
+
+  for(it = equipment_.begin(); it != equipment_.end(); ++it){
+    skills_.push_back(it->second.GetSkill());
+    }
+}
+
+/**
  * @brief Entity::ApplyModifier
  * @param mod The modifier to apply to the entity
  *
  */
-void Entity::ApplyModifier(Modifier mod)
+void Entity::ApplyModifier(Modifier mod, bool reverse)
 {
   switch(mod.GetType()){
     case ModifierType::Health:
-      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_);
+      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);
       break;
     case ModifierType::Magic:
-      magic_ = mod.GetModifiedStat(magic_, min_stat_value_, max_magic_);
+      magic_ = mod.GetModifiedStat(magic_, min_stat_value_, max_magic_, reverse);
       break;
     case ModifierType::Speed:
-      speed_ = mod.GetModifiedStat(speed_, min_stat_value_, max_stat_value_);
+      speed_ = mod.GetModifiedStat(speed_, min_stat_value_, max_stat_value_, reverse);
       break;
     case ModifierType::Strength:
-      strength_ = mod.GetModifiedStat(strength_, min_stat_value_, max_stat_value_);
+      strength_ = mod.GetModifiedStat(strength_, min_stat_value_, max_stat_value_, reverse);
       break;
     case ModifierType::MaxHealth:
-      max_health_ = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_);
+      max_health_ = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_, reverse);
       break;
     case ModifierType::MaxMagic:
-      max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_);
+      max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_, reverse);
       break;
      case ModifierType::Damage:
-      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_);
+      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);
       break;
     }
 
