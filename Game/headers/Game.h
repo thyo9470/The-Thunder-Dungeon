@@ -12,6 +12,8 @@
 #include "FightWindow.h"
 #include "Window.h"
 
+enum class Difficulty {Easy, Medium, Hard, Extreme};
+
 class Game : public QObject{
   Q_OBJECT
 public:
@@ -34,8 +36,12 @@ public:
 private:
   Window * window_;
   FightWindow * fight_window_;
+
   Board  *board_;
+
   BattleSim *battle_sim_;
+  Difficulty difficulty;
+
   bool playing_;
   SaveFormat save_format_ = SaveFormat::Binary;
   Entity *player_;

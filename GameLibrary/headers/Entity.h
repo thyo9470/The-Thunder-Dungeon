@@ -26,6 +26,7 @@ public:
   float GetStrength() { return strength_; }
   std::vector<Skill> GetSkills() { return skills_; }
   int get_sprite_index() {return sprite_index_;}
+  void UseSkill(Skill skill);
   void ApplySkill(Skill skill);
   void SetLevel(int level) {level_ = level;}
 

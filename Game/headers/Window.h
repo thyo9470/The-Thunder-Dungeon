@@ -37,6 +37,17 @@ private:
     int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
 
 
+    QPixmap dungeon_sheet_; // Loads all of the sprites
+    QPixmap player_sheet_; // loads sprite sheet for player
+    QPixmap slime_sheet_; // loads enemy sheet (slime)
+    int dungeon_sprite_size_ = 16; // the size in pixels of dungeon scenery sprites
+    int dungeon_sheet_size_ = 20; // The width of the dungeon sprite sheet in number of sprites
+    int dungeon_tile_scale_ = 1;
+
+    QGraphicsPixmapItem* GetWallSprite(std::array<bool, 4> wall_sides);
+    QGraphicsPixmapItem* GetDungeonSprite(Tile* tile);
+
+
 signals:
     void KeyPressSignal(QKeyEvent* event);
     void SaveGameSignal();

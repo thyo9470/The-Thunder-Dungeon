@@ -26,6 +26,7 @@ Board::Board(int layers, int width, int height){
   wall_tile_ref_ = new WallTile();
   player_tile_ = new PlayerTile();
   exit_tile_ = new ExitTile();
+  void_tile_ref_ = new VoidTile();
 
   // Initiate Command objects for command pattern
   up_command_ = new UpCommand();
@@ -67,6 +68,7 @@ void Board::NewLevel(){
 
   board_ = temp_board;
   GenerateDungeon();
+  FormatDungeon();
   SpawnEnemies();
 
   // update board data
@@ -306,6 +308,30 @@ void Board::GenerateDungeon(){
 
 }
 
+void Board::FormatDungeon(){
+  // loop through each coordinate
+  for(int y = 0; y < board_[0].size(); y++){
+    for(int x = 0; x < board_[0][y].size(); x++){
+
+      bool is_wall = false;
+
+      // loop around values at coordinate
+      for(int i = (y==0 ? y : y-1) ; i <= (y==board_[0].size()-1 ? y : y+1); i++){
+        for(int j = (x==0 ? x : x-1); j <= (x==board_[0][0].size()-1 ? x : x+1); j++){
+          if(board_[0][i][j]->get_type() == TileType::Empty){
+            is_wall = true;
+          }
+        }
+      }
+
+      if(!is_wall){
+        board_[0][y][x] = void_tile_ref_;
+      }
+
+    }
+  }
+}
+
 /*
  * Spawns new enemies on the board
  * */
@@ -451,6 +477,9 @@ void Board::Read(const QJsonObject &json)
               switch ((TileType)row_array[x].toInt()) {
                 case TileType::Empty:
                   board_[l][y][x] = empty_tile_ref_;
+                  break;
+                case TileType::Void:
+                  board_[l][y][x] = void_tile_ref_;
                   break;
                 case TileType::Wall:
                   board_[l][y][x] = wall_tile_ref_;

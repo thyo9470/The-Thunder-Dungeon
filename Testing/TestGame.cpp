@@ -5,6 +5,7 @@
 #include "headers/Modifier.h"
 #include "headers/Skill.h"
 #include "headers/Tile.h"
+#include "headers/BattleAgent.h"
 #include <vector>
 #include <QJsonObject>
 
@@ -16,6 +17,7 @@ private slots:
   void TestBoardInit();
   void TestBoardInit_data();
   void TestSkillModifiers();
+  void TestMinimax();
 };
 
 /*
@@ -69,13 +71,36 @@ void TestGame::TestSkillModifiers()
   mods.push_back(strength_to_0);
 
   // the 'target' parameter is irrelevant for this test
-  Skill attack_skill("", "", mods, Target::Self);
+  Skill attack_skill("", "", mods, 10, Target::Self);
 
   hippo_goose.ApplySkill(attack_skill);
 
   QCOMPARE(hippo_goose.GetHealth(), static_cast<float>(90));
   QCOMPARE(hippo_goose.GetMagic(), static_cast<float>(90));
   QCOMPARE(hippo_goose.GetStrength(), static_cast<float>(0));
+}
+
+
+void TestGame::TestMinimax(){
+  // make entites
+  QJsonObject entity_data;
+  entity_data["max_health"] = 100;
+  entity_data["max_magic"] = 100;
+  entity_data["strength"] = 100;
+  entity_data["speed"] = 100;
+  entity_data["sprite_index"] = 2;
+
+  Entity* player = new Entity(entity_data);
+
+  Entity* enemy = new Entity(entity_data);
+
+  BattleAgent* agent = new BattleAgent(player, enemy);
+
+  Skill best_move = agent->GetEnemyMove(3);
+
+  std::cout << "Best move: " << best_move.GetName() << std::endl;
+
+  QVERIFY(true);
 }
 
 QTEST_APPLESS_MAIN(TestGame)

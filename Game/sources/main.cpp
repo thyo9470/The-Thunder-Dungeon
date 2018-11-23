@@ -12,6 +12,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    qsrand(time(nullptr));
     srand(time(nullptr));
 
     QApplication a(argc, argv);
