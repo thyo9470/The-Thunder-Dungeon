@@ -31,10 +31,10 @@ public:
   void UseSkill(Skill skill);
   void ApplySkill(Skill skill);
   void SetLevel(int level) {level_ = level;}
-
   void Write(QJsonObject &json) const;
-
   void EquipItem(Item item);
+  std::map<EquipType, Item> GetEquipment() { return equipment_; }
+
 private:
   int level_;
   float max_health_;

@@ -7,6 +7,7 @@
 
 #include "./headers/Tile.h"
 #include "./headers/Entity.h"
+#include "./headers/Item.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,7 @@ public:
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
+    void UpdateItems(std::map<EquipType, Item> equipment_);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 

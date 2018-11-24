@@ -25,7 +25,7 @@ Game::Game()
   entity_data["speed"] = 100;
   entity_data["sprite_index"] = 2;
 
-  player_ = new Entity(entity_data);
+  player_ = new Player(entity_data);
 
   // setup ui
 
@@ -40,6 +40,7 @@ Game::Game()
 
   // Update the window to show the player stats
   window_->UpdatePlayerStats(*player_);
+  window_->UpdateItems(player_->GetEquipment());
 
   playing_ = true;
 
@@ -133,7 +134,7 @@ void Game::Read(const QJsonObject &json){
   }
   board_->Read(json["board"].toObject());
   delete player_;
-  player_ = new Entity(json["player"].toObject());
+  player_ = new Player(json["player"].toObject());
 }
 
 /*

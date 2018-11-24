@@ -10,5 +10,8 @@
         <file>images/Player.png</file>
         <file>images/Slime.png</file>
         <file>images/souterrain.png</file>
+        <file>images/sword_1.png</file>
+        <file>images/trinket_1.png</file>
+        <file>images/armor_1.png</file>
     </qresource>
 </RCC>

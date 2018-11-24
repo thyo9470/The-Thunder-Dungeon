@@ -111,16 +111,16 @@ void TestGame::TestEquipment()
   recover_mods.push_back(recover_mod);
 
   Skill recover_skill("Recover", "Regain 10 magic", recover_mods, recover_cost, Target::Self);
-  Item item(1, "The legendary claw of destiny", ":)", mods , EquipType::Weapon, recover_skill);
+  Item item(1, "The legendary claw of destiny", ":)", mods , EquipType::Weapon, recover_skill, "");
   player->EquipItem(item);
 
   // Test that equipping the item had the intended effects
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
-  QCOMPARE(player->GetSkills()[0].GetName(), "Recover");
+  QCOMPARE(player->GetSkills()[0].GetName(), static_cast<std::string>("Recover"));
 
   // Test the unequip ability by replacing the previous item with no mods
   std::vector<Modifier> none;
-  Item no_mods(1, "The legendary claw of destiny with no mods", ":)", none, EquipType::Weapon, recover_skill);
+  Item no_mods(1, "The legendary claw of destiny with no mods", ":)", none, EquipType::Weapon, recover_skill, "");
   player->EquipItem(no_mods);
 
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(100));

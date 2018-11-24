@@ -5,8 +5,8 @@
 
 #include <QApplication>
 
-#include <headers/Entity.h>
-
+#include "headers/Entity.h"
+#include "headers/Player.h"
 #include "./headers/Board.h"
 #include "BattleSim.h"
 #include "FightWindow.h"
@@ -44,7 +44,7 @@ private:
 
   bool playing_;
   SaveFormat save_format_ = SaveFormat::Binary;
-  Entity *player_;
+  Player *player_;
 
 public slots:
   void GetInputBoard(QKeyEvent* event);

@@ -263,6 +263,46 @@ void Window::UpdateLevel(int level)
   ui->currentLevel->setText("Current Level: " + QString::number(level));
 }
 
+/**
+ * Update the sidebar equipment panel with the player's equipment
+ *
+ * @param items
+ */
+void Window::UpdateItems(std::map<EquipType, Item> items)
+{
+  for(std::pair<EquipType, Item> kv : items){
+      QString item_name = QString::fromStdString(kv.second.GetName());
+      QString item_description = QString::fromStdString(kv.second.GetDescription());
+      QPixmap item_icon(QString::fromStdString(":/images/" + kv.second.GetIcon()));
+
+      QLabel * equipment_label;
+      QLabel * equipment_icon;
+
+      switch (kv.first) {
+        case EquipType::Weapon:
+          equipment_label = ui->equipment0;
+          equipment_icon = ui->equipmentImage0;
+          break;
+        case EquipType::Armor:
+          equipment_label = ui->equipment1;
+          equipment_icon = ui->equipmentImage1;
+          break;
+        case EquipType::Trinket:
+          equipment_label = ui->equipment2;
+          equipment_icon = ui->equipmentImage2;
+          break;
+        case EquipType::Secondary:
+          equipment_label = ui->equipment3;
+          equipment_icon = ui->equipmentImage3;
+          break;
+        }
+
+      equipment_label->setText(item_name);
+      equipment_label->setToolTip(item_description);
+      equipment_icon->setPixmap(item_icon);
+    }
+}
+
 void Window::on_save_button_clicked()
 {
     emit SaveGameSignal();
