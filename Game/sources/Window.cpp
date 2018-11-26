@@ -28,6 +28,8 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
     ui->graphicsView->setFixedSize(window_x, window_y);
     scene_->setSceneRect(0, 0, window_x, window_y);
 
+    ui->itemFoundDialogue->setVisible(false);
+
     // Hold all the images
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
     dungeon_sheet_ = QPixmap(":/images/tiles_dungeon_v1.1.png");
@@ -303,6 +305,21 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
     }
 }
 
+/**
+ * Whenever an item is found, this dialogue window will pop to let the player
+ * decide if they want the item or not
+ *
+ * @param item The item to be equipped
+ */
+void Window::EnableItemDropUI(Item item)
+{
+  ui->itemFoundDialogue->setEnabled(true);
+  ui->itemFoundDialogue->setVisible(true);
+  ui->newItemText->setText(QString::fromStdString(item.GetName()));
+  ui->newItemText->setToolTip(QString::fromStdString(item.GetDescription()));
+  ui->newItemImage->setPixmap(QPixmap(QString::fromStdString(item.GetIcon())));
+}
+
 void Window::on_save_button_clicked()
 {
     emit SaveGameSignal();
@@ -313,4 +330,16 @@ void Window::on_load_button_clicked()
     emit LoadGameSignal();
 }
 
+void Window::on_equipButton_clicked()
+{
+    ui->itemFoundDialogue->setEnabled(false);
+    ui->itemFoundDialogue->setVisible(false);
+    emit EquipItemSignal(true);
+}
 
+void Window::on_throwAwayButton_clicked()
+{
+    ui->itemFoundDialogue->setEnabled(false);
+    ui->itemFoundDialogue->setVisible(false);
+    emit EquipItemSignal(false);
+}

@@ -47,7 +47,7 @@ Game::Game()
   connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
   connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
   connect(window_, &Window::LoadGameSignal, this, &Game::LoadGame);
-
+  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
 
   connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
 
@@ -150,6 +150,8 @@ void Game::Write(QJsonObject &json) const{
   Recieved the input from the player, and moves the game foward
 */
 void Game::GetInputBoard(QKeyEvent* event){
+  if(!playing_) return;
+
   if(event->key() == Qt::Key_W){
     board_->MovePlayer(ActionType::Up);
   }else if(event->key() == Qt::Key_D){
@@ -236,7 +238,27 @@ void Game::StartBattle(){
 void Game::EndBattle(){
   window_->show();
   fight_window_->hide();
-  player_->EquipItem(item_factory_.GenerateWeapon(1)); // Automatically equip a new weapon
   window_->UpdatePlayerStats(*player_);
-  window_->UpdateItems(player_->GetEquipment());
+
+  item_to_equip_ = item_factory_.GenerateWeapon(board_->GetLevel());
+  window_->EnableItemDropUI(item_to_equip_);
+  playing_ = false;
+}
+
+/**
+ * Slot that equips an item if the player clicks the "equip" button
+ *
+ * Or simply resumes the game if the items is tossed away
+ *
+ * @param equip_item
+ */
+void Game::EquipItem(bool equip_item)
+{
+  if(equip_item){
+    player_->EquipItem(item_to_equip_);
+    window_->UpdatePlayerStats(*player_);
+    window_->UpdateItems(player_->GetEquipment());
+    }
+
+  playing_ = true;
 }

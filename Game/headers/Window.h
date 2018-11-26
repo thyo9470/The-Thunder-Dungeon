@@ -23,6 +23,7 @@ public:
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
     void UpdateItems(std::map<EquipType, Item> equipment_);
+    void EnableItemDropUI(Item item);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 
@@ -54,9 +55,12 @@ signals:
     void KeyPressSignal(QKeyEvent* event);
     void SaveGameSignal();
     void LoadGameSignal();
+    void EquipItemSignal(bool equip_item);
 private slots:
     void on_save_button_clicked();
     void on_load_button_clicked();
+    void on_equipButton_clicked();
+    void on_throwAwayButton_clicked();
 };
 
 #endif // MAINWINDOW_H
