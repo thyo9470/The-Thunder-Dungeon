@@ -273,7 +273,7 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
   for(std::pair<EquipType, Item> kv : items){
       QString item_name = QString::fromStdString(kv.second.GetName());
       QString item_description = QString::fromStdString(kv.second.GetDescription());
-      QPixmap item_icon(QString::fromStdString(":/images/" + kv.second.GetIcon()));
+      QPixmap item_icon(QString::fromStdString(kv.second.GetIcon()));
 
       QLabel * equipment_label;
       QLabel * equipment_icon;

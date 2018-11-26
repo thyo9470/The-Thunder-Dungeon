@@ -7,25 +7,15 @@
 #include <headers/Entity.h>
 
 #include "../headers/BattleSim.h"
+#include "headers/Item.h"
+#include "headers/Entityfactory.h"
 
 BattleSim::BattleSim(Entity* player, int minimax_depth){
   minimax_depth_ = minimax_depth;
 
   player_ = player;
 
-  // make enemy
-  QJsonObject entity_data;
-  int enemy_level =  player->GetLevel() + ( qrand() % 5 - 2 );
-  //int enemy_level = 10;
-  enemy_level = (enemy_level<1)?1:enemy_level;
-  entity_data["level"] = enemy_level;
-  entity_data["max_health"] = floor(log(enemy_level+1)/log(1.017)); // FIX FLOATING NUMBERS
-  entity_data["max_magic"] = floor(log(enemy_level+1)/log(1.017)); // FIX FLOATING NUMBERS
-  entity_data["strength"] = 100;
-  entity_data["speed"] = 100;
-  entity_data["sprite_index"] = 3;
-
-  enemy_ = new Entity(entity_data);
+  enemy_ = EntityFactory::GenerateEnemy(1);
 
   agent_ = new BattleAgent(player_, enemy_);
 

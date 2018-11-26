@@ -5,15 +5,21 @@
 #include <iostream>
 #include <vector>
 
+/**
+ * Prodecurally generates items (not completed)
+ */
 class ItemFactory
 {
 public:
   ItemFactory();
-  Item GenerateItem(int level);
+  Item GenerateWeapon(int level);
 
 private:
-  std::vector<std::string> item_adjectives_;
-  std::vector<std::string> item_nouns_;
+  std::vector<QString> item_adjectives_;
+  std::vector<QString> weapon_nouns_;
+  int sword_resource_count_ = 9;
+  int axe_resource_count = 8;
+  int staff_resource_count = 6;
 };
 
 #endif // ITEMFACTORY_H

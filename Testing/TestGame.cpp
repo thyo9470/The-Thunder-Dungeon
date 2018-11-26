@@ -7,6 +7,7 @@
 #include "headers/Tile.h"
 #include "headers/BattleAgent.h"
 #include "headers/Item.h"
+#include "headers/Entityfactory.h"
 #include <vector>
 #include <QJsonObject>
 
@@ -76,12 +77,9 @@ void TestGame::TestSkillModifiers()
 
 
 void TestGame::TestMinimax(){
-  // make entites
-  QJsonObject entity_data = GetTestStats();
+  Entity* player = EntityFactory::GeneratePlayer();
 
-  Entity* player = new Entity(entity_data);
-
-  Entity* enemy = new Entity(entity_data);
+  Entity* enemy = EntityFactory::GeneratePlayer();
 
   BattleAgent* agent = new BattleAgent(player, enemy);
 

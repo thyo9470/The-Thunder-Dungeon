@@ -6,11 +6,11 @@
 #include <QApplication>
 
 #include "headers/Entity.h"
-#include "headers/Player.h"
-#include "./headers/Board.h"
+#include "headers/Board.h"
 #include "BattleSim.h"
 #include "FightWindow.h"
 #include "Window.h"
+#include "headers/Itemfactory.h"
 
 enum class Difficulty {Easy, Medium, Hard, Extreme};
 
@@ -41,10 +41,11 @@ private:
 
   BattleSim *battle_sim_;
   Difficulty difficulty;
+  ItemFactory item_factory_;
 
   bool playing_;
-  SaveFormat save_format_ = SaveFormat::Binary;
-  Player *player_;
+  SaveFormat save_format_ = SaveFormat::Json;
+  Entity *player_;
 
 public slots:
   void GetInputBoard(QKeyEvent* event);

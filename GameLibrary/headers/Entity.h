@@ -31,7 +31,7 @@ public:
   void UseSkill(Skill skill);
   void ApplySkill(Skill skill);
   void SetLevel(int level) {level_ = level;}
-  void Write(QJsonObject &json) const;
+  void Write(QJsonObject &json);
   void EquipItem(Item item);
   std::map<EquipType, Item> GetEquipment() { return equipment_; }
 
@@ -51,6 +51,7 @@ private:
   std::map<EquipType, Item> equipment_;
   void ApplyModifier(Modifier mod, bool reverse = false);
   void UpdateSkills();
+  void InitializeSkills();
   int sprite_index_;
 
 };

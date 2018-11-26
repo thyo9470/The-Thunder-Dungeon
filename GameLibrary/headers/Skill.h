@@ -4,6 +4,7 @@
 #include "iostream"
 #include "Modifier.h"
 #include <vector>
+#include <QJsonObject>
 
 /**
  * @brief The Target enum
@@ -23,6 +24,7 @@ enum class Target {
 class Skill{
 public:
   Skill(){} // Default constructor because items and skills require default constructors when using maps (in entity)
+  Skill(QJsonObject data);
   Skill(std::string skill_name,  std::string skill_description, std::vector<Modifier> modifiers, int magic_cost, Target target):
     skill_name_(skill_name), skill_description_(skill_description), modifiers_(modifiers), magic_cost_(magic_cost), target_(target){}
 
@@ -31,6 +33,7 @@ public:
   std::string GetName() {return skill_name_;}
   std::string GetDescription() {return skill_description_;}
   int GetMagicCost() {return magic_cost_;}
+  QJsonObject Write();
 
 private:
   std::string skill_name_;

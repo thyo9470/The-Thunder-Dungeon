@@ -11,21 +11,14 @@
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
+#include "headers/Entityfactory.h"
 
 #include <QTextStream>
 
 Game::Game()
 {
 
-  // make player
-  QJsonObject entity_data;
-  entity_data["max_health"] = 100;
-  entity_data["max_magic"] = 100;
-  entity_data["strength"] = 100;
-  entity_data["speed"] = 100;
-  entity_data["sprite_index"] = 2;
-
-  player_ = new Player(entity_data);
+  player_ = EntityFactory::GeneratePlayer();
 
   // setup ui
 
@@ -90,6 +83,7 @@ bool Game::LoadGame(){
       // Visually updates after reading
       GameLoop();
       window_->UpdatePlayerStats(*player_);
+      window_->UpdateItems(player_->GetEquipment());
 
       return true;
 }
@@ -134,7 +128,7 @@ void Game::Read(const QJsonObject &json){
   }
   board_->Read(json["board"].toObject());
   delete player_;
-  player_ = new Player(json["player"].toObject());
+  player_ = new Entity(json["player"].toObject());
 }
 
 /*
@@ -239,9 +233,10 @@ void Game::StartBattle(){
 /**
  * @brief Game::StartBattle
  */
-
 void Game::EndBattle(){
   window_->show();
   fight_window_->hide();
+  player_->EquipItem(item_factory_.GenerateWeapon(1)); // Automatically equip a new weapon
   window_->UpdatePlayerStats(*player_);
+  window_->UpdateItems(player_->GetEquipment());
 }

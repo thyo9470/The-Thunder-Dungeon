@@ -1,6 +1,8 @@
 #ifndef MODIFER_H
 #define MODIFER_H
 
+#include <QJsonObject>
+
 /**
  * @brief The ModifierType enum
  *
@@ -36,9 +38,11 @@ class Modifier{
 public:
   Modifier(ModifierType type, ModifierOperation application, float effect):
     type_(type), application_type_(application), amount_(effect){}
+  Modifier(QJsonObject data);
 
   float GetModifiedStat(float stat, float min, float max, bool reverse);
   ModifierType GetType() { return type_; }
+  QJsonObject Write();
 
 private:
   ModifierType type_;
