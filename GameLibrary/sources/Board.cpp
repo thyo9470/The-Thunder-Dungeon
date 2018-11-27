@@ -478,6 +478,9 @@ void Board::Read(const QJsonObject &json)
                 case TileType::Empty:
                   board_[l][y][x] = empty_tile_ref_;
                   break;
+                case TileType::Void:
+                  board_[l][y][x] = void_tile_ref_;
+                  break;
                 case TileType::Wall:
                   board_[l][y][x] = wall_tile_ref_;
                   break;

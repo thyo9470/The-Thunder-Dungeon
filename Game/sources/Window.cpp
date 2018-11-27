@@ -98,9 +98,6 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
 
       }
 
-     // pixmap = GetDungeonSprite(dungeon_tile);
-      //pixmap->setPixmap(dungeon_sheet_.copy(tile_pos_x * dungeon_sprite_size_, tile_pos_y * dungeon_sprite_size_, dungeon_sprite_size_, dungeon_sprite_size_));
-
       pixmap->setPos(x * dungeon_sprite_size_ * dungeon_tile_scale_ , y * dungeon_sprite_size_ * dungeon_tile_scale_ );
       pixmap->setScale(pixmap->scale() * dungeon_tile_scale_);
       scene_->addItem(pixmap);

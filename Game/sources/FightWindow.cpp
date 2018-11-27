@@ -112,7 +112,6 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   int row = 0;
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_player = new QGraphicsPixmapItem();
-  //pixmap_player->setPixmap(sprite_sheet_.copy(player->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
   pixmap_player->setPixmap(player_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_player->setPos( player_position_x_ , player_position_y_);
   pixmap_player->setScale(pixmap_player->scale() * tile_scale_);
@@ -127,7 +126,6 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();
-  //pixmap_enemy->setPixmap(sprite_sheet_.copy(enemy->get_sprite_index() * sprite_size_, row * sprite_size_, sprite_size_, sprite_size_));
   pixmap_enemy->setPixmap(slime_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
   pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);

@@ -9,6 +9,7 @@ QT       -= gui
 TARGET = GameLibrary
 TEMPLATE = lib
 CONFIG += staticlib
+CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -23,11 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         gamelibrary.cpp \
-    sources\Board.cpp \
-    sources\Tile.cpp \
-    sources\Command.cpp \
-    sources\Entity.cpp \
-    sources\Modifier.cpp \
     sources/Tile.cpp \
     sources/Entity.cpp \
     sources/Command.cpp \
@@ -37,12 +33,6 @@ SOURCES += \
 
 HEADERS += \
         gamelibrary.h \
-    headers\Board.h \
-    headers\Tile.h \
-    headers\Command.h \
-    headers\Entity.h \
-    headers\Modifer.h \
-    headers\Skill.h \
     headers/Tile.h \
     headers/Command.h \
     headers/Board.h \
