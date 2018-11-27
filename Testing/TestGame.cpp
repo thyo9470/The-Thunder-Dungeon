@@ -101,29 +101,6 @@ void TestGame::TestMinimax(){
   QVERIFY(true);
 }
 
-
-void TestGame::TestMinimax(){
-  // make entites
-  QJsonObject entity_data;
-  entity_data["max_health"] = 100;
-  entity_data["max_magic"] = 100;
-  entity_data["strength"] = 100;
-  entity_data["speed"] = 100;
-  entity_data["sprite_index"] = 2;
-
-  Entity* player = new Entity(entity_data);
-
-  Entity* enemy = new Entity(entity_data);
-
-  BattleAgent* agent = new BattleAgent(player, enemy);
-
-  Skill best_move = agent->GetEnemyMove(3);
-
-  std::cout << "Best move: " << best_move.GetName() << std::endl;
-
-  QVERIFY(true);
-}
-
 QTEST_APPLESS_MAIN(TestGame)
 
 #include "TestGame.moc"

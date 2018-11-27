@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <iostream>
 #include <array>
+#include "./headers/Board.h"
 
 #include "./headers/Tile.h"
 
@@ -124,33 +125,6 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
 
     }
   }
-
-
-
-  /*for(int y = 0; y < tile_info[0].size(); y++){
-      for(int x = 0; x < tile_info[0][y].size(); x++){
-          // find the tile type to get sprite of
-          Tile tile = tile_info[0][y][x]->get_type();
-          for(unsigned int l = 0; l < tile_info.size(); l++){
-              Tile cur_sq = (*tile_info[l][y][x]);
-              if((cur_sq == TileType::Empty) == false){
-                tile = tile_info[l][y][x]->get_type();
-              }
-            }
-          int tile_num = static_cast<int>( tile.get_type() );
-
-          int tile_pos_x = tile_num % sprite_sheet_size_;
-          int tile_pos_y = 0;//tile % sprite_sheet_size_;
-
-
-          // Create and add the tile to the scene
-          QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
-          pixmap->setPixmap(sprite_sheet_.copy(tile_pos_x * sprite_size_, tile_pos_y * sprite_size_, sprite_size_, sprite_size_));
-          pixmap->setPos(x * sprite_size_ * tile_scale_, y * sprite_size_ * tile_scale_);
-          pixmap->setScale(pixmap->scale() * tile_scale_);
-          scene_->addItem(pixmap);
-      }
-    }*/
 }
 
 QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){
@@ -271,6 +245,82 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
   pixmap->setPixmap(dungeon_sheet_.copy(tile_pos_x * dungeon_sprite_size_, tile_pos_y * dungeon_sprite_size_, dungeon_sprite_size_, dungeon_sprite_size_));
 
   return pixmap;
+}
+
+/**
+ * @brief Window::AddLighting
+ *
+ * Adds a lighting affect tot he scene so that you can only see within a distance
+ *
+ * @param board - The board of tiles
+ * @param player - The player tile
+ */
+
+void Window::AddLighting(std::vector< std::vector< std::vector<Tile*> > >& board, PlayerTile* player){
+
+  // create varibale for playe position
+  Position pos = player->get_position();
+
+  // create 2d array for distances
+  std::vector< std::vector<int> > distances;
+
+  for(unsigned long i = 0; i < board[0].size(); i++){
+    std::vector<int> row(board[0][0].size(), -1);
+    distances.push_back( row );
+  }
+
+  std::vector< Position > frontier;
+
+  frontier.insert(frontier.begin(), pos);
+  distances[pos.y_][pos.x_] = 0;
+
+  Position player_pos;
+
+  // bfs to finnd player
+  while(frontier.size() > 0){
+    Position cur_pos = frontier.back();
+    frontier.pop_back();
+
+    std::vector<Position> possible_moves = { Position(cur_pos.x_, cur_pos.y_+1), Position(cur_pos.x_+1, cur_pos.y_), Position(cur_pos.x_, cur_pos.y_-1), Position(cur_pos.x_-1, cur_pos.y_)};
+
+    for(Position next_pos : possible_moves){
+      int dist = distances[cur_pos.y_][cur_pos.x_] + 1;
+
+      if(board[0][cur_pos.y_][cur_pos.x_]->get_type() != TileType::Empty){
+        continue;
+      }
+      if(distances[next_pos.y_][next_pos.x_] == -1){
+
+        // add next_post to frontier
+        if(dist < lighting_distance_){
+          // update distance
+          distances[next_pos.y_][next_pos.x_] = dist;
+          frontier.insert(frontier.begin(), next_pos);
+        }
+      }
+    }
+  }
+
+  for(int y = 0; y < board[0].size(); y++){
+    for(int x = 0; x < board[0][0].size(); x++){
+        // adding lighting
+        QGraphicsRectItem * pixmap;
+
+        if(distances[y][x] == -1){
+          pixmap = new QGraphicsRectItem( QRect(x * dungeon_sprite_size_ * dungeon_tile_scale_, y * dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_), 0 );
+          pixmap->setBrush(Qt::black);
+          pixmap->setPen(Qt::NoPen);
+        }else{
+          pixmap = new QGraphicsRectItem( QRect(x * dungeon_sprite_size_ * dungeon_tile_scale_, y * dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_), 0 );
+          pixmap->setBrush(Qt::black);
+          pixmap->setPen(Qt::NoPen);
+          double brightness = (distances[y][x] * 1.0)/lighting_distance_;
+          pixmap->setOpacity(brightness);
+        }
+
+        scene_->addItem(pixmap);
+    }
+  }
 }
 
 /**

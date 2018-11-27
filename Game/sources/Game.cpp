@@ -195,6 +195,7 @@ void Game::GetInputBattleSim(int skill_id){
 
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
+  window_->AddLighting(board_->get_board(), board_->GetPlayer());
   player_->SetLevel(board_->GetLevel());
   window_->UpdateLevel(board_->GetLevel());
 }

@@ -21,6 +21,7 @@ public:
 
   std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
   int GetLevel() {return level_;}
+  PlayerTile* GetPlayer() {return player_tile_;}
 
   // Move Player
   void MovePlayer(ActionType action_type);

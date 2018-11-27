@@ -21,6 +21,10 @@ struct Position{
     return x_ == other.x_ && y_ == other.y_;
   }
 
+  bool operator!=(const Position &other) {
+    return x_ != other.x_ || y_ != other.y_;
+  }
+
   // Override + operator
   Position operator+(const Position &other){
     Position ret_pos;
@@ -103,6 +107,7 @@ public:
   void Follow(std::vector< std::vector< std::vector<Tile*> > > &board);
 
 private:
+  int follow_distance_ = 5;
 
   std::vector<Position> next_moves_;
   std::vector<Position> prev_moves_;

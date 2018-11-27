@@ -359,7 +359,8 @@ void Board::MoveEnemies()
 {
   for(EnemyTile * enemy : enemies_){
       board_[entity_layer_id_][enemy->get_position().y_][enemy->get_position().x_] = empty_tile_ref_;
-      enemy->DFSMove(board_);
+      //enemy->DFSMove(board_);
+      enemy->Follow(board_);
   }
   Tile* test = CheckCollision(player_tile_);
   switch(test->get_type()){
