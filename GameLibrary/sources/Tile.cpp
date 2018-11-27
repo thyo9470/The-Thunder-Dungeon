@@ -72,7 +72,7 @@ EnemyTile::EnemyTile(Position startPos):EntityTile(TileType::Enemy)
  *
  * @param board The board's tile information
  * */
-void EnemyTile::Move(std::vector< std::vector< std::vector<Tile*> > > &board)
+void EnemyTile::DFSMove(std::vector< std::vector< std::vector<Tile*> > > &board)
 {
   // Reset the algorithm after it has explored every option
   if(next_moves_.size() == 0){
@@ -140,4 +140,26 @@ void EnemyTile::Move(std::vector< std::vector< std::vector<Tile*> > > &board)
         }
 
     }
+  Follow(board);
+}
+
+void EnemyTile::Follow(std::vector< std::vector< std::vector<Tile*> > > &board){
+
+  std::vector< std::vector<int> > distances;
+
+  for(unsigned long i = 0; i < board[0].size(); i++){
+    std::vector<int> row(board[0][0].size(), 0);
+    distances.push_back( row );
+  }
+
+  std::vector< Position > frontier;
+
+  frontier.insert(frontier.begin(), pos_);
+
+  while(frontier.size() > 0){
+    Position cur_pos = frontier.back();
+    frontier.pop_back();
+
+
+  }
 }

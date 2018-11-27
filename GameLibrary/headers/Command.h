@@ -41,4 +41,17 @@ public:
 
 };
 
+class DFSSearchCommand : public Command{
+
+public:
+  virtual void execute(EnemyTile* tile, std::vector< std::vector< std::vector<Tile*> > > &board);
+};
+
+class FollowCommnad : public Command{
+
+public:
+  virtual void execute(EnemyTile* tile, std::vector< std::vector< std::vector<Tile*> > > &board);
+
+};
+
 #endif // COMMAND_H

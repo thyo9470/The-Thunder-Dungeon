@@ -78,9 +78,9 @@ public:
 class EntityTile:public Tile{
 
 public:
-  EntityTile(TileType type):Tile(type){};
+  EntityTile(TileType type):Tile(type){}
 
-  virtual Position get_position(){return pos_;};
+  virtual Position get_position(){return pos_;}
   virtual void SetPosition(Position new_pos);
 
 protected:
@@ -99,9 +99,11 @@ class EnemyTile:public EntityTile{
 
 public:
   EnemyTile(Position startPos);
-  virtual void Move(std::vector< std::vector< std::vector<Tile*> > > &board);
+  void DFSMove(std::vector< std::vector< std::vector<Tile*> > > &board);
+  void Follow(std::vector< std::vector< std::vector<Tile*> > > &board);
 
 private:
+
   std::vector<Position> next_moves_;
   std::vector<Position> prev_moves_;
 

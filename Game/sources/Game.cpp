@@ -33,7 +33,7 @@ Game::Game()
   int rooms_tall = 5;
 
   // set difficulty
-  difficulty = Difficulty::Medium;
+  difficulty = Difficulty::Hard;
 
   window_ = new Window(); // Represents the board window
   fight_window_ = new FightWindow(); // Represents the fight scene window
