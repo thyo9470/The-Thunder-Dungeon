@@ -10,18 +10,18 @@ Item::Item(){
 
 Item::Item(QJsonObject json){
   if(json.contains("item_name") && json["item_name"].isString()){
-      item_name_ = json["item_name"].toString().toStdString();
+      item_name_ = json["item_name"].toString();
     }
   else{
       item_name_ = "None";
     }
 
   if(json.contains("item_description") && json["item_description"].isString()){
-      item_description_ = json["item_description"].toString().toStdString();
+      item_description_ = json["item_description"].toString();
     }
 
   if(json.contains("item_icon") && json["item_icon"].isString()){
-      item_icon_ = json["item_icon"].toString().toStdString();
+      item_icon_ = json["item_icon"].toString();
     }
   else{
       item_icon_ = "Slime.png"; // The default texture
@@ -67,7 +67,7 @@ Item::Item(QJsonObject json){
  * @param skill
  * @param item_icon
  */
-Item::Item(int item_level, std::string item_name, std::string item_description, std::vector<Modifier> modifiers, EquipType equip_type, Skill skill, std::string item_icon):
+Item::Item(int item_level, QString item_name, QString item_description, std::vector<Modifier> modifiers, EquipType equip_type, Skill skill, QString item_icon):
   item_level_(item_level), item_name_(item_name), item_description_(item_description), modifiers_(modifiers), equip_type_(equip_type), item_skill_(skill), item_icon_(item_icon)
 {
   has_skill_ = true;
@@ -80,9 +80,9 @@ Item::Item(int item_level, std::string item_name, std::string item_description, 
 QJsonObject Item::Write()
 {
   QJsonObject data;
-  data["item_name"] = QString::fromStdString(item_name_);
-  data["item_description"] = QString::fromStdString(item_description_);
-  data["item_icon"] = QString::fromStdString(item_icon_);
+  data["item_name"] = item_name_;
+  data["item_description"] = item_description_;
+  data["item_icon"] = item_icon_;
   data["item_level"] = item_level_;
   data["equip_type"] = static_cast<int>(equip_type_);
   QJsonArray modifers;

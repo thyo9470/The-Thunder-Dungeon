@@ -43,11 +43,13 @@ public:
   float GetModifiedStat(float stat, float min, float max, bool reverse);
   ModifierType GetType() { return type_; }
   QJsonObject Write();
+  QString ToString();
 
 private:
   ModifierType type_;
   ModifierOperation application_type_;
   float amount_;
+  QString OperationToString();
 };
 
 #endif // MODIFER_H

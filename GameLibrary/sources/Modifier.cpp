@@ -60,3 +60,30 @@ QJsonObject Modifier::Write()
   data["amount"] = static_cast<double>(amount_);
   return data;
 }
+
+/**
+ * Returns the description of what the modifier does
+ * @return
+ */
+QString Modifier::ToString()
+{
+  switch(type_){
+    case ModifierType::Health:
+      return "Heals " + OperationToString() +  " Health";
+    case ModifierType::Magic:
+      return "Restores " + OperationToString() +  " Magic";
+    case ModifierType::MaxHealth:
+      return "Changes Max Health by " + OperationToString();
+    case ModifierType::MaxMagic:
+      return "Changes Max Magic by " + OperationToString();
+        }
+    }
+
+/**
+ * Helper function to return a percentage or not for toStirng()
+ * @return
+ */
+QString Modifier::OperationToString()
+{
+  return application_type_ == ModifierOperation::Multiplicative ? QString::number((amount_ - 1) * 100) + "% " : QString::number(amount_);
+}

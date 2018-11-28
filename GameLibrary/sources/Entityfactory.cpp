@@ -72,11 +72,14 @@ void EntityFactory::EquipDefaultItems(Entity &entity)
   Skill drain_skill("Drain", "Enemy loses \n10 magic", drain_mods, drain_cost, Target::Enemy);
   Skill recover_skill("Recover", "Regain 10 magic", recover_mods, recover_cost, Target::Self);
 
-  std::vector<Modifier> item_mods; // No mods
+  std::vector<Modifier> no_mods;
+  std::vector<Modifier> add_magic;
+  Modifier max_magic_mod(ModifierType::MaxMagic, ModifierOperation::Additive, 10);
+  add_magic.push_back(max_magic_mod);
 
-  Item start_weapon(1, "Short Sword", "Unlocks skill: " + strike_skill.GetName(), item_mods, EquipType::Weapon, strike_skill, ":/images/items/sword_1.png");
-  Item start_armor(1, "Magic Armor", "Unlock skill: " + recover_skill.GetName(), item_mods, EquipType::Armor, recover_skill, ":/images/items/armor_1.png");
-  Item start_amulet(1, "Vampiric Amulet", "Unlock skill: " + drain_skill.GetName(), item_mods, EquipType::Trinket, drain_skill, ":/images/items/trinket_1.png");
+  Item start_weapon(1, "Short Sword", "A light short sword.", no_mods, EquipType::Weapon, strike_skill, ":/images/items/sword_1.png");
+  Item start_armor(1, "Magic Armor", "Armor mixed with a bit of magic.", add_magic, EquipType::Armor, recover_skill, ":/images/items/armor_1.png");
+  Item start_amulet(1, "Vampiric Amulet", "An amulet that drinks blood.", no_mods, EquipType::Trinket, drain_skill, ":/images/items/trinket_1.png");
 
   entity.EquipItem(start_weapon);
   entity.EquipItem(start_armor);

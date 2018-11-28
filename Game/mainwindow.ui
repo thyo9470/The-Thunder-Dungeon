@@ -152,9 +152,9 @@
    <widget class="QWidget" name="verticalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>530</x>
       <y>250</y>
-      <width>221</width>
+      <width>91</width>
       <height>191</height>
      </rect>
     </property>
@@ -167,7 +167,7 @@
         </font>
        </property>
        <property name="text">
-        <string>None</string>
+        <string>Weapon:</string>
        </property>
       </widget>
      </item>
@@ -179,7 +179,7 @@
         </font>
        </property>
        <property name="text">
-        <string>None</string>
+        <string>Armor:</string>
        </property>
       </widget>
      </item>
@@ -191,7 +191,7 @@
         </font>
        </property>
        <property name="text">
-        <string>None</string>
+        <string>Trinket:</string>
        </property>
       </widget>
      </item>
@@ -203,7 +203,7 @@
         </font>
        </property>
        <property name="text">
-        <string>None</string>
+        <string>Special:</string>
        </property>
       </widget>
      </item>
@@ -236,16 +236,19 @@
    <widget class="QLabel" name="equipmentImage0">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>260</y>
-      <width>32</width>
-      <height>32</height>
+      <x>630</x>
+      <y>251</y>
+      <width>41</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <pointsize>8</pointsize>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/Crypte.png&quot;/&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;sadfasdfdsafsfsdf&lt;/span&gt;&lt;/img&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string/>
@@ -260,10 +263,10 @@
    <widget class="QLabel" name="equipmentImage1">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>310</y>
-      <width>32</width>
-      <height>32</height>
+      <x>630</x>
+      <y>301</y>
+      <width>41</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -284,10 +287,10 @@
    <widget class="QLabel" name="equipmentImage2">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>360</y>
-      <width>32</width>
-      <height>32</height>
+      <x>630</x>
+      <y>351</y>
+      <width>41</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -308,10 +311,10 @@
    <widget class="QLabel" name="equipmentImage3">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>410</y>
-      <width>32</width>
-      <height>32</height>
+      <x>630</x>
+      <y>401</y>
+      <width>41</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -336,9 +339,9 @@
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>170</y>
+      <y>130</y>
       <width>291</width>
-      <height>131</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="font">
@@ -350,33 +353,15 @@
      <bool>true</bool>
     </property>
     <property name="title">
-     <string>Item Found!</string>
+     <string>New Item Found!</string>
     </property>
-    <widget class="QLabel" name="newItemText">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>40</y>
-       <width>191</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="newItemImage">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>110</x>
        <y>30</y>
-       <width>32</width>
-       <height>32</height>
+       <width>61</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
@@ -398,7 +383,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
+       <y>220</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -411,13 +396,50 @@
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>90</y>
+       <y>220</y>
        <width>91</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
       <string>Toss</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="currentItemImage">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>130</y>
+       <width>61</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/images/Slime.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>251</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Your Current Item:</string>
      </property>
     </widget>
    </widget>

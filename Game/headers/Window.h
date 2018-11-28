@@ -22,8 +22,8 @@ public:
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
-    void UpdateItems(std::map<EquipType, Item> equipment_);
-    void EnableItemDropUI(Item item);
+    void UpdateItems(std::map<EquipType, Item> equipment);
+    void EnableItemDropUI(Item item, std::map<EquipType, Item> equipment);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 
@@ -50,6 +50,7 @@ private:
     QGraphicsPixmapItem* GetWallSprite(std::array<bool, 4> wall_sides);
     QGraphicsPixmapItem* GetDungeonSprite(Tile* tile);
 
+    QString ItemToHTML(Item item);
 
 signals:
     void KeyPressSignal(QKeyEvent* event);

@@ -8,8 +8,6 @@
 
 #include "./headers/Tile.h"
 
-
-
 Window::Window(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -273,36 +271,58 @@ void Window::UpdateLevel(int level)
 void Window::UpdateItems(std::map<EquipType, Item> items)
 {
   for(std::pair<EquipType, Item> kv : items){
-      QString item_name = QString::fromStdString(kv.second.GetName());
-      QString item_description = QString::fromStdString(kv.second.GetDescription());
-      QPixmap item_icon(QString::fromStdString(kv.second.GetIcon()));
-
-      QLabel * equipment_label;
       QLabel * equipment_icon;
 
+      // Determine which image to update based on the equipment type
       switch (kv.first) {
         case EquipType::Weapon:
-          equipment_label = ui->equipment0;
           equipment_icon = ui->equipmentImage0;
           break;
         case EquipType::Armor:
-          equipment_label = ui->equipment1;
           equipment_icon = ui->equipmentImage1;
           break;
         case EquipType::Trinket:
-          equipment_label = ui->equipment2;
           equipment_icon = ui->equipmentImage2;
           break;
         case EquipType::Secondary:
-          equipment_label = ui->equipment3;
           equipment_icon = ui->equipmentImage3;
           break;
         }
 
-      equipment_label->setText(item_name);
-      equipment_label->setToolTip(item_description);
-      equipment_icon->setPixmap(item_icon);
+      // Set the EPIC tooltip
+      equipment_icon->setToolTip(ItemToHTML(kv.second));
+      equipment_icon->setPixmap(kv.second.GetIcon());
     }
+}
+
+/**
+ * Formats the item modifiers and skill to html for the tooltip
+ * @param item
+ * @return
+ */
+QString Window::ItemToHTML(Item item)
+{
+  QString item_string =
+      "<html> \
+      <head/> \
+      <body align='center'> \
+        <b><p style='color:goldenrod; font-size: 20px;'>" + item.GetName() + "</p></b>"
+        "<b><p>Item Level: " + QString::number(item.GetLevel()) + "</p></b>";
+
+  for(Modifier mod : item.GetModifiers()){
+      item_string += "<b><p style='color:darkslateblue'>" + mod.ToString() + "</p></b>";
+    }
+
+  if(item.HasSkill()){
+      item_string += "<b><p style='color:darkslateblue'>Unlock Skill: " + item.GetSkill().GetName() + "</p></b>";
+    }
+
+  item_string +=
+        "<p>" + item.GetDescription() + "</p>" +
+      "</body>"
+      "</html>";
+
+  return item_string;
 }
 
 /**
@@ -311,13 +331,18 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
  *
  * @param item The item to be equipped
  */
-void Window::EnableItemDropUI(Item item)
+void Window::EnableItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
 {
   ui->itemFoundDialogue->setEnabled(true);
   ui->itemFoundDialogue->setVisible(true);
-  ui->newItemText->setText(QString::fromStdString(item.GetName()));
-  ui->newItemText->setToolTip(QString::fromStdString(item.GetDescription()));
-  ui->newItemImage->setPixmap(QPixmap(QString::fromStdString(item.GetIcon())));
+
+  // Set the images and tooltip of the newly found item
+  ui->newItemImage->setToolTip(ItemToHTML(new_item));
+  ui->newItemImage->setPixmap(QPixmap(new_item.GetIcon()));
+
+  // Set the currently equipped item
+  ui->currentItemImage->setToolTip(ItemToHTML(equipment.at(new_item.GetEquipType())));
+  ui->currentItemImage->setPixmap(QPixmap(equipment.at(new_item.GetEquipType()).GetIcon()));
 }
 
 void Window::on_save_button_clicked()

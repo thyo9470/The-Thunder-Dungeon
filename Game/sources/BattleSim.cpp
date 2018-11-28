@@ -58,7 +58,7 @@ void BattleSim::PlayerTurn(int skill_id){
     }else{
       enemy_->ApplySkill(cur_skill);
     }
-    UpdateLog("You used " + cur_skill.GetName());
+    UpdateLog("You used " + cur_skill.GetName().toStdString());
     player_->UseSkill(cur_skill);
     agent_->AddSkill(cur_skill);
     EnemyTurn();
@@ -86,7 +86,7 @@ void BattleSim::EnemyTurn(){
           player_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
         }
-        UpdateLog("The enemy used " + cur_skill.GetName());
+        UpdateLog("The enemy used " + cur_skill.GetName().toStdString());
       }else{
         UpdateLog("The enemy tried but didn't have enough magic");
       }

@@ -137,10 +137,6 @@ void Entity::UpdateSkills()
           skills_.push_back(it->second.GetSkill());
         }
     }
-
-  for(Skill skill: skills_){
-      qDebug() << QString::fromStdString(skill.GetName());
-    }
 }
 
 /**
@@ -165,9 +161,15 @@ void Entity::ApplyModifier(Modifier mod, bool reverse)
       break;
     case ModifierType::MaxHealth:
       max_health_ = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_, reverse);
+      if(health_ > max_health_){
+          health_ = max_health_;
+        }
       break;
     case ModifierType::MaxMagic:
       max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_, reverse);
+      if(magic_ > max_magic_){
+          magic_ = max_magic_;
+        }
       break;
      case ModifierType::Damage:
       health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);

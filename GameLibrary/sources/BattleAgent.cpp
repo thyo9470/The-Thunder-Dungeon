@@ -60,7 +60,7 @@ Skill BattleAgent::GetEnemyMove(int depth){
 
 
   for(unsigned long i = 0; i < skill_score.size(); i++){
-    std::cout << enemy_skills[i].GetName() << "'s Score: " << skill_score[i] << " || ";
+    std::cout << enemy_skills[i].GetName().toStdString() << "'s Score: " << skill_score[i] << " || ";
   }
   std::cout << std::endl;
 

@@ -241,7 +241,7 @@ void Game::EndBattle(){
   window_->UpdatePlayerStats(*player_);
 
   item_to_equip_ = item_factory_.GenerateWeapon(board_->GetLevel());
-  window_->EnableItemDropUI(item_to_equip_);
+  window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
 }
 

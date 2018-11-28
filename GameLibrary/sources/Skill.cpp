@@ -3,14 +3,14 @@
 
 Skill::Skill(QJsonObject data){
   if(data.contains("skill_name") && data["skill_name"].isString()){
-      skill_name_ = data["skill_name"].toString().toStdString();
+      skill_name_ = data["skill_name"].toString();
     }
   else{
       qWarning("Json skill initialization contains no skill_name parameter.");
     }
 
   if(data.contains("skill_description") && data["skill_description"].isString()){
-      skill_description_ = data["skill_description"].toString().toStdString();
+      skill_description_ = data["skill_description"].toString();
     }
   else{
       qWarning("Json skill initialization contains no description parameter.");
@@ -44,8 +44,8 @@ Skill::Skill(QJsonObject data){
 QJsonObject Skill::Write()
 {
   QJsonObject data;
-  data["skill_name"] = QString::fromStdString(skill_name_);
-  data["skill_description"] = QString::fromStdString(skill_description_);
+  data["skill_name"] = skill_name_;
+  data["skill_description"] = skill_description_;
   QJsonArray modifers;
   for(Modifier mod : modifiers_){
       modifers.append(mod.Write());
