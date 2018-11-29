@@ -486,6 +486,7 @@ void Board::MovePlayer(ActionType action_type){
   switch(test->get_type()){
     case TileType::Exit: // move to next level
       NewLevel();
+      emit StartBattle();
       break;
     case TileType::Enemy: // fight enemy
       DeleteEnemy(player_tile_->get_position());
