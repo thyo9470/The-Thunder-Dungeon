@@ -3,7 +3,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <vector>
-#include <QRandomGenerator>
 #include <QtMath>
 
 ItemFactory::ItemFactory()
@@ -24,7 +23,7 @@ Item ItemFactory::GenerateItem(int level)
   QJsonObject item_data = items_by_level_.at(level).at(qrand() % items_by_level_.at(level).size());
 
   // Generate item prefixes
-  if(QRandomGenerator::global()->generateDouble() < prefix_chance_){
+  if((qrand() % 100)/100.0 < prefix_chance_){
       QJsonObject prefix = item_prefixes_[qrand() % item_prefixes_.size()];
 
       ApplyAffixToItem(prefix["modifiers"].toArray(), item_data);
@@ -33,7 +32,7 @@ Item ItemFactory::GenerateItem(int level)
     }
 
   // Generate item suffixes
-  if(QRandomGenerator::global()->generateDouble() < suffix_chance_){
+  if((qrand() % 100)/100.0 < suffix_chance_){
       QJsonObject suffix = item_suffixes_[qrand() % item_suffixes_.size()];
 
       ApplyAffixToItem(suffix["modifiers"].toArray(), item_data);

@@ -109,18 +109,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="playerSpeed">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Speed: 0</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="save_button">
