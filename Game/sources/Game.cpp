@@ -142,6 +142,8 @@ void Game::Write(QJsonObject &json) const{
 
   QJsonObject player_object;
   player_->Write(player_object);
+  player_object["max_health"] = 100;
+  player_object["max_magic"] = 100;
   json["player"] = player_object;
 }
 
