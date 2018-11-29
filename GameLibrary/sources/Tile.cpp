@@ -242,5 +242,9 @@ void EnemyTile::Follow(std::vector< std::vector< std::vector<Tile*> > > &board){
     pos_ = cur_pos;
     board[Board::entity_layer_id_][pos_.y_][pos_.x_] = this;
 
+    // clear dfs search to make sure the enemy can't jump around
+
+    next_moves_.clear();
+    prev_moves_.clear();
   }
 }
