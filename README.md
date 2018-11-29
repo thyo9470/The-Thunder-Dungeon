@@ -7,5 +7,8 @@ https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/Homework%2
 Homwork 4 Update:
 https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/homework%204.md
 
+Checkpoint Update:
+https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/checkpoint.md
+
 Project Proposal:
 https://docs.google.com/document/d/1xnf_grHEvMoCKZBvd1qq4vKbp7d0kQI72I4vSzTSAps/edit?usp=sharing
