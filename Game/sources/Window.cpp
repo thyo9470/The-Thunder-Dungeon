@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <iostream>
 #include <array>
+#include "./headers/Board.h"
 
 #include "./headers/Tile.h"
 
@@ -58,9 +59,6 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
     for(unsigned int x = 0; x < tile_info[0][y].size(); x++){
       //Generate dungeon sprites
       Tile* dungeon_tile = tile_info[0][y][x];
-
-      int tile_pos_x = 3;
-      int tile_pos_y = 0;
 
       QGraphicsPixmapItem * pixmap;
       // get dungeon sprite
@@ -126,10 +124,22 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
   }
 }
 
+/**
+ * @brief Window::GetWallSprite
+ *
+ * Given the an bool array of size four saying which tiles are walls and are not
+ *  the function returns the Pixmap with the correct wall sprite
+ *
+ * @param wall_sides - array of which spaces are walls or not: [up, right, down, left]
+ * @return The pixmap with the correct wall sprite
+ */
+
 QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){
+  // pink square to show when a sprite isn't loaded properly
   int tile_pos_x = 15;
   int tile_pos_y = 8;
 
+  // all the wall choices
   std::array<bool, 4> all_sides = {true, true, true, true}; // all sides are walls
 
   std::array<bool, 4> up_right = {true, true, false, false}; // up-right corner
@@ -151,7 +161,7 @@ QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){
   std::array<bool, 4> up_end = {false, false, true, false}; // up-end
   std::array<bool, 4> down_end = {true, false, false, false}; // down-end
 
-
+  // match wall and get the possition of the proper sprite
   if(wall_sides == all_sides){
     tile_pos_x = 3;
     tile_pos_y = 21;
@@ -199,17 +209,28 @@ QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){
     tile_pos_y = 23;
   }
 
+  // create wall pixmap
   QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
   pixmap->setPixmap(dungeon_sheet_.copy(tile_pos_x * dungeon_sprite_size_, tile_pos_y * dungeon_sprite_size_, dungeon_sprite_size_, dungeon_sprite_size_));
 
   return pixmap;
 }
 
+/**
+ * @brief Window::GetDungeonSprite
+ *
+ * Given a tile this returns the pixmap with corerct sprite
+ *
+ * @param tile - the tile you want the pixmap for
+ * @return The pixmap of the tile with the proper sprite
+ */
 
 QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
+  // show pink square when sprite doesn't load properly
   int tile_pos_x = 15;
   int tile_pos_y = 8;
 
+  // player
   if(tile->get_type() == TileType::Player){
     tile_pos_x = 0;
     tile_pos_y = 0;
@@ -219,6 +240,7 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
     return pixmap;
   }
 
+  // enemy
   if(tile->get_type() == TileType::Enemy){
     tile_pos_x = 0;
     tile_pos_y = 0;
@@ -228,22 +250,107 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
     return pixmap;
   }
 
-  if(tile->get_type() == TileType::Empty){
+
+  if(tile->get_type() == TileType::Empty){ //empty
     tile_pos_x = 0;
     tile_pos_y = 4;
-  }else if(tile->get_type() == TileType::Exit){
+  }else if(tile->get_type() == TileType::Exit){ //exit
     tile_pos_x = 9;
     tile_pos_y = 16;
-  }else if(tile->get_type() == TileType::Void){
+  }else if(tile->get_type() == TileType::Void){ // nothing/void
     tile_pos_x = 3;
     tile_pos_y = 0;
   }
 
 
+  // create pixmap
   QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
   pixmap->setPixmap(dungeon_sheet_.copy(tile_pos_x * dungeon_sprite_size_, tile_pos_y * dungeon_sprite_size_, dungeon_sprite_size_, dungeon_sprite_size_));
 
   return pixmap;
+}
+
+/**
+ * @brief Window::AddLighting
+ *
+ * - Adds a lighting affect tot he scene so that you can only see within a distance
+ * - Uses breadth first search to find distance from player which is the brightness
+ *
+ * @param board - The board of tiles
+ * @param player - The player tile
+ */
+
+void Window::AddLighting(std::vector< std::vector< std::vector<Tile*> > > board, PlayerTile* player){
+
+  // create varibale for playe position
+  Position pos = player->get_position();
+
+  // create 2d array for distances
+  std::vector< std::vector<int> > distances;
+
+  for(unsigned long i = 0; i < board[0].size(); i++){
+    std::vector<int> row(board[0][0].size(), -1);
+    distances.push_back( row );
+  }
+
+  // setup for bfs
+  std::vector< Position > frontier;
+
+  frontier.insert(frontier.begin(), pos);
+  distances[pos.y_][pos.x_] = 0;
+
+  Position player_pos;
+
+  // bfs
+  while(frontier.size() > 0){
+    // get front element
+    Position cur_pos = frontier.back();
+    frontier.pop_back();
+
+    // the possible places the places the light can go at cur_pos
+    std::vector<Position> possible_moves = { Position(cur_pos.x_, cur_pos.y_+1), Position(cur_pos.x_+1, cur_pos.y_), Position(cur_pos.x_, cur_pos.y_-1), Position(cur_pos.x_-1, cur_pos.y_)};
+
+    for(Position next_pos : possible_moves){
+      int dist = distances[cur_pos.y_][cur_pos.x_] + 1;
+
+      // if the next place not empty
+      if(board[0][cur_pos.y_][cur_pos.x_]->get_type() != TileType::Empty){
+        continue;
+      }
+
+      // if place unvisited
+      if(distances[next_pos.y_][next_pos.x_] == -1){
+
+        // if the distance is within the lighting distance bound add to frontier
+        if(dist < lighting_distance_){
+
+          // update distance
+          distances[next_pos.y_][next_pos.x_] = dist;
+          frontier.insert(frontier.begin(), next_pos);
+        }
+      }
+    }
+  }
+
+  // Create lighting squares
+  for(int y = 0; y < board[0].size(); y++){
+    for(int x = 0; x < board[0][0].size(); x++){
+        // adding lighting
+        QGraphicsRectItem * pixmap;
+
+        // create black square
+        pixmap = new QGraphicsRectItem( QRect(x * dungeon_sprite_size_ * dungeon_tile_scale_, y * dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_, dungeon_sprite_size_ * dungeon_tile_scale_), 0 );
+        pixmap->setBrush(Qt::black);
+        pixmap->setPen(Qt::NoPen);
+        if(distances[y][x] != -1){
+          // change opacity if within lighting distance
+          double brightness = (distances[y][x] * 1.0)/lighting_distance_;
+          pixmap->setOpacity(brightness);
+        }
+
+        scene_->addItem(pixmap);
+    }
+  }
 }
 
 /**

@@ -20,6 +20,7 @@ class Window : public QMainWindow
 public:
     explicit Window(QWidget *parent = nullptr, int window_x = 496, int window_y = 496);
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
+    void AddLighting(std::vector< std::vector< std::vector<Tile*> > > board, PlayerTile* player);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
     void UpdateItems(std::map<EquipType, Item> equipment);
@@ -35,12 +36,12 @@ private:
 
     QPixmap sprite_sheet_; // Loads all of the sprites
 
-    int sprite_size_ = 8; // The size of a sprite in pixels
-    int sprite_sheet_size_ = 16; // The width of the sprite sheet in number of sprites
-    int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
+    //int sprite_size_ = 8; // The size of a sprite in pixels
+    //int sprite_sheet_size_ = 16; // The width of the sprite sheet in number of sprites
+    //int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
 
 
-    QPixmap dungeon_sheet_; // Loads all of the sprites
+    QPixmap dungeon_sheet_; // Loads all of thse sprites
     QPixmap player_sheet_; // loads sprite sheet for player
     QPixmap slime_sheet_; // loads enemy sheet (slime)
     int dungeon_sprite_size_ = 16; // the size in pixels of dungeon scenery sprites
@@ -49,6 +50,8 @@ private:
 
     QGraphicsPixmapItem* GetWallSprite(std::array<bool, 4> wall_sides);
     QGraphicsPixmapItem* GetDungeonSprite(Tile* tile);
+
+    int lighting_distance_ = 20;
 
     QString ItemToHTML(Item item);
 
