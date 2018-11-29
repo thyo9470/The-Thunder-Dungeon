@@ -1,4 +1,6 @@
-# Checkpoint 4
+Michael Yoshimura, Thomas Young
+
+# Homework 4
 #### 0) Guide to current functionalities:
 - "wasd" keys to move around on the board
 - Click the 'save' button to save a game state, and the 'load' button to load a game state

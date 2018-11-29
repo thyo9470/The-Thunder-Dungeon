@@ -25,7 +25,7 @@ Game::Game()
   int rooms_tall = 5;
 
   // set difficulty
-  difficulty = Difficulty::Medium;
+  difficulty = Difficulty::Hard;
 
   window_ = new Window(); // Represents the board window
   fight_window_ = new FightWindow(); // Represents the fight scene window
@@ -142,6 +142,8 @@ void Game::Write(QJsonObject &json) const{
 
   QJsonObject player_object;
   player_->Write(player_object);
+  player_object["max_health"] = 100;
+  player_object["max_magic"] = 100;
   json["player"] = player_object;
 }
 
@@ -190,6 +192,7 @@ void Game::GetInputBattleSim(int skill_id){
  */
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
+  window_->AddLighting(board_->get_board(), board_->GetPlayer());
   player_->SetLevel(board_->GetLevel());
   window_->UpdateLevel(board_->GetLevel());
 }

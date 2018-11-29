@@ -1,6 +1,6 @@
 Michael Yoshimura, Thomas Young
 
-Homework 3
+# Homework 3
 
 **1) Our plan for this homework: Board and Graphics**
  Setup all development frameworks: Github, Travis CI, QT Creator, Catch
@@ -74,7 +74,7 @@ input, turns, and holds a reference to the board.
     * Interface for the battle simulation
     * Unit tests for the battle simulation
 * Knowledge required to complete:
-    * We don’t know how to use Qt specifically for GUI, but we should learn those
+    * We donâ€™t know how to use Qt specifically for GUI, but we should learn those
 skills in time for this homework 4.
    * We will be working in JSON reading and generating objects with unique stats,
 which we have some experience in Unity.

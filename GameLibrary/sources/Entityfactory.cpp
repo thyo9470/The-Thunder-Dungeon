@@ -1,4 +1,5 @@
 #include "headers/Entityfactory.h"
+#include <cmath>
 
 /**
  * Generates an enemy based on level
