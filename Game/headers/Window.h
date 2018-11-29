@@ -7,6 +7,7 @@
 
 #include "./headers/Tile.h"
 #include "./headers/Entity.h"
+#include "./headers/Item.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,8 @@ public:
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
+    void UpdateItems(std::map<EquipType, Item> equipment);
+    void EnableItemDropUI(Item item, std::map<EquipType, Item> equipment);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 
@@ -47,14 +50,18 @@ private:
     QGraphicsPixmapItem* GetWallSprite(std::array<bool, 4> wall_sides);
     QGraphicsPixmapItem* GetDungeonSprite(Tile* tile);
 
+    QString ItemToHTML(Item item);
 
 signals:
     void KeyPressSignal(QKeyEvent* event);
     void SaveGameSignal();
     void LoadGameSignal();
+    void EquipItemSignal(bool equip_item);
 private slots:
     void on_save_button_clicked();
     void on_load_button_clicked();
+    void on_equipButton_clicked();
+    void on_throwAwayButton_clicked();
 };
 
 #endif // MAINWINDOW_H

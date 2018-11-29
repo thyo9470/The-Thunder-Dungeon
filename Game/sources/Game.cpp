@@ -7,25 +7,17 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QJsonDocument>
-#include <QDebug>
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
+#include "headers/Entityfactory.h"
 
 #include <QTextStream>
 
 Game::Game()
 {
 
-  // make player
-  QJsonObject entity_data;
-  entity_data["max_health"] = 100;
-  entity_data["max_magic"] = 100;
-  entity_data["strength"] = 100;
-  entity_data["speed"] = 100;
-  entity_data["sprite_index"] = 2;
-
-  player_ = new Entity(entity_data);
+  player_ = EntityFactory::GeneratePlayer();
 
   // setup ui
 
@@ -40,6 +32,7 @@ Game::Game()
 
   // Update the window to show the player stats
   window_->UpdatePlayerStats(*player_);
+  window_->UpdateItems(player_->GetEquipment());
 
   playing_ = true;
 
@@ -53,7 +46,7 @@ Game::Game()
   connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
   connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
   connect(window_, &Window::LoadGameSignal, this, &Game::LoadGame);
-
+  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
 
   connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
 
@@ -89,6 +82,7 @@ bool Game::LoadGame(){
       // Visually updates after reading
       GameLoop();
       window_->UpdatePlayerStats(*player_);
+      window_->UpdateItems(player_->GetEquipment());
 
       return true;
 }
@@ -155,6 +149,8 @@ void Game::Write(QJsonObject &json) const{
   Recieved the input from the player, and moves the game foward
 */
 void Game::GetInputBoard(QKeyEvent* event){
+  if(!playing_) return;
+
   if(event->key() == Qt::Key_W){
     board_->MovePlayer(ActionType::Up);
   }else if(event->key() == Qt::Key_D){
@@ -192,7 +188,6 @@ void Game::GetInputBattleSim(int skill_id){
  *
  * Updating the board
  */
-
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
   player_->SetLevel(board_->GetLevel());
@@ -204,7 +199,6 @@ void Game::GameLoop() const{
  */
 
 void Game::StartBattle(){
-
 
   // set difficulty of the battle
   int minimax_depth = 0;
@@ -238,9 +232,30 @@ void Game::StartBattle(){
 /**
  * @brief Game::StartBattle
  */
-
 void Game::EndBattle(){
   window_->show();
   fight_window_->hide();
   window_->UpdatePlayerStats(*player_);
+
+  item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
+  window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
+  playing_ = false;
+}
+
+/**
+ * Slot that equips an item if the player clicks the "equip" button
+ *
+ * Or simply resumes the game if the items is tossed away
+ *
+ * @param equip_item
+ */
+void Game::EquipItem(bool equip_item)
+{
+  if(equip_item){
+    player_->EquipItem(item_to_equip_);
+    window_->UpdatePlayerStats(*player_);
+    window_->UpdateItems(player_->GetEquipment());
+    }
+
+  playing_ = true;
 }

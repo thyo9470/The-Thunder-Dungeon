@@ -5,12 +5,12 @@
 
 #include <QApplication>
 
-#include <headers/Entity.h>
-
-#include "./headers/Board.h"
+#include "headers/Entity.h"
+#include "headers/Board.h"
 #include "BattleSim.h"
 #include "FightWindow.h"
 #include "Window.h"
+#include "headers/Itemfactory.h"
 
 enum class Difficulty {Easy, Medium, Hard, Extreme};
 
@@ -36,13 +36,12 @@ public:
 private:
   Window * window_;
   FightWindow * fight_window_;
-
   Board  *board_;
-
   BattleSim *battle_sim_;
   Difficulty difficulty;
-
+  ItemFactory item_factory_;
   bool playing_;
+  Item item_to_equip_;
   SaveFormat save_format_ = SaveFormat::Binary;
   Entity *player_;
 
@@ -54,6 +53,7 @@ public slots:
   bool SaveGame() const;
   void StartBattle();
   void EndBattle();
+  void EquipItem(bool equip_skill);
 
 };
 

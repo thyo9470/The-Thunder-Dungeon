@@ -8,8 +8,6 @@
 
 #include "./headers/Tile.h"
 
-
-
 Window::Window(QWidget *parent, int window_x, int window_y) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -27,6 +25,8 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
     // Keep the scene from resizing
     ui->graphicsView->setFixedSize(window_x, window_y);
     scene_->setSceneRect(0, 0, window_x, window_y);
+
+    ui->itemFoundDialogue->setVisible(false);
 
     // Hold all the images
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
@@ -124,33 +124,6 @@ void Window::UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tile_i
 
     }
   }
-
-
-
-  /*for(int y = 0; y < tile_info[0].size(); y++){
-      for(int x = 0; x < tile_info[0][y].size(); x++){
-          // find the tile type to get sprite of
-          Tile tile = tile_info[0][y][x]->get_type();
-          for(unsigned int l = 0; l < tile_info.size(); l++){
-              Tile cur_sq = (*tile_info[l][y][x]);
-              if((cur_sq == TileType::Empty) == false){
-                tile = tile_info[l][y][x]->get_type();
-              }
-            }
-          int tile_num = static_cast<int>( tile.get_type() );
-
-          int tile_pos_x = tile_num % sprite_sheet_size_;
-          int tile_pos_y = 0;//tile % sprite_sheet_size_;
-
-
-          // Create and add the tile to the scene
-          QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
-          pixmap->setPixmap(sprite_sheet_.copy(tile_pos_x * sprite_size_, tile_pos_y * sprite_size_, sprite_size_, sprite_size_));
-          pixmap->setPos(x * sprite_size_ * tile_scale_, y * sprite_size_ * tile_scale_);
-          pixmap->setScale(pixmap->scale() * tile_scale_);
-          scene_->addItem(pixmap);
-      }
-    }*/
 }
 
 QGraphicsPixmapItem* Window::GetWallSprite(std::array<bool, 4> wall_sides){
@@ -280,14 +253,95 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
  */
 void Window::UpdatePlayerStats(Entity &player)
 {
-  ui->playerHealth->setText("Health: " + QString::number(player.GetHealth()) + " / " + QString::number(player.GetMaxHealth()));
-  ui->playerMagic->setText("Magic: " + QString::number(player.GetMagic()) + " / " + QString::number((player.GetMaxMagic())));
-  ui->playerSpeed->setText("Speed: " + QString::number(player.GetSpeed()));
+  ui->playerHealth->setText("Health: " + QString::number((int)player.GetHealth()) + " / " + QString::number((int)player.GetMaxHealth()));
+  ui->playerMagic->setText("Magic: " + QString::number((int)player.GetMagic()) + " / " + QString::number(((int)player.GetMaxMagic())));
 }
 
 void Window::UpdateLevel(int level)
 {
   ui->currentLevel->setText("Current Level: " + QString::number(level));
+}
+
+/**
+ * Update the sidebar equipment panel with the player's equipment
+ *
+ * @param items
+ */
+void Window::UpdateItems(std::map<EquipType, Item> items)
+{
+  for(std::pair<EquipType, Item> kv : items){
+      QLabel * equipment_icon;
+
+      // Determine which image to update based on the equipment type
+      switch (kv.first) {
+        case EquipType::Weapon:
+          equipment_icon = ui->equipmentImage0;
+          break;
+        case EquipType::Armor:
+          equipment_icon = ui->equipmentImage1;
+          break;
+        case EquipType::Trinket:
+          equipment_icon = ui->equipmentImage2;
+          break;
+        case EquipType::Special:
+          equipment_icon = ui->equipmentImage3;
+          break;
+        }
+
+      // Set the EPIC tooltip
+      equipment_icon->setToolTip(ItemToHTML(kv.second));
+      equipment_icon->setPixmap(kv.second.GetIcon());
+    }
+}
+
+/**
+ * Formats the item modifiers and skill to html for the tooltip
+ * @param item
+ * @return
+ */
+QString Window::ItemToHTML(Item item)
+{
+  QString item_string =
+      "<html> \
+      <head/> \
+      <body align='center'> \
+        <b><p style='color:goldenrod; font-size: 20px;'>" + item.GetName() + "</p></b>"
+        "<b><p>Item Level: " + QString::number(item.GetLevel()) + "</p></b>";
+
+  for(Modifier mod : item.GetModifiers()){
+      item_string += "<b><p style='color:darkslateblue'>" + mod.ToString() + "</p></b>";
+    }
+
+  if(item.HasSkill()){
+      item_string += "<b><p style='color:darkslateblue'>Unlock Skill: " + item.GetSkill().GetName() + "</p></b>";
+    }
+
+  item_string +=
+        "<p>" + item.GetDescription() + "</p>" +
+      "</body>"
+      "</html>";
+
+  return item_string;
+}
+
+/**
+ * Whenever an item is found, this dialogue window will pop to let the player
+ * decide if they want the item or not
+ *
+ * @param item The item to be equipped
+ */
+void Window::EnableItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
+{
+  ui->itemFoundDialogue->setEnabled(true);
+  ui->itemFoundDialogue->setVisible(true);
+
+  // Set the images and tooltip of the newly found item
+  ui->newItemImage->setToolTip(ItemToHTML(new_item));
+  ui->newItemImage->setPixmap(QPixmap(new_item.GetIcon()));
+
+  // Set the currently equipped item
+  ui->currentItemImage->setToolTip(ItemToHTML(equipment.at(new_item.GetEquipType())));
+  ui->currentItemImage->setPixmap(QPixmap(equipment.at(new_item.GetEquipType()).GetIcon()));
 }
 
 void Window::on_save_button_clicked()
@@ -300,4 +354,16 @@ void Window::on_load_button_clicked()
     emit LoadGameSignal();
 }
 
+void Window::on_equipButton_clicked()
+{
+    ui->itemFoundDialogue->setEnabled(false);
+    ui->itemFoundDialogue->setVisible(false);
+    emit EquipItemSignal(true);
+}
 
+void Window::on_throwAwayButton_clicked()
+{
+    ui->itemFoundDialogue->setEnabled(false);
+    ui->itemFoundDialogue->setVisible(false);
+    emit EquipItemSignal(false);
+}

@@ -10,5 +10,34 @@
         <file>images/Player.png</file>
         <file>images/Slime.png</file>
         <file>images/souterrain.png</file>
+        <file>images/items/axe_0.png</file>
+        <file>images/items/axe_6.png</file>
+        <file>images/items/axe_7.png</file>
+        <file>images/items/staff_0.png</file>
+        <file>images/items/staff_1.png</file>
+        <file>images/items/staff_2.png</file>
+        <file>images/items/staff_3.png</file>
+        <file>images/items/staff_4.png</file>
+        <file>images/items/staff_5.png</file>
+        <file>images/items/sword_0.png</file>
+        <file>images/items/sword_1.png</file>
+        <file>images/items/sword_2.png</file>
+        <file>images/items/sword_3.png</file>
+        <file>images/items/sword_4.png</file>
+        <file>images/items/sword_5.png</file>
+        <file>images/items/sword_6.png</file>
+        <file>images/items/sword_7.png</file>
+        <file>images/items/sword_8.png</file>
+        <file>images/items/armor_1.png</file>
+        <file>images/items/trinket_1.png</file>
+        <file>images/items/axe_1.png</file>
+        <file>images/items/axe_2.png</file>
+        <file>images/items/axe_3.png</file>
+        <file>images/items/axe_4.png</file>
+        <file>images/items/axe_5.png</file>
+        <file>itemData/itemData.json</file>
+        <file>itemData/affixes.json</file>
+        <file>images/items/book_0.png</file>
+        <file>images/items/headband_0.png</file>
     </qresource>
 </RCC>

@@ -6,6 +6,8 @@
 #include "headers/Skill.h"
 #include "headers/Tile.h"
 #include "headers/BattleAgent.h"
+#include "headers/Item.h"
+#include "headers/Entityfactory.h"
 #include <vector>
 #include <QJsonObject>
 
@@ -18,6 +20,8 @@ private slots:
   void TestBoardInit_data();
   void TestSkillModifiers();
   void TestMinimax();
+  void TestEquipment();
+  QJsonObject GetTestStats();
 };
 
 /*
@@ -54,13 +58,7 @@ void TestGame::TestBoardInit_data()
  */
 void TestGame::TestSkillModifiers()
 {
-  QJsonObject entity_data;
-  entity_data["max_health"] = 100;
-  entity_data["max_magic"] = 100;
-  entity_data["strength"] = 100;
-  entity_data["speed"] = 100;
-
-  Entity hippo_goose(entity_data);
+  Entity hippo_goose(GetTestStats());
 
   std::vector<Modifier> mods;
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
@@ -79,6 +77,59 @@ void TestGame::TestSkillModifiers()
 
 
 void TestGame::TestMinimax(){
+  Entity* player = EntityFactory::GeneratePlayer();
+
+  Entity* enemy = EntityFactory::GeneratePlayer();
+
+  BattleAgent* agent = new BattleAgent(player, enemy);
+
+  Skill best_move = agent->GetEnemyMove(3);
+
+  std::cout << "Best move: " << best_move.GetName().toStdString() << std::endl;
+
+  QVERIFY(true);
+}
+
+/**
+ * Tests item creation and equipping items
+ */
+void TestGame::TestEquipment()
+{
+  Entity* player = new Entity(GetTestStats());
+
+  // Direct mods for the item equip
+  std::vector<Modifier> mods;
+  Modifier increase_health(ModifierType::MaxHealth, ModifierOperation::Additive, 10);
+  mods.push_back(increase_health);
+
+  // Mods for the skill for the item
+  std::vector<Modifier> recover_mods;
+  int recover_cost = 0;
+  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 20);
+  recover_mods.push_back(recover_mod);
+
+  Skill recover_skill("Recover", "Regain 10 magic", recover_mods, recover_cost, Target::Self);
+  Item item(1, "The legendary claw of destiny", ":)", mods , EquipType::Weapon, recover_skill, "");
+  player->EquipItem(item);
+
+  // Test that equipping the item had the intended effects
+  QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
+  QCOMPARE(player->GetSkills()[0].GetName(), QString("Recover"));
+
+  // Test the unequip ability by replacing the previous item with no mods
+  std::vector<Modifier> none;
+  Item no_mods(1, "The legendary claw of destiny with no mods", ":)", none, EquipType::Weapon, recover_skill, "");
+  player->EquipItem(no_mods);
+
+  QCOMPARE(player->GetMaxHealth(), static_cast<float>(100));
+}
+
+/**
+ * @brief TestGame::GetTestStats
+ * @return A object containing all the stats an entity needs
+ */
+QJsonObject TestGame::GetTestStats()
+{
   // make entites
   QJsonObject entity_data;
   entity_data["max_health"] = 100;
@@ -86,18 +137,7 @@ void TestGame::TestMinimax(){
   entity_data["strength"] = 100;
   entity_data["speed"] = 100;
   entity_data["sprite_index"] = 2;
-
-  Entity* player = new Entity(entity_data);
-
-  Entity* enemy = new Entity(entity_data);
-
-  BattleAgent* agent = new BattleAgent(player, enemy);
-
-  Skill best_move = agent->GetEnemyMove(3);
-
-  std::cout << "Best move: " << best_move.GetName() << std::endl;
-
-  QVERIFY(true);
+  return entity_data;
 }
 
 QTEST_APPLESS_MAIN(TestGame)

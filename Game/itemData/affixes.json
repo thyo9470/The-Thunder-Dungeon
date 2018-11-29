@@ -1,0 +1,116 @@
+{
+    "prefixes": [
+        {
+            "name": "Tough",
+            "modifiers": [
+                {
+                    "amount": 3,
+                    "application_type": 1,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "Fortifying",
+            "modifiers": [
+                {
+                    "amount": 5,
+                    "application_type": 1,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "Impenetrable",
+            "modifiers": [
+                {
+                    "amount": 10,
+                    "application_type": 1,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "Energetic",
+            "modifiers": [
+                {
+                    "amount": 3,
+                    "application_type": 1,
+                    "type": 3
+                }
+            ]
+        },
+        {
+            "name": "Empowered",
+            "modifiers": [
+                {
+                    "amount": 5,
+                    "application_type": 1,
+                    "type": 3
+                }
+            ]
+        },
+        {
+            "name": "Arcane",
+            "modifiers": [
+                {
+                    "amount": 10,
+                    "application_type": 1,
+                    "type": 3
+                }
+            ]
+        },
+        {
+            "name": "Legendary",
+            "modifiers": [
+                {
+                    "amount": 10,
+                    "application_type": 1,
+                    "type": 1
+                },
+                {
+                    "amount": 10,
+                    "application_type": 1,
+                    "type": 3
+                }
+            ]
+        }
+    ],
+    "suffixes": [
+        {
+            "name": "of the Giant",
+            "modifiers": [
+                {
+                    "amount": 1.03,
+                    "application_type": 0,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "of Wisdom",
+            "modifiers": [
+                {
+                    "amount": 1.03,
+                    "application_type": 0,
+                    "type": 3
+                }
+            ]
+        },
+        {
+            "name": "of the HippoGoose",
+            "modifiers": [
+                {
+                    "amount": 1.1,
+                    "application_type": 0,
+                    "type": 1
+                },
+                {
+                    "amount": 1.1,
+                    "application_type": 0,
+                    "type": 3
+                }
+            ]
+        }
+    ]
+}
