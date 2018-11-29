@@ -1,16 +1,19 @@
-
+﻿
 #include "../headers/Tile.h"
 #include "../headers/Board.h"
-#include <queue>
 #include <vector>
 #include <cmath>
 
-/*
-  Convert a given TileType to a string
 
-  @param  (TileType) tile - The tile you want the type of in a string
-  @return (string)        - The tile type as a string 
-*/
+/**
+ * @brief TileTypeToString
+ *
+ * Convert TileType to string
+ *
+ * @param tile - the TileType you want converted
+ * @return The string version of given TileType
+ */
+
 std::string TileTypeToString(TileType tile){
   int type = static_cast<int>(tile);
   switch(type){
@@ -30,9 +33,14 @@ std::string TileTypeToString(TileType tile){
 }
 
 
-/*
-    Compare an instance of the Tile class to an instance of the TileType class
-*/
+/**
+ * @brief operator ==
+ *
+ * overload == operator to word between TileType enum and TIle class
+ *
+ * @return
+ */
+
 bool operator==(const TileType& tt, const Tile& tl){
   return tt == tl.type_;
 }
@@ -49,9 +57,9 @@ Tile::Tile(TileType type){
   type_ = type;
 }
 
-/*
-    Player class methods
-*/
+/**
+ * @brief PlayerTile::PlayerTile
+ */
 
 PlayerTile::PlayerTile():EntityTile(TileType::Player){
   pos_ = Position(3,3); 
@@ -67,11 +75,14 @@ EnemyTile::EnemyTile(Position startPos):EntityTile(TileType::Enemy)
   next_moves_.push_back(startPos);
 }
 
-/*
- * Moves an enemy according to dfs search
+/**
+ * @brief EnemyTile::DFSMove
  *
- * @param board The board's tile information
- * */
+ * Move enemy around the board using depth first search
+ *
+ * @param board
+ */
+
 void EnemyTile::DFSMove(std::vector< std::vector< std::vector<Tile*> > > &board)
 {
   // Reset the algorithm after it has explored every option
@@ -138,8 +149,21 @@ void EnemyTile::DFSMove(std::vector< std::vector< std::vector<Tile*> > > &board)
     }
 }
 
+/**
+ * @brief EnemyTile::Follow
+ *
+ * Checks if the player is within a follow distance
+ * if true:
+ *    move enemy towards player
+ * else:
+ *    move using DFSSearchMove function
+ *
+ * @param board
+ */
+
 void EnemyTile::Follow(std::vector< std::vector< std::vector<Tile*> > > &board){
 
+  // setup BFS
   std::vector< std::vector<int> > distances;
   std::vector< std::vector<Position> > pred;
 
@@ -151,6 +175,7 @@ void EnemyTile::Follow(std::vector< std::vector< std::vector<Tile*> > > &board){
     pred.push_back( row2 );
   }
 
+  // start BFS
   std::vector< Position > frontier;
 
   frontier.insert(frontier.begin(), pos_);
@@ -158,50 +183,64 @@ void EnemyTile::Follow(std::vector< std::vector< std::vector<Tile*> > > &board){
 
   Position player_pos;
 
-  // bfs to finnd player
+  // BFS to finnd player
   while(frontier.size() > 0){
     Position cur_pos = frontier.back();
     frontier.pop_back();
 
+    // player found
     if(board[Board::player_layer_id_][cur_pos.y_][cur_pos.x_]->get_type() == TileType::Player){
       player_pos = cur_pos;
       break;
     }
 
+    // moves enemy can take
     std::vector<Position> possible_moves = { Position(cur_pos.x_, cur_pos.y_+1), Position(cur_pos.x_+1, cur_pos.y_), Position(cur_pos.x_, cur_pos.y_-1), Position(cur_pos.x_-1, cur_pos.y_)};
+
+    // randomize the possible moves order
+    for(int i = 0; i < possible_moves.size(); i++){
+      int new_index = rand() % (int)possible_moves.size();
+
+      Position temp_pos = possible_moves[i];
+      possible_moves[i] = possible_moves[new_index];
+      possible_moves[new_index] = temp_pos;
+    }
 
     for(Position next_pos : possible_moves){
       // skip walls
       if(board[0][next_pos.y_][next_pos.x_]->get_type() != TileType::Empty){
         continue;
       }
+
+      // if not visited and within follow distance
       if(distances[next_pos.y_][next_pos.x_] == -1){
         // update distance
         distances[next_pos.y_][next_pos.x_] = distances[cur_pos.y_][cur_pos.x_] + 1;
         // udate predecessor
         pred[next_pos.y_][next_pos.x_] = cur_pos;
-        // add next_post to frontier
-        frontier.insert(frontier.begin(), next_pos);
+        if(distances[next_pos.y_][next_pos.x_] < follow_distance_){
+          // add next_post to frontier
+          frontier.insert(frontier.begin(), next_pos);
+        }
       }
     }
   }
 
-  int length = 0;
+  // save current position in tracing path backward
   Position cur_pos = player_pos;
 
-  // Get the path to the playaer
-  while(length < follow_distance_){
-    Position pred_pos = pred[cur_pos.y_][cur_pos.x_];
-    //move player
-    if(pred_pos == pos_){
-      pos_ = cur_pos;
-      board[Board::entity_layer_id_][pos_.y_][pos_.x_] = this;
-      break;
-    }
-    length++;
-    cur_pos = pred_pos;
-  }
-  if(length  == follow_distance_){
+  // if path not found within follow distance do normal dfs search move
+  if(pred[cur_pos.y_][cur_pos.x_] == Position(-1, -1)){
     DFSMove(board);
+  }else{
+
+    // find the tile we move to next
+    while (pred[cur_pos.y_][cur_pos.x_] != pos_) {
+      cur_pos = pred[cur_pos.y_][cur_pos.x_];
+    }
+
+    pos_ = cur_pos;
+    board[Board::entity_layer_id_][pos_.y_][pos_.x_] = this;
+
   }
 }

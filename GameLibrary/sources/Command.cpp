@@ -19,11 +19,3 @@ void DownCommand::execute(EntityTile* tile){
 void LeftCommand::execute(EntityTile* tile){
   tile->SetPosition(tile->get_position() + Position(-1,0)); 
 }
-
-void DFSSearchCommand::execute(EnemyTile* tile, std::vector< std::vector< std::vector<Tile*> > > &board){
-  tile->DFSMove(board);
-}
-
-void FollowCommnad::execute(EnemyTile* tile, std::vector< std::vector< std::vector<Tile*> > > &board){
-  //tile->Follow(board);
-}

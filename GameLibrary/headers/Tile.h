@@ -107,7 +107,7 @@ public:
   void Follow(std::vector< std::vector< std::vector<Tile*> > > &board);
 
 private:
-  int follow_distance_ = 5;
+  int follow_distance_ = 4;
 
   std::vector<Position> next_moves_;
   std::vector<Position> prev_moves_;
