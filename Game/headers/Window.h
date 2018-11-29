@@ -7,6 +7,7 @@
 
 #include "./headers/Tile.h"
 #include "./headers/Entity.h"
+#include "./headers/Item.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,8 @@ public:
     void AddLighting(std::vector< std::vector< std::vector<Tile*> > > board, PlayerTile* player);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
+    void UpdateItems(std::map<EquipType, Item> equipment);
+    void EnableItemDropUI(Item item, std::map<EquipType, Item> equipment);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
 
@@ -38,7 +41,7 @@ private:
     //int tile_scale_ = 2; // The scale factor to increase the size of the sprites rendered
 
 
-    QPixmap dungeon_sheet_; // Loads all of the sprites
+    QPixmap dungeon_sheet_; // Loads all of thse sprites
     QPixmap player_sheet_; // loads sprite sheet for player
     QPixmap slime_sheet_; // loads enemy sheet (slime)
     int dungeon_sprite_size_ = 16; // the size in pixels of dungeon scenery sprites
@@ -50,14 +53,18 @@ private:
 
     int lighting_distance_ = 20;
 
+    QString ItemToHTML(Item item);
 
 signals:
     void KeyPressSignal(QKeyEvent* event);
     void SaveGameSignal();
     void LoadGameSignal();
+    void EquipItemSignal(bool equip_item);
 private slots:
     void on_save_button_clicked();
     void on_load_button_clicked();
+    void on_equipButton_clicked();
+    void on_throwAwayButton_clicked();
 };
 
 #endif // MAINWINDOW_H

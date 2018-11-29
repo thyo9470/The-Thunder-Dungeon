@@ -1,0 +1,164 @@
+{
+    "items": [
+    {
+        "equip_type": 0,
+        "item_description": "A light short sword.",
+        "item_icon": ":/images/items/sword_1.png",
+        "item_level": 1,
+        "item_name": "Short Sword",
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": -10,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Basic Attack: \n10 damage",
+            "skill_name": "Strike",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "A trusty wooden staff.",
+        "item_icon": ":/images/items/staff_4.png",
+        "item_level": 1,
+        "item_name": "Wooden Staff",
+        "skill": {
+            "magic_cost": 20,
+            "modifiers": [
+                {
+                    "amount": -20,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Magic Blast: \n20 damage",
+            "skill_name": "Magic Blast",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "An axe fit for felling trees.",
+        "item_icon": ":/images/items/axe_0.png",
+        "item_level": 1,
+        "item_name": "Woodsman's Axe",
+        "skill": {
+            "magic_cost": 20,
+            "modifiers": [
+                {
+                    "amount": -20,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "A powerful attack: \n20 damage",
+            "skill_name": "Cleave",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "A true soldier's sword.",
+        "item_icon": ":/images/items/sword_2.png",
+        "item_level": 2,
+        "item_name": "Steel Sword",
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": -15,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "A more refined attack \n15 damage",
+            "skill_name": "Strike II",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "A sword of the desert.",
+        "item_icon": ":/images/items/sword_8.png",
+        "item_level": 3,
+        "item_name": "Sand Katana",
+        "skill": {
+            "magic_cost": 15,
+            "modifiers": [
+                {
+                    "amount": -30,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "A precise attack. \n30 damage",
+            "skill_name": "Slash",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "A great and heavy sword.",
+        "item_icon": ":/images/items/sword_0.png",
+        "item_level": 4,
+        "item_name": "Broadsword",
+        "skill": {
+            "magic_cost": 15,
+            "modifiers": [
+                {
+                    "amount": -40,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "An overpowering attack \n40 damage",
+            "skill_name": "Slash II",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "An elegant thin blade.",
+        "item_icon": ":/images/items/sword_6.png",
+        "item_level": 5,
+        "item_name": "Elvensword",
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": -30,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "An critical attack. \n30 damage",
+            "skill_name": "Strike IV",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 3,
+        "item_description": "A book of power.",
+        "item_icon": ":/images/items/book_0.png",
+        "item_level": 1,
+        "item_name": "Mage's Tome",
+        "skill": {
+            "magic_cost": 0,
+            "modifiers": [
+                {
+                    "amount": 20,
+                    "application_type": 1,
+                    "type": 2
+                }
+            ],
+            "skill_description": "Recover 20 Mana",
+            "skill_name": "Recovery",
+            "target": 1
+        }
+    }
+]
+}

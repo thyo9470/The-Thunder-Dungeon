@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT -= gui
 
 TARGET = GameLibrary
 TEMPLATE = lib
@@ -29,7 +29,11 @@ SOURCES += \
     sources/Command.cpp \
     sources/Board.cpp \
     sources/Modifier.cpp \
-    sources/BattleAgent.cpp
+    sources/BattleAgent.cpp \
+    sources/Item.cpp \
+    sources/Itemfactory.cpp \
+    sources/Skill.cpp \
+    sources/Entityfactory.cpp
 
 HEADERS += \
         gamelibrary.h \
@@ -39,7 +43,10 @@ HEADERS += \
     headers/Entity.h \
     headers/Skill.h \
     headers/Modifier.h \
-    headers/BattleAgent.h
+    headers/BattleAgent.h \
+    headers/Item.h \
+    headers/Itemfactory.h \
+    headers/Entityfactory.h
 
 unix {
     target.path = /usr/lib
