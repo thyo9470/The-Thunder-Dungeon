@@ -130,6 +130,7 @@ void ItemFactory::InitializeAffixes()
  */
 void ItemFactory::ApplyAffixToItem(QJsonArray affixes, QJsonObject &item_data)
 {
+  QJsonArray item_mods = item_data["modifiers"].toArray();
   for(int i = 0; i < affixes.size(); i++){
       QJsonObject affix = affixes[i].toObject();
 
@@ -143,6 +144,7 @@ void ItemFactory::ApplyAffixToItem(QJsonArray affixes, QJsonObject &item_data)
           affix["amount"] = qPow(affix["amount"].toDouble(), item_data["item_level"].toInt());
         }
 
-      item_data["modifiers"] = item_data["modifiers"].toArray() + affix;
+      item_mods.append(affix);
     }
+  item_data["modifiers"] = item_mods;
 }
