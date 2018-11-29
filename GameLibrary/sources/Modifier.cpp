@@ -9,11 +9,9 @@ Modifier::Modifier(QJsonObject data)
   if(data.contains("type") &&
      data.contains("application_type") &&
      data.contains("amount") && data["amount"].isDouble()){
-      Modifier(
-          static_cast<ModifierType>(data["type"].toInt()),
-          static_cast<ModifierOperation>(data["application_type"].toInt()),
-          data["amount"].toDouble()
-          );
+     type_ = static_cast<ModifierType>(data["type"].toInt());
+     application_type_  = static_cast<ModifierOperation>(data["application_type"].toInt());
+     amount_ = data["amount"].toDouble();
     }
   else{
       qWarning("Json modifier initialization is missing one or more parameters.");

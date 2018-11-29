@@ -253,9 +253,8 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
  */
 void Window::UpdatePlayerStats(Entity &player)
 {
-  ui->playerHealth->setText("Health: " + QString::number(player.GetHealth()) + " / " + QString::number(player.GetMaxHealth()));
-  ui->playerMagic->setText("Magic: " + QString::number(player.GetMagic()) + " / " + QString::number((player.GetMaxMagic())));
-  ui->playerSpeed->setText("Speed: " + QString::number(player.GetSpeed()));
+  ui->playerHealth->setText("Health: " + QString::number((int)player.GetHealth()) + " / " + QString::number((int)player.GetMaxHealth()));
+  ui->playerMagic->setText("Magic: " + QString::number((int)player.GetMagic()) + " / " + QString::number(((int)player.GetMaxMagic())));
 }
 
 void Window::UpdateLevel(int level)
@@ -284,7 +283,7 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
         case EquipType::Trinket:
           equipment_icon = ui->equipmentImage2;
           break;
-        case EquipType::Secondary:
+        case EquipType::Special:
           equipment_icon = ui->equipmentImage3;
           break;
         }

@@ -1,7 +1,6 @@
 
 #include <QApplication>
 #include <QJsonDocument>
-#include <QDebug>
 #include <cmath>
 
 #include <headers/Entity.h>

@@ -35,5 +35,9 @@
         <file>images/items/axe_3.png</file>
         <file>images/items/axe_4.png</file>
         <file>images/items/axe_5.png</file>
+        <file>itemData/itemData.json</file>
+        <file>itemData/affixes.json</file>
+        <file>images/items/book_0.png</file>
+        <file>images/items/headband_0.png</file>
     </qresource>
 </RCC>

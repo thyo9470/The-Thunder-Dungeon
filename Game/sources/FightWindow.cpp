@@ -4,7 +4,6 @@
 #include <QKeyEvent>
 #include <iostream>
 #include <ui_fightwindow.h>
-#include <QDebug>
 
 FightWindow::FightWindow(QWidget *parent) :
   QMainWindow(parent),

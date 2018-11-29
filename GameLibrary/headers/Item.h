@@ -9,9 +9,9 @@
 
 enum class EquipType{
   Weapon,
-  Secondary,
   Armor,
-  Trinket
+  Trinket,
+  Special,
 };
 
 class Item
@@ -20,6 +20,7 @@ public:
   Item();
   Item(QJsonObject item_data);
   Item(int item_level, QString item_name, QString item_description, std::vector<Modifier> modifiers, EquipType equip_type, Skill skill, QString item_icon);
+  Item(int item_level, QString item_name, QString item_description, std::vector<Modifier> modifiers, EquipType equip_type, QString item_icon);
   std::vector<Modifier> GetModifiers() { return modifiers_; }
   QString GetName() {return item_name_;}
   QString GetDescription() {return item_description_;}

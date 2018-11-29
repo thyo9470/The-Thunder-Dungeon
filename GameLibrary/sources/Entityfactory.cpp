@@ -78,10 +78,12 @@ void EntityFactory::EquipDefaultItems(Entity &entity)
   add_magic.push_back(max_magic_mod);
 
   Item start_weapon(1, "Short Sword", "A light short sword.", no_mods, EquipType::Weapon, strike_skill, ":/images/items/sword_1.png");
-  Item start_armor(1, "Magic Armor", "Armor mixed with a bit of magic.", add_magic, EquipType::Armor, recover_skill, ":/images/items/armor_1.png");
+  Item start_special(1, "Mage's Tome", "A book of power", add_magic, EquipType::Special, recover_skill, ":/images/items/book_0.png");
   Item start_amulet(1, "Vampiric Amulet", "An amulet that drinks blood.", no_mods, EquipType::Trinket, drain_skill, ":/images/items/trinket_1.png");
+  Item start_armor(1, "Headband", "An absolutely useless headband.", no_mods, EquipType::Armor, ":/images/items/headband_0.png");
 
   entity.EquipItem(start_weapon);
-  entity.EquipItem(start_armor);
+  entity.EquipItem(start_special);
   entity.EquipItem(start_amulet);
+  entity.EquipItem(start_armor);
 }

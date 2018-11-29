@@ -1,6 +1,5 @@
 #include "./headers/Item.h"
 #include <QJsonArray>
-#include <QtDebug>
 
 Item::Item(){
   item_name_ = "None";
@@ -41,9 +40,12 @@ Item::Item(QJsonObject json){
       qWarning("Json item initialization contains no equip_type parameter.");
     }
 
-  if(json.contains("modifiers") && json["modifers"].isArray()){
-      QJsonArray modifiers = json["modifers"].toArray();
+  if(json.contains("modifiers") && json["modifiers"].isArray()){
+      QJsonArray modifiers = json["modifiers"].toArray();
       for(int i = 0; i < modifiers.size(); i++){
+          if(!modifiers[i].isObject()){
+              qWarning("Modifier is not an object");
+            }
           modifiers_.push_back(Modifier(modifiers[i].toObject()));
         }
     }
@@ -71,6 +73,21 @@ Item::Item(int item_level, QString item_name, QString item_description, std::vec
   item_level_(item_level), item_name_(item_name), item_description_(item_description), modifiers_(modifiers), equip_type_(equip_type), item_skill_(skill), item_icon_(item_icon)
 {
   has_skill_ = true;
+}
+
+/**
+ * Constructs and item without a skill
+ * @param item_level
+ * @param item_name
+ * @param item_description
+ * @param modifiers
+ * @param equip_type
+ * @param item_icon
+ */
+Item::Item(int item_level, QString item_name, QString item_description, std::vector<Modifier> modifiers, EquipType equip_type, QString item_icon):
+item_level_(item_level), item_name_(item_name), item_description_(item_description), modifiers_(modifiers), equip_type_(equip_type), item_icon_(item_icon)
+{
+  has_skill_ = false;
 }
 
 /**

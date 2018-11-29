@@ -1,6 +1,5 @@
 #include "../headers/Entity.h"
 #include <QJsonArray>
-#include <QDebug>
 
 /**
  * Initialize and entity using a json object to initialize all of its parameters

@@ -7,7 +7,6 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QJsonDocument>
-#include <QDebug>
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
@@ -189,7 +188,6 @@ void Game::GetInputBattleSim(int skill_id){
  *
  * Updating the board
  */
-
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
   player_->SetLevel(board_->GetLevel());
@@ -201,7 +199,6 @@ void Game::GameLoop() const{
  */
 
 void Game::StartBattle(){
-
 
   // set difficulty of the battle
   int minimax_depth = 0;
@@ -240,7 +237,7 @@ void Game::EndBattle(){
   fight_window_->hide();
   window_->UpdatePlayerStats(*player_);
 
-  item_to_equip_ = item_factory_.GenerateWeapon(board_->GetLevel());
+  item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
   window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
 }

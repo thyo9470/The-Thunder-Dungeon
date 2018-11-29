@@ -42,7 +42,7 @@ private:
   ItemFactory item_factory_;
   bool playing_;
   Item item_to_equip_;
-  SaveFormat save_format_ = SaveFormat::Json;
+  SaveFormat save_format_ = SaveFormat::Binary;
   Entity *player_;
 
 public slots:
