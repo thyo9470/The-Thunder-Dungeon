@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT -= gui
+QT += core
 
 TARGET = GameLibrary
 TEMPLATE = lib
