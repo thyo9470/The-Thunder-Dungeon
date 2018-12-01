@@ -1,4 +1,4 @@
-
+# New Document
 
 Michael Yoshimura, Thomas Young
 
@@ -51,7 +51,20 @@ Michael Yoshimura, Thomas Young
 - Finally got Travis CI to work with Qt
 - We added and ItemFactory and EntityFactor because instantiating enemies and items from Json turned out to be a pain. ItemFactory was especially useful because they are somewhat procedurally generated.
 
-#### 3) Next Checkpoint:
+#### 5) User Testing:
+We tested three different features:
+1) Find and battle an enemy
+  - Should make the cost of using a skill more clear
+  - The lighting was a nice mechanic
+  - It was too easy to run into enemies. We should either decrease the number of enemies or the distance they can see the player.
+2) View and equip items
+  - Tool tips should pop up faster
+  - Increase the amount of information tool tips have
+3) Save game, and reload when level is beaten
+  - We need a way to recover health (it is very hard to beat levels)
+  - Have a clear indication that the game was saved. There is no feedback when clicking the saved button.
+
+#### 4) Next Checkpoint:
 Up until now, we’ve been trying to implement a ton of features and mechanics, so it will likely not look too great and it probably won’t be balanced enough for fun gameplay. So, we will focus on refining and polishing the graphics, sound, and gameplay. 
 - Add the main menu.
 - Add game over and winning
@@ -62,7 +75,7 @@ Up until now, we’ve been trying to implement a ton of features and mechanics, 
 
 We are on track: besides some additional item improvement, we will focus on polishing the game.
 
-#### 4) Screenshots:
+#### 5) Screenshots:
 ![Class Composition](https://docs.google.com/drawings/d/e/2PACX-1vQcp-J_FPsAmD4-jyjnHrd3bMwdnSvQYlChoGFL0ri7zYxPZLZR1JmnIIcM57XKVTkxZ3-OZgV1kg5a/pub?w=960&h=720)
 
 #### Enemies follow when close to the player!
