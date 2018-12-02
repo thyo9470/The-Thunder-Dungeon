@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QJsonObject>
 
 #include "./headers/Tile.h"
 #include "./headers/Entity.h"
@@ -27,7 +28,7 @@ public:
     void EnableItemDropUI(Item item, std::map<EquipType, Item> equipment);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
-
+    bool GetStillChoosingItem();
 
 private:
 
@@ -55,16 +56,20 @@ private:
 
     QString ItemToHTML(Item item);
 
+    bool paused_ = false;
+
 signals:
     void KeyPressSignal(QKeyEvent* event);
     void SaveGameSignal();
-    void LoadGameSignal();
+    void QuitGameSignal();
     void EquipItemSignal(bool equip_item);
 private slots:
     void on_save_button_clicked();
-    void on_load_button_clicked();
     void on_equipButton_clicked();
     void on_throwAwayButton_clicked();
+    void on_resumeButton_clicked();
+    void on_quitButton_clicked();
+    void on_pauseButton_clicked();
 };
 
 #endif // MAINWINDOW_H

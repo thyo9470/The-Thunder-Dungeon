@@ -94,7 +94,7 @@ item_level_(item_level), item_name_(item_name), item_description_(item_descripti
  * Saves the item in a QJsonObject
  * @return The QJsonObject
  */
-QJsonObject Item::Write()
+QJsonObject Item::Write() const
 {
   QJsonObject data;
   data["item_name"] = item_name_;

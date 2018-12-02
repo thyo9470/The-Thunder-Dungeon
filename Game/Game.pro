@@ -29,13 +29,15 @@ SOURCES += \
     sources/Game.cpp \
     sources/Window.cpp \
     sources/FightWindow.cpp \
-    sources/BattleSim.cpp
+    sources/BattleSim.cpp \
+    sources/MenuWindow.cpp
 
 HEADERS += \
     headers/Game.h\
     headers/Window.h \
     headers/FightWindow.h \
-    headers/BattleSim.h
+    headers/BattleSim.h \
+    headers/MenuWindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -47,7 +49,8 @@ RESOURCES += \
 
 FORMS += \
     mainwindow.ui \
-    fightwindow.ui
+    fightwindow.ui \
+    menuwindow.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/release/ -lGameLibrary
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../GameLibrary/debug/ -lGameLibrary

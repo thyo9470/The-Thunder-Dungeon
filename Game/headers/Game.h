@@ -10,6 +10,7 @@
 #include "BattleSim.h"
 #include "FightWindow.h"
 #include "Window.h"
+#include "MenuWindow.h"
 #include "headers/Itemfactory.h"
 
 enum class Difficulty {Easy, Medium, Hard, Extreme};
@@ -17,11 +18,6 @@ enum class Difficulty {Easy, Medium, Hard, Extreme};
 class Game : public QObject{
   Q_OBJECT
 public:
-  // Choose which format to save our data in
-  enum SaveFormat {
-      Json, Binary
-  };
-
   Game();
 
   void Read(const QJsonObject &json);
@@ -36,25 +32,27 @@ public:
 private:
   Window * window_;
   FightWindow * fight_window_;
+  MenuWindow * menu_window_;
   Board  *board_;
   BattleSim *battle_sim_;
   Difficulty difficulty;
   ItemFactory item_factory_;
   bool playing_;
   Item item_to_equip_;
-  SaveFormat save_format_ = SaveFormat::Binary;
   Entity *player_;
 
 public slots:
   void GetInputBoard(QKeyEvent* event);
   void GetInputBattleSim(int skill_id);
+  void StartGame();
+  void NewGame();
   // For data persistence
   bool LoadGame();
   bool SaveGame() const;
   void StartBattle();
   void EndBattle();
   void EquipItem(bool equip_skill);
-
+  void QuitGame();
 };
 
 

@@ -28,6 +28,7 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
     scene_->setSceneRect(0, 0, window_x, window_y);
 
     ui->itemFoundDialogue->setVisible(false);
+    ui->pauseMenu->setVisible(false);
 
     // Hold all the images
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
@@ -44,7 +45,17 @@ Window::~Window()
 
 void Window::keyPressEvent(QKeyEvent *event)
 {
+    if(paused_){ return; }
     emit KeyPressSignal(event);
+}
+
+/**
+ * Used to determine whether to save item choice dialogue in the item save
+ * @return
+ */
+bool Window::GetStillChoosingItem()
+{
+  return ui->itemFoundDialogue->isVisible();
 }
 
 /**
@@ -439,7 +450,6 @@ QString Window::ItemToHTML(Item item)
  */
 void Window::EnableItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
 {
-  ui->itemFoundDialogue->setEnabled(true);
   ui->itemFoundDialogue->setVisible(true);
 
   // Set the images and tooltip of the newly found item
@@ -456,21 +466,33 @@ void Window::on_save_button_clicked()
     emit SaveGameSignal();
 }
 
-void Window::on_load_button_clicked()
-{
-    emit LoadGameSignal();
-}
-
 void Window::on_equipButton_clicked()
 {
-    ui->itemFoundDialogue->setEnabled(false);
     ui->itemFoundDialogue->setVisible(false);
     emit EquipItemSignal(true);
 }
 
 void Window::on_throwAwayButton_clicked()
 {
-    ui->itemFoundDialogue->setEnabled(false);
     ui->itemFoundDialogue->setVisible(false);
     emit EquipItemSignal(false);
+}
+
+void Window::on_resumeButton_clicked()
+{
+  ui->pauseMenu->setVisible(false);
+  paused_ = false;
+}
+
+void Window::on_quitButton_clicked()
+{
+  on_resumeButton_clicked();
+  ui->itemFoundDialogue->setVisible(false);
+  emit QuitGameSignal();
+}
+
+void Window::on_pauseButton_clicked()
+{
+  ui->pauseMenu->setVisible(true);
+  paused_ = true;
 }

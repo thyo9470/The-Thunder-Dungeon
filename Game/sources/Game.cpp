@@ -16,40 +16,61 @@
 
 Game::Game()
 {
+  window_ = new Window(); // Represents the board window
+  fight_window_ = new FightWindow(); // Represents the fight scene window
+  menu_window_ = new MenuWindow(); // Represents the starting window
 
-  player_ = EntityFactory::GeneratePlayer();
+  menu_window_->show();
 
-  // setup ui
+  QFile loadFile(QStringLiteral("save.dat")); // Check to see if a load save exists
+  menu_window_->UpdateWindow(loadFile.open(QIODevice::ReadOnly));
 
-  int rooms_wide = 5;
-  int rooms_tall = 5;
+  playing_ = false;
+
+  connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
+  connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
+  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
+  connect(window_, &Window::QuitGameSignal, this, &Game::QuitGame);
+
+  connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
+
+  connect(menu_window_, &MenuWindow::StartGameSignal, this, &Game::NewGame);
+  connect(menu_window_, &MenuWindow::LoadGameSignal, this, &Game::LoadGame);
+}
+
+/**
+ * After initializing a new game, or loading a previous game, this function sets up
+ * the rest of the game
+ */
+void Game::StartGame()
+{
+  connect(board_, &Board::StartBattle, this, &Game::StartBattle);
+
+  // Update the window with the player's stats
+  window_->UpdatePlayerStats(*player_);
+  window_->UpdateItems(player_->GetEquipment());
 
   // set difficulty
   difficulty = Difficulty::Hard;
 
-  window_ = new Window(); // Represents the board window
-  fight_window_ = new FightWindow(); // Represents the fight scene window
-
-  // Update the window to show the player stats
-  window_->UpdatePlayerStats(*player_);
-  window_->UpdateItems(player_->GetEquipment());
-
-  playing_ = true;
-
-  // setup board
-
-  board_ = new Board(4, rooms_wide, rooms_tall);
-  connect(board_, &Board::StartBattle, this, &Game::StartBattle);
-
+  menu_window_->hide();
   window_->show();
+  playing_ = true;
+  GameLoop();
+}
 
-  connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
-  connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
-  connect(window_, &Window::LoadGameSignal, this, &Game::LoadGame);
-  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
+/**
+ * Starts a new game by instantiating a new board and player
+ */
+void Game::NewGame()
+{
+  // setup board
+  int rooms_wide = 5;
+  int rooms_tall = 5;
+  board_ = new Board(4, rooms_wide, rooms_tall);
+  player_ = EntityFactory::GeneratePlayer();
 
-  connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
-
+  StartGame();
 }
 
 /**
@@ -62,9 +83,7 @@ Game::Game()
 bool Game::LoadGame(){
   // Have the option to save in two different formats:
   // JSON, or unreadable binary
-  QFile loadFile(save_format_ == Json
-          ? QStringLiteral("save.json")
-          : QStringLiteral("save.dat"));
+  QFile loadFile(QStringLiteral("save.dat"));
 
       if (!loadFile.open(QIODevice::ReadOnly)) {
           qWarning("Couldn't open save file.");
@@ -73,9 +92,7 @@ bool Game::LoadGame(){
 
       QByteArray save_data = loadFile.readAll();
 
-      QJsonDocument loadDoc(save_format_ == Json
-          ? QJsonDocument::fromJson(save_data)
-          : QJsonDocument::fromBinaryData(save_data));
+      QJsonDocument loadDoc(QJsonDocument::fromBinaryData(save_data));
 
       Read(loadDoc.object());
 
@@ -83,6 +100,8 @@ bool Game::LoadGame(){
       GameLoop();
       window_->UpdatePlayerStats(*player_);
       window_->UpdateItems(player_->GetEquipment());
+
+      StartGame(); // Start the game after a successful load
 
       return true;
 }
@@ -95,9 +114,7 @@ bool Game::LoadGame(){
  * @return
  */
 bool Game::SaveGame() const{
-  QFile saveFile(save_format_ == Json
-         ? QStringLiteral("save.json")
-         : QStringLiteral("save.dat"));
+  QFile saveFile(QStringLiteral("save.dat"));
 
      if (!saveFile.open(QIODevice::WriteOnly)) {
          qWarning("Couldn't open save file.");
@@ -107,9 +124,7 @@ bool Game::SaveGame() const{
      QJsonObject game_object;
      Write(game_object);
      QJsonDocument saveDoc(game_object);
-     saveFile.write(save_format_ == Json
-         ? saveDoc.toJson()
-         : saveDoc.toBinaryData());
+     saveFile.write(saveDoc.toBinaryData());
 
      return true;
 }
@@ -128,6 +143,11 @@ void Game::Read(const QJsonObject &json){
   board_->Read(json["board"].toObject());
   delete player_;
   player_ = new Entity(json["player"].toObject());
+
+  if(json.contains("item_to_equip") && json["item_to_equip"].isObject()){
+      item_to_equip_ = Item(json["item_to_equip"].toObject());
+      window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
+    }
 }
 
 /*
@@ -145,6 +165,13 @@ void Game::Write(QJsonObject &json) const{
   player_object["max_health"] = 100;
   player_object["max_magic"] = 100;
   json["player"] = player_object;
+
+  if(window_->GetStillChoosingItem()){
+      json["item_to_equip"] = item_to_equip_.Write();
+    }
+  else{
+      json.remove("item_to_equip");
+    }
 }
 
 /*
@@ -261,4 +288,18 @@ void Game::EquipItem(bool equip_item)
     }
 
   playing_ = true;
+}
+
+/**
+ * Returns the window to the start menu
+ */
+void Game::QuitGame()
+{
+  playing_ = false;
+  window_->hide();
+  menu_window_->show();
+
+  // Update the menu_window
+  QFile loadFile(QStringLiteral("save.dat")); // Check to see if a load save exists
+  menu_window_->UpdateWindow(loadFile.open(QIODevice::ReadOnly));
 }
