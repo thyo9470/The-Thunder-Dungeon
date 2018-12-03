@@ -53,6 +53,9 @@ public slots:
   void EndBattle();
   void EquipItem(bool equip_skill);
   void QuitGame();
+  void DropItem();
+  void GoToBoard();
+  void GameOver();
 };
 
 

@@ -25,7 +25,7 @@ public:
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
     void UpdateItems(std::map<EquipType, Item> equipment);
-    void EnableItemDropUI(Item item, std::map<EquipType, Item> equipment);
+    void ShowItemDropUI(Item item, std::map<EquipType, Item> equipment);
     ~Window();
     void keyPressEvent( QKeyEvent * event );
     bool GetStillChoosingItem();

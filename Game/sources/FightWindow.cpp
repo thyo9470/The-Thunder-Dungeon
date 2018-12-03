@@ -34,7 +34,9 @@ FightWindow::FightWindow(QWidget *parent) :
 
   // hide exit button
   ui->exitButton->setVisible(false);
-  ui->exitButton->setEnabled(false);
+
+  // hide game over dialogue
+  ui->gameOverBox->setVisible(false);
 
   //set player and enemy position
   player_position_x_ = 100;
@@ -52,7 +54,8 @@ FightWindow::FightWindow(QWidget *parent) :
   connect(ui->skillButton_3, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->skillButton_4, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
   connect(ui->runButton, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
-  connect(ui->exitButton, &QPushButton::pressed, this, &FightWindow::ButtonPressedSlot);
+  connect(ui->exitButton, &QPushButton::pressed, this, &FightWindow::ExitButtonPressed);
+  connect(ui->gameOverButton, &QPushButton::pressed, this, &FightWindow::GameOverButtonPressed);
 
 }
 
@@ -68,6 +71,23 @@ void FightWindow::ButtonPressedSlot(){
 }
 
 /**
+ * Return to the board when the exit button is pressed
+ */
+void FightWindow::ExitButtonPressed()
+{
+  emit ToBoardSignal();
+}
+
+/**
+ * When the game over button is pressed, return to the main menu
+ */
+void FightWindow::GameOverButtonPressed()
+{
+  emit ToBoardSignal();
+  emit GameOverSignal();
+}
+
+/**
  * @brief FightWindow::UpdateFightWindow
  *
  * Updates the fight window GUI
@@ -79,10 +99,11 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   // if it's the end of a battle show exit button otherwise hide it
   if(battle_sim->GetState() == BattleState::End){
     ui->exitButton->setVisible(true);
-    ui->exitButton->setEnabled(true);
+    SetActionsVisible(false);
     }else if(battle_sim->GetState() == BattleState::Active){
     ui->exitButton->setVisible(false);
-    ui->exitButton->setEnabled(false);
+    ui->gameOverBox->setVisible(false);
+    SetActionsVisible(true);
     }
 
   //update log
@@ -135,4 +156,29 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
   pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);
   scene_->addItem(pixmap_enemy);
+}
+
+/**
+ * Shows the game over dialogue
+ * @param enemy_name
+ * @param level
+ */
+void FightWindow::ShowGameOver(QString enemy_name, int level)
+{
+  ui->gameOverDesc->setText("You were slain by a " + enemy_name + " at level " + QString::number(level) + ".");
+  ui->gameOverBox->setVisible(true);
+  SetActionsVisible(false);
+}
+
+/**
+ * Sets all action button visibility
+ * @param visible
+ */
+void FightWindow::SetActionsVisible(bool visible)
+{
+  ui->skillButton_1->setVisible(visible);
+  ui->skillButton_2->setVisible(visible);
+  ui->skillButton_3->setVisible(visible);
+  ui->skillButton_4->setVisible(visible);
+  ui->runButton->setVisible(visible);
 }

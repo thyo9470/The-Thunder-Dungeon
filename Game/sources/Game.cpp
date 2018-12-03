@@ -33,6 +33,8 @@ Game::Game()
   connect(window_, &Window::QuitGameSignal, this, &Game::QuitGame);
 
   connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
+  connect(fight_window_, &FightWindow::GameOverSignal, this, &Game::QuitGame);
+  connect(fight_window_, &FightWindow::ToBoardSignal, this, &Game::GoToBoard);
 
   connect(menu_window_, &MenuWindow::StartGameSignal, this, &Game::NewGame);
   connect(menu_window_, &MenuWindow::LoadGameSignal, this, &Game::LoadGame);
@@ -146,7 +148,7 @@ void Game::Read(const QJsonObject &json){
 
   if(json.contains("item_to_equip") && json["item_to_equip"].isObject()){
       item_to_equip_ = Item(json["item_to_equip"].toObject());
-      window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
+      window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
     }
 }
 
@@ -205,11 +207,35 @@ void Game::GetInputBattleSim(int skill_id){
   BattleState battle_state = battle_sim_->GetState();
   if(battle_state == BattleState::Active){
     battle_sim_->PlayerTurn(skill_id);
-  }else if(battle_state == BattleState::End){
-     battle_sim_->DeactivateBattle();
-     EndBattle();
   }
   fight_window_->UpdateFightWindow(battle_sim_);
+}
+
+/**
+ * Returns from the battle simulation back to the board
+ */
+void Game::GoToBoard()
+{
+  battle_sim_->DeactivateBattle();
+  EndBattle();
+}
+
+/**
+ * Show the game over dialogue
+ */
+void Game::GameOver()
+{
+  fight_window_->ShowGameOver("Slime", board_->GetLevel());
+}
+
+/**
+ * Generate a new item drop, and show the item drop dialogue
+ */
+void Game::DropItem()
+{
+  item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
+  window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
+  playing_ = false;
 }
 
 /**
@@ -254,6 +280,8 @@ void Game::StartBattle(){
 
   battle_sim_ = new BattleSim(player_, minimax_depth);
   battle_sim_->ActivateBattle();
+  connect(battle_sim_, &BattleSim::DropItemSignal, this, &Game::DropItem);
+  connect(battle_sim_, &BattleSim::GameOverSignal, this, &Game::GameOver);
   fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();
   fight_window_->show();
@@ -266,10 +294,6 @@ void Game::EndBattle(){
   window_->show();
   fight_window_->hide();
   window_->UpdatePlayerStats(*player_);
-
-  item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
-  window_->EnableItemDropUI(item_to_equip_, player_->GetEquipment());
-  playing_ = false;
 }
 
 /**

@@ -448,7 +448,7 @@ QString Window::ItemToHTML(Item item)
  *
  * @param item The item to be equipped
  */
-void Window::EnableItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
+void Window::ShowItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
 {
   ui->itemFoundDialogue->setVisible(true);
 
