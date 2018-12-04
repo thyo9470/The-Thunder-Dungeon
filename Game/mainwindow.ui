@@ -195,7 +195,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="equipmentImage0">
+   <widget class="ItemImage" name="equipmentImage0">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -222,7 +222,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="equipmentImage1">
+   <widget class="ItemImage" name="equipmentImage1">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -246,7 +246,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="equipmentImage2">
+   <widget class="ItemImage" name="equipmentImage2">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -270,7 +270,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="equipmentImage3">
+   <widget class="ItemImage" name="equipmentImage3">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -317,7 +317,7 @@
     <property name="title">
      <string>New Item Found!</string>
     </property>
-    <widget class="QLabel" name="newItemImage">
+    <widget class="ItemImage" name="newItemImage">
      <property name="geometry">
       <rect>
        <x>110</x>
@@ -367,7 +367,7 @@
       <string>Toss</string>
      </property>
     </widget>
-    <widget class="QLabel" name="currentItemImage">
+    <widget class="ItemImage" name="currentItemImage">
      <property name="geometry">
       <rect>
        <x>110</x>
@@ -493,6 +493,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemImage</class>
+   <extends>QLabel</extends>
+   <header location="global">headers/ItemImage.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

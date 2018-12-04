@@ -30,14 +30,16 @@ SOURCES += \
     sources/Window.cpp \
     sources/FightWindow.cpp \
     sources/BattleSim.cpp \
-    sources/MenuWindow.cpp
+    sources/MenuWindow.cpp \
+    sources/ItemImage.cpp
 
 HEADERS += \
     headers/Game.h\
     headers/Window.h \
     headers/FightWindow.h \
     headers/BattleSim.h \
-    headers/MenuWindow.h
+    headers/MenuWindow.h \
+    headers/ItemImage.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
