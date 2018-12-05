@@ -104,5 +104,5 @@ QString Modifier::ToString()
  */
 QString Modifier::OperationToString()
 {
-  return application_type_ == ModifierOperation::Multiplicative ? QString::number((abs(amount_) - 1) * 100) + "%" : QString::number(abs(amount_));
+  return application_type_ == ModifierOperation::Multiplicative ? QString::number((abs(amount_) - 1.0) * 100) + "%" : QString::number(abs(amount_));
 }

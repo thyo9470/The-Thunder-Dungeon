@@ -130,10 +130,10 @@ void TestGame::TestModiferString()
 {
   Modifier mod(ModifierType::Health, ModifierOperation::Additive, -5);
   QCOMPARE(mod.ToString(), QString("Deals 5 Damage"));
-  mod = Modifier(ModifierType::MaxMagic, ModifierOperation::Multiplicative, 1.1);
-  QCOMPARE(mod.ToString(), QString("Increases Max Magic by 10%"));
-  mod = Modifier(ModifierType::Magic, ModifierOperation::Multiplicative, 1.1);
-  QCOMPARE(mod.ToString(), QString("Restores 10% Magic"));
+  Modifier mod2(ModifierType::MaxMagic, ModifierOperation::Multiplicative, 1.1);
+  QCOMPARE(mod2.ToString(), QString("Increases Max Magic by 10%"));
+  Modifier mod3(ModifierType::Magic, ModifierOperation::Multiplicative, 1.1);
+  QCOMPARE(mod3.ToString(), QString("Restores 10% Magic"));
 }
 
 /**
