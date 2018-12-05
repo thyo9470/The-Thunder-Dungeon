@@ -438,7 +438,9 @@ QString Window::ItemToHTML(Item item)
   // Display the skill's stats in detail
   if(item.HasSkill()){
       item_string += "<b><p style='color:darkslateblue; font-size: 20px;'>Skill: " + item.GetSkill().GetName() + "</p></b>";
-      item_string += "<b><p> Cost: " + QString::number(item.GetSkill().GetMagicCost()) + " magic</p></b>";
+      if(item.GetSkill().GetMagicCost() != 0){
+        item_string += "<b><p> Cost: " + QString::number(item.GetSkill().GetMagicCost()) + " magic</p></b>";
+        }
       for(Modifier mod : item.GetSkill().GetModifiers()){
           item_string += "<b><p> Skill Effect: " + mod.ToString() + "</p></b>";
         }
