@@ -130,8 +130,6 @@ void TestGame::TestModiferString()
 {
   Modifier mod(ModifierType::Health, ModifierOperation::Additive, -5);
   QCOMPARE(mod.ToString(), QString("Deals 5 Damage"));
-  Modifier mod2(ModifierType::Magic, ModifierOperation::Multiplicative, 1.1);
-  QCOMPARE(mod2.ToString(), QString("Restores 10% Magic"));
 }
 
 /**
