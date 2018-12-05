@@ -419,25 +419,32 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
  */
 QString Window::ItemToHTML(Item item)
 {
+  // Add the beginning of the html and the title of the item
   QString item_string =
       "<html> \
       <head/> \
       <body align='center'> \
-        <b><p style='color:goldenrod; font-size: 20px;'>" + item.GetName() + "</p></b>"
+        <b><p style='color:goldenrod; font-size: 24px;'>" + item.GetName() + "</p></b>"
         "<b><p>Item Level: " + QString::number(item.GetLevel()) + "</p></b>";
 
+  // Add all of the modifiers that the item has
   for(Modifier mod : item.GetModifiers()){
-      item_string += "<b><p style='color:darkslateblue'>" + mod.ToString() + "</p></b>";
+      item_string += "<b><p>" + mod.ToString() + "</p></b>";
     }
 
+  // Add the item descriptioin
+  item_string += "<b><p style='color:darkslateblue'>" + item.GetDescription() + "</p></b>";
+
+  // Display the skill's stats in detail
   if(item.HasSkill()){
-      item_string += "<b><p style='color:darkslateblue'>Unlock Skill: " + item.GetSkill().GetName() + "</p></b>";
+      item_string += "<b><p style='color:darkslateblue; font-size: 20px;'>Skill: " + item.GetSkill().GetName() + "</p></b>";
+      item_string += "<b><p> Cost: " + QString::number(item.GetSkill().GetMagicCost()) + " magic</p></b>";
+      for(Modifier mod : item.GetSkill().GetModifiers()){
+          item_string += "<b><p> Skill Effect: " + mod.ToString() + "</p></b>";
+        }
     }
 
-  item_string +=
-        "<p>" + item.GetDescription() + "</p>" +
-      "</body>"
-      "</html>";
+  item_string += "</body></html>";
 
   return item_string;
 }

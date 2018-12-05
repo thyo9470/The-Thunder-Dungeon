@@ -1,4 +1,5 @@
 #include "../headers/Modifier.h"
+#include <cmath>
 
 /**
  * Initialize a modifier from its appropriate json object
@@ -67,13 +68,33 @@ QString Modifier::ToString()
 {
   switch(type_){
     case ModifierType::Health:
-      return "Heals " + OperationToString() +  " Health";
+      if(amount_ >= 0){
+          return "Heals " + OperationToString() +  " Health";
+        }
+      else{
+          return "Deals " + OperationToString() +  " Damage";
+        }
     case ModifierType::Magic:
-      return "Restores " + OperationToString() +  " Magic";
+      if(amount_ >= 0){
+          return "Restores " + OperationToString() +  " Magic";
+        }
+      else{
+          return "Drains " + OperationToString() +  " Magic";
+        }
     case ModifierType::MaxHealth:
-      return "Changes Max Health by " + OperationToString();
+      if(amount_ >= 0){
+          return "Increases Max Health by " + OperationToString();
+        }
+      else{
+          return "Decreases Max Health by " + OperationToString();
+        }
     case ModifierType::MaxMagic:
-      return "Changes Max Magic by " + OperationToString();
+      if(amount_ >= 0){
+          return "Increases Max Magic by " + OperationToString();
+        }
+      else{
+          return "Decreases Max Magic by " + OperationToString();
+        }
         }
     }
 
@@ -83,5 +104,5 @@ QString Modifier::ToString()
  */
 QString Modifier::OperationToString()
 {
-  return application_type_ == ModifierOperation::Multiplicative ? QString::number((amount_ - 1) * 100) + "% " : QString::number(amount_);
+  return application_type_ == ModifierOperation::Multiplicative ? QString::number((abs(amount_) - 1) * 100) + "%" : QString::number(abs(amount_));
 }

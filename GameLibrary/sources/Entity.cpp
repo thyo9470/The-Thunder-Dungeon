@@ -145,6 +145,8 @@ void Entity::UpdateSkills()
  */
 void Entity::ApplyModifier(Modifier mod, bool reverse)
 {
+  float new_max = 0;
+  float difference = 0;
   switch(mod.GetType()){
     case ModifierType::Health:
       health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);
@@ -152,26 +154,31 @@ void Entity::ApplyModifier(Modifier mod, bool reverse)
     case ModifierType::Magic:
       magic_ = mod.GetModifiedStat(magic_, min_stat_value_, max_magic_, reverse);
       break;
-    case ModifierType::Speed:
-      speed_ = mod.GetModifiedStat(speed_, min_stat_value_, max_stat_value_, reverse);
-      break;
-    case ModifierType::Strength:
-      strength_ = mod.GetModifiedStat(strength_, min_stat_value_, max_stat_value_, reverse);
-      break;
     case ModifierType::MaxHealth:
-      max_health_ = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_, reverse);
+      new_max = mod.GetModifiedStat(max_health_, min_stat_value_, max_stat_value_, reverse);
+      difference = new_max - max_health_;
+      max_health_ = new_max;
+
+      // Increase the health along with the max health increase
+      if(difference > 0){
+          health_ += difference;
+        }
       if(health_ > max_health_){
           health_ = max_health_;
         }
       break;
     case ModifierType::MaxMagic:
-      max_magic_ = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_, reverse);
+      new_max = mod.GetModifiedStat(max_magic_, min_stat_value_, max_stat_value_, reverse);
+      difference = new_max - max_magic_;
+      max_magic_ = new_max;
+
+      // Increase magic along with max magic increase
+      if(difference > 0){
+          magic_ += difference;
+      }
       if(magic_ > max_magic_){
           magic_ = max_magic_;
         }
-      break;
-     case ModifierType::Damage:
-      health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);
       break;
     }
 
