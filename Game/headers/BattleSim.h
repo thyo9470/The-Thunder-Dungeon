@@ -29,6 +29,10 @@ public:
 public slots:
   void PlayerTurn(int skill);
 
+signals:
+  void DropItemSignal();
+  void GameOverSignal();
+
 private:
   Entity* player_;
   Entity* enemy_;

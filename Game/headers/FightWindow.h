@@ -22,6 +22,8 @@ public:
     Ui::FightWindow * get_ui(){return ui;}
 
     void UpdateFightWindow(BattleSim* battle_sim);
+    void ShowGameOver(QString enemy_name, int level);
+    void SetActionsVisible(bool visible);
 
 private:
 
@@ -48,11 +50,13 @@ private:
 
 private slots:
     void ButtonPressedSlot();
-
+    void ExitButtonPressed();
+    void GameOverButtonPressed();
 
 signals:
     void ButtonPressedSignal(int skill_id);
-
+    void GameOverSignal();
+    void ToBoardSignal();
 };
 
 #endif // FIGHTWINDOW_H

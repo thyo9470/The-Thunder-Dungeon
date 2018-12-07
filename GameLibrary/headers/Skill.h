@@ -33,7 +33,7 @@ public:
   QString GetName() {return skill_name_;}
   QString GetDescription() {return skill_description_;}
   int GetMagicCost() {return magic_cost_;}
-  QJsonObject Write();
+  QJsonObject Write() const;
 
 private:
   QString skill_name_;

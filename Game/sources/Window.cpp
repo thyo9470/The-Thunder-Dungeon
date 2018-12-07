@@ -28,6 +28,7 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
     scene_->setSceneRect(0, 0, window_x, window_y);
 
     ui->itemFoundDialogue->setVisible(false);
+    ui->pauseMenu->setVisible(false);
 
     // Hold all the images
     sprite_sheet_ = QPixmap(":/images/Sprites.png");
@@ -44,7 +45,17 @@ Window::~Window()
 
 void Window::keyPressEvent(QKeyEvent *event)
 {
+    if(paused_){ return; }
     emit KeyPressSignal(event);
+}
+
+/**
+ * Used to determine whether to save item choice dialogue in the item save
+ * @return
+ */
+bool Window::GetStillChoosingItem()
+{
+  return ui->itemFoundDialogue->isVisible();
 }
 
 /**
@@ -408,25 +419,34 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
  */
 QString Window::ItemToHTML(Item item)
 {
+  // Add the beginning of the html and the title of the item
   QString item_string =
       "<html> \
       <head/> \
       <body align='center'> \
-        <b><p style='color:goldenrod; font-size: 20px;'>" + item.GetName() + "</p></b>"
+        <b><p style='color:goldenrod; font-size: 24px;'>" + item.GetName() + "</p></b>"
         "<b><p>Item Level: " + QString::number(item.GetLevel()) + "</p></b>";
 
+  // Add all of the modifiers that the item has
   for(Modifier mod : item.GetModifiers()){
-      item_string += "<b><p style='color:darkslateblue'>" + mod.ToString() + "</p></b>";
+      item_string += "<b><p>" + mod.ToString() + "</p></b>";
     }
 
+  // Add the item descriptioin
+  item_string += "<b><p style='color:darkslateblue'>" + item.GetDescription() + "</p></b>";
+
+  // Display the skill's stats in detail
   if(item.HasSkill()){
-      item_string += "<b><p style='color:darkslateblue'>Unlock Skill: " + item.GetSkill().GetName() + "</p></b>";
+      item_string += "<b><p style='color:darkslateblue; font-size: 20px;'>Skill: " + item.GetSkill().GetName() + "</p></b>";
+      if(item.GetSkill().GetMagicCost() != 0){
+        item_string += "<b><p> Cost: " + QString::number(item.GetSkill().GetMagicCost()) + " magic</p></b>";
+        }
+      for(Modifier mod : item.GetSkill().GetModifiers()){
+          item_string += "<b><p> Skill Effect: " + mod.ToString() + "</p></b>";
+        }
     }
 
-  item_string +=
-        "<p>" + item.GetDescription() + "</p>" +
-      "</body>"
-      "</html>";
+  item_string += "</body></html>";
 
   return item_string;
 }
@@ -437,9 +457,8 @@ QString Window::ItemToHTML(Item item)
  *
  * @param item The item to be equipped
  */
-void Window::EnableItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
+void Window::ShowItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
 {
-  ui->itemFoundDialogue->setEnabled(true);
   ui->itemFoundDialogue->setVisible(true);
 
   // Set the images and tooltip of the newly found item
@@ -456,21 +475,33 @@ void Window::on_save_button_clicked()
     emit SaveGameSignal();
 }
 
-void Window::on_load_button_clicked()
-{
-    emit LoadGameSignal();
-}
-
 void Window::on_equipButton_clicked()
 {
-    ui->itemFoundDialogue->setEnabled(false);
     ui->itemFoundDialogue->setVisible(false);
     emit EquipItemSignal(true);
 }
 
 void Window::on_throwAwayButton_clicked()
 {
-    ui->itemFoundDialogue->setEnabled(false);
     ui->itemFoundDialogue->setVisible(false);
     emit EquipItemSignal(false);
+}
+
+void Window::on_resumeButton_clicked()
+{
+  ui->pauseMenu->setVisible(false);
+  paused_ = false;
+}
+
+void Window::on_quitButton_clicked()
+{
+  on_resumeButton_clicked();
+  ui->itemFoundDialogue->setVisible(false);
+  emit QuitGameSignal();
+}
+
+void Window::on_pauseButton_clicked()
+{
+  ui->pauseMenu->setVisible(true);
+  paused_ = true;
 }

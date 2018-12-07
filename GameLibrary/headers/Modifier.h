@@ -13,9 +13,6 @@ enum class ModifierType{
   MaxHealth,
   Magic,
   MaxMagic,
-  Strength,
-  Speed,
-  Damage
 };
 
 /**

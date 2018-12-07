@@ -89,9 +89,6 @@ void BattleSim::EnemyTurn(){
       }else{
         UpdateLog("The enemy tried but didn't have enough magic");
       }
-
-
-
   }
   IsBattleOver();
 }
@@ -106,9 +103,11 @@ void BattleSim::EnemyTurn(){
 void BattleSim::IsBattleOver(){
   if(player_->GetHealth() == 0){
     UpdateLog("You Lost!!");
+    emit GameOverSignal();
     state_ = BattleState::End;
   }else if(enemy_->GetHealth() == 0){
     UpdateLog("You Win!!");
+    emit DropItemSignal();
     state_ = BattleState::End;
   }
 }

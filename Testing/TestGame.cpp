@@ -22,6 +22,7 @@ private slots:
   void TestSkillModifiers();
   void TestMinimax();
   void TestEquipment();
+  void TestModiferString();
   QJsonObject GetTestStats();
 };
 
@@ -123,6 +124,12 @@ void TestGame::TestEquipment()
   player->EquipItem(no_mods);
 
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(100));
+}
+
+void TestGame::TestModiferString()
+{
+  Modifier mod(ModifierType::Health, ModifierOperation::Additive, -5);
+  QCOMPARE(mod.ToString(), QString("Deals 5 Damage"));
 }
 
 /**

@@ -29,7 +29,7 @@ public:
   Skill GetSkill() { return item_skill_; }
   bool HasSkill() { return has_skill_; }
   QString GetIcon() { return item_icon_; }
-  QJsonObject Write();
+  QJsonObject Write() const;
 
 private:
   QString item_name_;

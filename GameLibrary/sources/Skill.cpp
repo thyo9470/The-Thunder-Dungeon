@@ -41,7 +41,7 @@ Skill::Skill(QJsonObject data){
     }
 }
 
-QJsonObject Skill::Write()
+QJsonObject Skill::Write() const
 {
   QJsonObject data;
   data["skill_name"] = skill_name_;
