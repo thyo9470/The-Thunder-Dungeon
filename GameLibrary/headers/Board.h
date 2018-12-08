@@ -34,6 +34,7 @@ public:
 
 signals:
   void StartBattle();
+  void DropItemSignal();
 
 private:
   // number of object layers
@@ -49,12 +50,16 @@ private:
   int width_res_;
   int height_res_;
 
+  int chests_per_level_ = 10;
+
   // Pointers to Tile objects for flyweight
   Tile* empty_tile_ref_;
   Tile* void_tile_ref_;
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
   Tile* exit_tile_;
+  Tile* chest_tile_ref_;
+  Tile* empty_chest_tile_ref_;
   std::vector<EnemyTile *> enemies_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
@@ -81,9 +86,11 @@ private:
 
   // Spawn and move enemies
   void SpawnEnemies();
-  void MoveEnemies();
+  bool MoveEnemies();
   void ClearEnemies();
   void DeleteEnemy(Position pos);
+
+  void GenerateChests();
 
   // checks it an entity tile has collided with another object
   Tile* CheckCollision(Position pos);

@@ -47,6 +47,7 @@ Game::Game()
 void Game::StartGame()
 {
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
+  connect(board_, &Board::DropItemSignal, this, &Game::DropItem);
 
   // Update the window with the player's stats
   window_->UpdatePlayerStats(*player_);

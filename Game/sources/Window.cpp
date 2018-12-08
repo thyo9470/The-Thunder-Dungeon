@@ -272,8 +272,13 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
   }else if(tile->get_type() == TileType::Void){ // nothing/void
     tile_pos_x = 3;
     tile_pos_y = 0;
+  }else if(tile->get_type() == TileType::Chest){
+      tile_pos_x = 14;
+      tile_pos_y = 16;
+  }else if(tile->get_type() == TileType::EmptyChest){
+      tile_pos_x = 15;
+      tile_pos_y = 16;
   }
-
 
   // create pixmap
   QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
