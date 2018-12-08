@@ -46,7 +46,33 @@ Item::Item(QJsonObject json){
           if(!modifiers[i].isObject()){
               qWarning("Modifier is not an object");
             }
-          modifiers_.push_back(Modifier(modifiers[i].toObject()));
+
+          Modifier new_mod(Modifier(modifiers[i].toObject()));
+
+          // Combine like modifers
+          bool combined = false;
+          for(int i = 0; i < modifiers_.size(); i++){
+              if(modifiers_[i] == new_mod){
+                  modifiers_[i] = new_mod + modifiers_[i];
+                  combined = true;
+                  break;
+                }
+            }
+
+          // If we didn't combine with a previous modifier, slap it to the end of the vector
+          if(!combined){
+              modifiers_.push_back(new_mod);
+            }
+
+          // Remove all modifiers that contain 0 for their value (because they are useless and ugly)
+          std::vector<Modifier> filtered_modifers;
+          for(Modifier mod : modifiers_){
+              if(mod.get_amount() != 0){
+                  filtered_modifers.push_back(mod);
+                }
+            }
+
+          modifiers_ = filtered_modifers;
         }
     }
 

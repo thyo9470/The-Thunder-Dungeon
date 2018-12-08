@@ -86,7 +86,7 @@ private:
   void DeleteEnemy(Position pos);
 
   // checks it an entity tile has collided with another object
-  Tile* CheckCollision(EntityTile* entity);
+  Tile* CheckCollision(Position pos);
 };
 
 

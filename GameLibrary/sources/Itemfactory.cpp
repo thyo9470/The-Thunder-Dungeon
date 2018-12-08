@@ -72,7 +72,7 @@ void ItemFactory::InitializeItemDatabase()
 
      QJsonObject item = items[i].toObject();
 
-     if(!item.contains("equip_type") || !item.contains("item_level") || !item.contains("item_icon") || !item.contains("skill") || !item.contains("item_name")){
+     if(!item.contains("equip_type") || !item.contains("item_level") || !item.contains("item_icon") || !item.contains("item_name")){
          qWarning("Item " + QString::number(i).toLocal8Bit() + " is missing an essential property as an item. Aborting loading items.");
          return;
        }

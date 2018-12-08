@@ -159,6 +159,25 @@
             "skill_name": "Recovery",
             "target": 1
         }
+    },
+    {
+        "equip_type": 4,
+        "item_description": "A potion of health gone sour over time.",
+        "item_icon": ":/images/items/Potion.png",
+        "item_level": 1,
+        "item_name": "Tainted Health Potion",
+        "modifiers": [
+            {
+                "amount": 20,
+                "application_type": 1,
+                "type": 0
+            },
+            {
+                "amount": -10,
+                "application_type": 1,
+                "type": 1
+            }
+        ]
     }
 ]
 }

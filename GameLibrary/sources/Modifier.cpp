@@ -1,5 +1,6 @@
 #include "../headers/Modifier.h"
 #include <cmath>
+#include <stdexcept>
 
 /**
  * Initialize a modifier from its appropriate json object
@@ -95,8 +96,34 @@ QString Modifier::ToString()
       else{
           return "Decreases Max Magic by " + OperationToString();
         }
-        }
     }
+}
+
+/**
+ * If the modifiers are the same type add the amounts together
+ * @param m1
+ * @return
+ */
+Modifier Modifier::operator+(const Modifier &m1)
+{
+  if(!(m1 == *this)){
+      throw std::invalid_argument("Modifiers cannot be added.");
+    }
+  else{
+      return Modifier(type_, application_type_, m1.amount_ + amount_);
+    }
+}
+
+/**
+ * Checks to see if the modifiers are the same type and operation_type
+ * @param m1
+ * @param m2
+ * @return
+ */
+bool operator==(const Modifier &m1, const Modifier &m2)
+{
+  return m1.type_ == m2.type_ && m1.application_type_ == m2.application_type_;
+}
 
 /**
  * Helper function to return a percentage or not for toStirng()

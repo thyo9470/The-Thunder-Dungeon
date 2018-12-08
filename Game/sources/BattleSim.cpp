@@ -48,16 +48,16 @@ void BattleSim::PlayerTurn(int skill_id){
     UpdateLog("You do not have a skill on this slot");
   }else{
     Skill cur_skill = possible_skills[skill_id];
-    if(player_->GetMagic() < cur_skill.GetMagicCost()){
+    if(player_->GetMagic() < cur_skill.get_magic_cost()){
       UpdateLog("You do not have enough magic!");
       return;
     }
-    if(cur_skill.GetTarget() == Target::Self){
+    if(cur_skill.get_target() == Target::Self){
       player_->ApplySkill(cur_skill);
     }else{
       enemy_->ApplySkill(cur_skill);
     }
-    UpdateLog("You used " + cur_skill.GetName().toStdString());
+    UpdateLog("You used " + cur_skill.get_name().toStdString());
     player_->UseSkill(cur_skill);
     agent_->AddSkill(cur_skill);
     EnemyTurn();
@@ -76,16 +76,16 @@ void BattleSim::EnemyTurn(){
 
     Skill cur_skill = agent_->GetEnemyMove(minimax_depth_);
 
-    if(enemy_->GetMagic() >= cur_skill.GetMagicCost()){
+    if(enemy_->GetMagic() >= cur_skill.get_magic_cost()){
 
-        if(cur_skill.GetTarget() == Target::Self){
+        if(cur_skill.get_target() == Target::Self){
           enemy_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
         }else{
           player_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
         }
-        UpdateLog("The enemy used " + cur_skill.GetName().toStdString());
+        UpdateLog("The enemy used " + cur_skill.get_name().toStdString());
       }else{
         UpdateLog("The enemy tried but didn't have enough magic");
       }

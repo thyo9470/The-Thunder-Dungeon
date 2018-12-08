@@ -40,5 +40,6 @@
         <file>images/items/book_0.png</file>
         <file>images/items/headband_0.png</file>
         <file>images/Button.png</file>
+        <file>images/items/Potion.png</file>
     </qresource>
 </RCC>

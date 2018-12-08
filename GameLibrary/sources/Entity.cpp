@@ -49,7 +49,7 @@ Entity::Entity(QJsonObject json)
 }
 
 void Entity::UseSkill(Skill skill){
-  magic_ -= skill.GetMagicCost();
+  magic_ -= skill.get_magic_cost();
 }
 
 /**
@@ -58,7 +58,7 @@ void Entity::UseSkill(Skill skill){
  */
 void Entity::ApplySkill(Skill skill)
 {
-  for(Modifier mod : skill.GetModifiers()){
+  for(Modifier mod : skill.get_modifiers()){
       ApplyModifier(mod);
     }
 }
@@ -97,23 +97,26 @@ void Entity::Write(QJsonObject &json)
  */
 void Entity::EquipItem(Item item)
 {
-  std::map<EquipType, Item>::iterator it = equipment_.find(item.GetEquipType());
+  // Do not actually equip a consumable, just apply its effects
+  if(item.get_equip_type() != EquipType::Consumable){
+    std::map<EquipType, Item>::iterator it = equipment_.find(item.get_equip_type());
 
-  // If there was an item already equipped
-  if(it != equipment_.end()){
+    // If there was an item already equipped
+    if(it != equipment_.end()){
 
-      // Remove the equipped item's modifiers
-      for(Modifier mod : it->second.GetModifiers()){
-          ApplyModifier(mod, true);
-        }
-      it->second = item;
-    }
-  else{
-      equipment_[item.GetEquipType()] = item;
+        // Remove the equipped item's modifiers
+        for(Modifier mod : it->second.get_modifiers()){
+            ApplyModifier(mod, true);
+          }
+        it->second = item;
+      }
+    else{
+        equipment_[item.get_equip_type()] = item;
+      }
     }
 
   // Apply the item's modifiers
-  for(Modifier mod : item.GetModifiers()){
+  for(Modifier mod : item.get_modifiers()){
       ApplyModifier(mod);
     }
 
@@ -132,8 +135,8 @@ void Entity::UpdateSkills()
   std::map<EquipType, Item>::iterator it;
 
   for(it = equipment_.begin(); it != equipment_.end(); ++it){
-      if(it->second.HasSkill()){
-          skills_.push_back(it->second.GetSkill());
+      if(it->second.get_has_skill()){
+          skills_.push_back(it->second.get_skill());
         }
     }
 }
@@ -147,7 +150,7 @@ void Entity::ApplyModifier(Modifier mod, bool reverse)
 {
   float new_max = 0;
   float difference = 0;
-  switch(mod.GetType()){
+  switch(mod.get_type()){
     case ModifierType::Health:
       health_ = mod.GetModifiedStat(health_, min_stat_value_, max_health_, reverse);
       break;

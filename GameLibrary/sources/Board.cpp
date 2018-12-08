@@ -10,7 +10,6 @@
 #include "../headers/Tile.h"
 #include "../headers/Command.h"
 
-
 /**
  * @brief Board::Board
  *
@@ -403,7 +402,7 @@ void Board::MoveEnemies()
       //enemy->DFSMove(board_);
       enemy->Follow(board_);
   }
-  Tile* test = CheckCollision(player_tile_);
+  Tile* test = CheckCollision(player_tile_->get_position());
   switch(test->get_type()){
     case TileType::Enemy:
       DeleteEnemy(player_tile_->get_position());
@@ -452,37 +451,31 @@ void Board::MovePlayer(ActionType action_type){
   board_[player_layer_id_][old_pos.y_][old_pos.x_] = empty_tile_ref_;
   switch(action_type){
     case ActionType::Up : // up
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(0,-1)) == TileType::Empty){
+      if(CheckCollision(old_pos + Position(0,-1)) == empty_tile_ref_){
         up_command_->execute(player_tile_);
       }
       break;
     case ActionType::Right: // right
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(1,0)) == TileType::Empty){
+      if(CheckCollision(old_pos + Position(1,0)) == empty_tile_ref_){
         right_command_->execute(player_tile_);
       }
       break;
     case ActionType::Down: // down
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(0,1)) == TileType::Empty){
+      if(CheckCollision(old_pos + Position(0,1)) == empty_tile_ref_){
         down_command_->execute(player_tile_);
       }
       break;
     case ActionType::Left: // left
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(-1,0)) == TileType::Empty){
+      if(CheckCollision(old_pos + Position(-1,0)) == empty_tile_ref_){
         left_command_->execute(player_tile_);
       }
-      break;
-    default:
       break;
   }
   // move player
   Position new_pos =  player_tile_->get_position(); 
   board_[player_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
   // test for collision
-  Tile* test = CheckCollision(player_tile_);
+  Tile* test = CheckCollision(new_pos);
   switch(test->get_type()){
     case TileType::Exit: // move to next level
       NewLevel();
@@ -639,10 +632,9 @@ TileType Board::GetTileAtPosition(int layer, Position pos){
  * @return The tile the entity collided with (empty if nothing)
  */
 
-Tile* Board::CheckCollision(EntityTile* entity){
+Tile* Board::CheckCollision(Position pos){
   for(int i = 0; i < layers_; i++){
-    Position cur_pos = entity->get_position();
-    Tile* check_tile = board_[i][cur_pos.y_][cur_pos.x_];
+    Tile* check_tile = board_[i][pos.y_][pos.x_];
     if( !((*check_tile) == TileType::Empty) && check_tile != player_tile_){
         return check_tile;
     }

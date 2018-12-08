@@ -87,7 +87,7 @@ void TestGame::TestMinimax(){
 
   Skill best_move = agent->GetEnemyMove(3);
 
-  std::cout << "Best move: " << best_move.GetName().toStdString() << std::endl;
+  std::cout << "Best move: " << best_move.get_name().toStdString() << std::endl;
 
   QVERIFY(true);
 }
@@ -116,7 +116,7 @@ void TestGame::TestEquipment()
 
   // Test that equipping the item had the intended effects
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
-  QCOMPARE(player->GetSkills()[0].GetName(), QString("Recover"));
+  QCOMPARE(player->GetSkills()[0].get_name(), QString("Recover"));
 
   // Test the unequip ability by replacing the previous item with no mods
   std::vector<Modifier> none;
