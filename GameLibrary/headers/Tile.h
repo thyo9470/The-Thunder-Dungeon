@@ -34,7 +34,7 @@ struct Position{
   } 
 };
 
-enum class TileType {Empty, Wall, Player, Enemy, Exit, Void, Chest, EmptyChest};
+enum class TileType {Empty, Wall, Player, Enemy, Exit, Void, ChestClosed, ChestOpened};
 
 std::string TileTypeToString(TileType tile);
 
@@ -73,18 +73,6 @@ class ExitTile:public Tile{
 
 public:
   ExitTile():Tile(TileType::Exit){}
-};
-
-class ChestTile:public Tile{
-
-public:
-  ChestTile():Tile(TileType::Chest){}
-};
-
-class EmptyChestTile:public Tile{
-
-public:
-  EmptyChestTile():Tile(TileType::EmptyChest){}
 };
 
 
@@ -133,5 +121,18 @@ public:
   VoidTile():Tile(TileType::Void){}
 };
 
+class ChestClosedTile:public Tile{
+
+public:
+  ChestClosedTile():Tile(TileType::ChestClosed){}
+
+};
+
+class ChestOpenedTile:public Tile{
+
+public:
+  ChestOpenedTile():Tile(TileType::ChestOpened){}
+
+};
 
 #endif // TILE_H

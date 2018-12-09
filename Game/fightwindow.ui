@@ -27,9 +27,9 @@
    <widget class="QLabel" name="dialogLabel">
     <property name="geometry">
      <rect>
-      <x>456</x>
+      <x>466</x>
       <y>446</y>
-      <width>331</width>
+      <width>321</width>
       <height>111</height>
      </rect>
     </property>
@@ -38,86 +38,6 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="runButton">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>440</y>
-      <width>111</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>RUN!!</string>
-    </property>
-    <property name="skill" stdset="0">
-     <number>4</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="skillButton_2">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>440</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Empty</string>
-    </property>
-    <property name="skill" stdset="0">
-     <number>1</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="skillButton_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>500</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Empty</string>
-    </property>
-    <property name="skill" stdset="0">
-     <number>2</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="skillButton_4">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>500</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Empty</string>
-    </property>
-    <property name="skill" stdset="0">
-     <number>3</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="skillButton_1">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>440</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Empty</string>
-    </property>
-    <property name="skill" stdset="0">
-     <number>0</number>
     </property>
    </widget>
    <widget class="QProgressBar" name="playerHealthBar">
@@ -332,6 +252,110 @@
      </property>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="SkillButtons">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>413</y>
+      <width>451</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <widget class="QPushButton" name="skillButton_2">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Empty</string>
+     </property>
+     <property name="skill" stdset="0">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="skillButton_1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Empty</string>
+     </property>
+     <property name="skill" stdset="0">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="skillButton_4">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>90</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Empty</string>
+     </property>
+     <property name="skill" stdset="0">
+      <number>3</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="skillButton_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Empty</string>
+     </property>
+     <property name="skill" stdset="0">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="runButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>111</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RUN!!</string>
+     </property>
+     <property name="skill" stdset="0">
+      <number>4</number>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -339,7 +363,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

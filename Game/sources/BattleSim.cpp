@@ -57,6 +57,7 @@ void BattleSim::PlayerTurn(int skill_id){
       player_->ApplySkill(cur_skill);
     }else{
       enemy_->ApplySkill(cur_skill);
+      emit AnimateAttackSignal(true);
     }
     UpdateLog("You used " + cur_skill.get_name().toStdString());
     player_->UseSkill(cur_skill);
@@ -85,6 +86,7 @@ void BattleSim::EnemyTurn(){
         }else{
           player_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
+          emit AnimateAttackSignal(false);
         }
         UpdateLog("The enemy used " + cur_skill.get_name().toStdString());
       }else{

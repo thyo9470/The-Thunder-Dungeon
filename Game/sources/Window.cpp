@@ -263,21 +263,28 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
   }
 
 
-  if(tile->get_type() == TileType::Empty){ //empty
-    tile_pos_x = 0;
-    tile_pos_y = 4;
-  }else if(tile->get_type() == TileType::Exit){ //exit
-    tile_pos_x = 9;
-    tile_pos_y = 16;
-  }else if(tile->get_type() == TileType::Void){ // nothing/void
-    tile_pos_x = 3;
-    tile_pos_y = 0;
-  }else if(tile->get_type() == TileType::Chest){
+  switch (tile->get_type()) {
+
+    case TileType::Empty:
+      tile_pos_x = 0;
+      tile_pos_y = 4;
+      break;
+    case TileType::Exit:
+      tile_pos_x = 9;
+      tile_pos_y = 16;
+      break;
+    case TileType::Void:
+      tile_pos_x = 3;
+      tile_pos_y = 0;
+      break;
+    case TileType::ChestClosed:
       tile_pos_x = 14;
       tile_pos_y = 16;
-  }else if(tile->get_type() == TileType::EmptyChest){
+      break;
+    case TileType::ChestOpened:
       tile_pos_x = 15;
       tile_pos_y = 16;
+      break;
   }
 
   // create pixmap
@@ -414,7 +421,8 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
 
       // Set the EPIC tooltip
       equipment_icon->setToolTip(ItemToHTML(kv.second));
-      equipment_icon->setPixmap(kv.second.get_icon());
+      QPixmap image = QPixmap(kv.second.get_icon());
+      equipment_icon->setPixmap( image );
     }
 }
 
