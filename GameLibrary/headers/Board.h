@@ -50,6 +50,8 @@ private:
   int width_res_;
   int height_res_;
 
+  int chests_per_level_ = 10;
+
   // Pointers to Tile objects for flyweight
   Tile* empty_tile_ref_;
   Tile* void_tile_ref_;
@@ -90,8 +92,10 @@ private:
   void DeleteEnemy(Position pos);
   void AddExtraToRoom(int x, int y, int width, int height);
 
+  void GenerateChests();
+
   // checks it an entity tile has collided with another object
-  Tile* CheckCollision(Position cur_pos);
+  Tile* CheckCollision(Position pos);
 };
 
 

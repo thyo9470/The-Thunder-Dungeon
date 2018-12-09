@@ -15,7 +15,7 @@
 
 void BattleAgent::AddSkill(Skill new_skill){
   for(Skill& skill : player_skills){
-    if(skill.GetName() == new_skill.GetName()){
+    if(skill.get_name() == new_skill.get_name()){
       return;
     }
   }
@@ -60,7 +60,7 @@ Skill BattleAgent::GetEnemyMove(int depth){
 
 
   for(unsigned long i = 0; i < skill_score.size(); i++){
-    std::cout << enemy_skills[i].GetName().toStdString() << "'s Score: " << skill_score[i] << " || ";
+    std::cout << enemy_skills[i].get_name().toStdString() << "'s Score: " << skill_score[i] << " || ";
   }
   std::cout << std::endl;
 
@@ -202,7 +202,7 @@ double BattleAgent::PlayerMove(Entity player, Entity enemy, int depth, double al
 
 void BattleAgent::UseEnemyMove(Entity& player, Entity& enemy, Skill& skill){
 
-  Target target = skill.GetTarget();
+  Target target = skill.get_target();
 
   // apply skill on proper target
   enemy.UseSkill(skill);
@@ -227,7 +227,7 @@ void BattleAgent::UseEnemyMove(Entity& player, Entity& enemy, Skill& skill){
 
 void BattleAgent::UsePlayerMove(Entity& player, Entity& enemy, Skill& skill){
 
-  Target target = skill.GetTarget();
+  Target target = skill.get_target();
 
   // apply skill on proper target
   player.UseSkill(skill);

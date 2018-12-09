@@ -2,19 +2,20 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <cmath>
-
 #include <headers/Entity.h>
 
 #include "../headers/BattleSim.h"
 #include "headers/Item.h"
 #include "headers/Entityfactory.h"
+#include "headers/Itemfactory.h"
 
 BattleSim::BattleSim(Entity* player, int minimax_depth){
   minimax_depth_ = minimax_depth;
 
   player_ = player;
 
-  enemy_ = EntityFactory::GenerateEnemy(1);
+  EntityFactory entity_factory;
+  enemy_ = entity_factory.GenerateEnemyWithEquipment(player->GetLevel());
 
   agent_ = new BattleAgent(player_, enemy_);
 
@@ -48,17 +49,17 @@ void BattleSim::PlayerTurn(int skill_id){
     UpdateLog("You do not have a skill on this slot");
   }else{
     Skill cur_skill = possible_skills[skill_id];
-    if(player_->GetMagic() < cur_skill.GetMagicCost()){
+    if(player_->GetMagic() < cur_skill.get_magic_cost()){
       UpdateLog("You do not have enough magic!");
       return;
     }
-    if(cur_skill.GetTarget() == Target::Self){
+    if(cur_skill.get_target() == Target::Self){
       player_->ApplySkill(cur_skill);
     }else{
       enemy_->ApplySkill(cur_skill);
       emit AnimateAttackSignal(true);
     }
-    UpdateLog("You used " + cur_skill.GetName().toStdString());
+    UpdateLog("You used " + cur_skill.get_name().toStdString());
     player_->UseSkill(cur_skill);
     agent_->AddSkill(cur_skill);
     EnemyTurn();
@@ -77,9 +78,9 @@ void BattleSim::EnemyTurn(){
 
     Skill cur_skill = agent_->GetEnemyMove(minimax_depth_);
 
-    if(enemy_->GetMagic() >= cur_skill.GetMagicCost()){
+    if(enemy_->GetMagic() >= cur_skill.get_magic_cost()){
 
-        if(cur_skill.GetTarget() == Target::Self){
+        if(cur_skill.get_target() == Target::Self){
           enemy_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
         }else{
@@ -87,7 +88,7 @@ void BattleSim::EnemyTurn(){
           enemy_->UseSkill(cur_skill);
           emit AnimateAttackSignal(false);
         }
-        UpdateLog("The enemy used " + cur_skill.GetName().toStdString());
+        UpdateLog("The enemy used " + cur_skill.get_name().toStdString());
       }else{
         UpdateLog("The enemy tried but didn't have enough magic");
       }

@@ -1,5 +1,6 @@
 #include "../headers/Modifier.h"
 #include <cmath>
+#include <stdexcept>
 
 /**
  * Initialize a modifier from its appropriate json object
@@ -66,43 +67,41 @@ QJsonObject Modifier::Write()
  */
 QString Modifier::ToString()
 {
+  QString adjusted_string = application_type_ == ModifierOperation::Multiplicative ? QString::number((amount_ - 1.0) * 100) + "%" : QString::number(amount_);
   switch(type_){
     case ModifierType::Health:
-      if(amount_ >= 0){
-          return "Heals " + OperationToString() +  " Health";
-        }
-      else{
-          return "Deals " + OperationToString() +  " Damage";
-        }
+      return "Changes health by " + adjusted_string;
     case ModifierType::Magic:
-      if(amount_ >= 0){
-          return "Restores " + OperationToString() +  " Magic";
-        }
-      else{
-          return "Drains " + OperationToString() +  " Magic";
-        }
+      return "Changes magic by " + adjusted_string;
     case ModifierType::MaxHealth:
-      if(amount_ >= 0){
-          return "Increases Max Health by " + OperationToString();
-        }
-      else{
-          return "Decreases Max Health by " + OperationToString();
-        }
+      return "Changes max health by " + adjusted_string;
     case ModifierType::MaxMagic:
-      if(amount_ >= 0){
-          return "Increases Max Magic by " + OperationToString();
-        }
-      else{
-          return "Decreases Max Magic by " + OperationToString();
-        }
-        }
+      return "Change max magic by " + adjusted_string;
     }
+}
 
 /**
- * Helper function to return a percentage or not for toStirng()
+ * If the modifiers are the same type add the amounts together
+ * @param m1
  * @return
  */
-QString Modifier::OperationToString()
+Modifier Modifier::operator+(const Modifier &m1)
 {
-  return application_type_ == ModifierOperation::Multiplicative ? QString::number(static_cast<float>((abs(amount_) - 1.0) * 100.0)) + "%" : QString::number(abs(amount_));
+  if(!(m1 == *this)){
+      throw std::invalid_argument("Modifiers cannot be added.");
+    }
+  else{
+      return Modifier(type_, application_type_, m1.amount_ + amount_);
+    }
+}
+
+/**
+ * Checks to see if the modifiers are the same type and operation_type
+ * @param m1
+ * @param m2
+ * @return
+ */
+bool operator==(const Modifier &m1, const Modifier &m2)
+{
+  return m1.type_ == m2.type_ && m1.application_type_ == m2.application_type_;
 }

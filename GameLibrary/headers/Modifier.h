@@ -38,15 +38,19 @@ public:
   Modifier(QJsonObject data);
 
   float GetModifiedStat(float stat, float min, float max, bool reverse);
-  ModifierType GetType() { return type_; }
+  ModifierType get_type() { return type_; }
+  int get_amount() { return amount_; }
   QJsonObject Write();
   QString ToString();
+
+  Modifier operator+(const Modifier& m1);
+  friend bool operator==(const Modifier& tl, const Modifier& tt);
 
 private:
   ModifierType type_;
   ModifierOperation application_type_;
   float amount_;
-  QString OperationToString();
+  float QuantifyEffect();
 };
 
 #endif // MODIFER_H

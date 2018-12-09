@@ -47,7 +47,7 @@ Game::Game()
 void Game::StartGame()
 {
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
-  connect(board_, &Board::DropItemSignal, this, &Game::DropItem);
+  connect(board_, &Board::DropItemSignal, this, &Game::DropRandomItem);
 
   // Update the window with the player's stats
   window_->UpdatePlayerStats(*player_);
@@ -232,10 +232,21 @@ void Game::GameOver()
 /**
  * Generate a new item drop, and show the item drop dialogue
  */
-void Game::DropItem()
+void Game::DropRandomItem()
 {
   std::cout << "test" << std::endl;
   item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
+  window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
+  playing_ = false;
+}
+
+/**
+ * Generate a new item drop from the enemy equipment, and show the item drop dialogue
+ */
+void Game::EnemyDropItem()
+{
+  std::map<EquipType, Item> item_drops = battle_sim_->GetEnemy()->GetEquipment();
+  item_to_equip_ = item_drops[static_cast<EquipType>(qrand() % 4)];
   window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
 }
@@ -282,7 +293,7 @@ void Game::StartBattle(){
 
   battle_sim_ = new BattleSim(player_, minimax_depth);
   battle_sim_->ActivateBattle();
-  connect(battle_sim_, &BattleSim::DropItemSignal, this, &Game::DropItem);
+  connect(battle_sim_, &BattleSim::DropItemSignal, this, &Game::EnemyDropItem);
   connect(battle_sim_, &BattleSim::GameOverSignal, this, &Game::GameOver);
   connect(battle_sim_, &BattleSim::AnimateAttackSignal, fight_window_, &FightWindow::AnimateAttack);
   fight_window_->UpdateFightWindow(battle_sim_);

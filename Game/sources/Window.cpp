@@ -27,7 +27,8 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
     ui->graphicsView->setFixedSize(window_x, window_y);
     scene_->setSceneRect(0, 0, window_x, window_y);
 
-    ui->itemFoundDialogue->setVisible(false);
+    ui->equipmentFoundDialogue->setVisible(false);
+    ui->consumableFoundDialogue->setVisible(false);
     ui->pauseMenu->setVisible(false);
 
     // Hold all the images
@@ -55,7 +56,7 @@ void Window::keyPressEvent(QKeyEvent *event)
  */
 bool Window::GetStillChoosingItem()
 {
-  return ui->itemFoundDialogue->isVisible();
+  return ui->equipmentFoundDialogue->isVisible() || ui->consumableFoundDialogue->isVisible();
 }
 
 /**
@@ -286,7 +287,6 @@ QGraphicsPixmapItem* Window::GetDungeonSprite(Tile* tile){
       break;
   }
 
-
   // create pixmap
   QGraphicsPixmapItem * pixmap = new QGraphicsPixmapItem();
   pixmap->setPixmap(dungeon_sheet_.copy(tile_pos_x * dungeon_sprite_size_, tile_pos_y * dungeon_sprite_size_, dungeon_sprite_size_, dungeon_sprite_size_));
@@ -421,7 +421,7 @@ void Window::UpdateItems(std::map<EquipType, Item> items)
 
       // Set the EPIC tooltip
       equipment_icon->setToolTip(ItemToHTML(kv.second));
-      QPixmap image = QPixmap(kv.second.GetIcon());
+      QPixmap image = QPixmap(kv.second.get_icon());
       equipment_icon->setPixmap( image );
     }
 }
@@ -438,24 +438,24 @@ QString Window::ItemToHTML(Item item)
       "<html> \
       <head/> \
       <body align='center'> \
-        <b><p style='color:goldenrod; font-size: 24px;'>" + item.GetName() + "</p></b>"
-        "<b><p>Item Level: " + QString::number(item.GetLevel()) + "</p></b>";
+        <b><p style='color:goldenrod; font-size: 24px;'>" + item.get_name() + "</p></b>"
+        "<b><p>Item Level: " + QString::number(item.get_level()) + "</p></b>";
 
   // Add all of the modifiers that the item has
-  for(Modifier mod : item.GetModifiers()){
+  for(Modifier mod : item.get_modifiers()){
       item_string += "<b><p>" + mod.ToString() + "</p></b>";
     }
 
   // Add the item descriptioin
-  item_string += "<b><p style='color:darkslateblue'>" + item.GetDescription() + "</p></b>";
+  item_string += "<b><p style='color:darkslateblue'>" + item.get_description() + "</p></b>";
 
   // Display the skill's stats in detail
-  if(item.HasSkill()){
-      item_string += "<b><p style='color:darkslateblue; font-size: 20px;'>Skill: " + item.GetSkill().GetName() + "</p></b>";
-      if(item.GetSkill().GetMagicCost() != 0){
-        item_string += "<b><p> Cost: " + QString::number(item.GetSkill().GetMagicCost()) + " magic</p></b>";
+  if(item.get_has_skill()){
+      item_string += "<b><p style='color:darkslateblue; font-size: 20px;'>Skill: " + item.get_skill().get_name() + "</p></b>";
+      if(item.get_skill().get_magic_cost() != 0){
+        item_string += "<b><p> Cost: " + QString::number(item.get_skill().get_magic_cost()) + " magic</p></b>";
         }
-      for(Modifier mod : item.GetSkill().GetModifiers()){
+      for(Modifier mod : item.get_skill().get_modifiers()){
           item_string += "<b><p> Skill Effect: " + mod.ToString() + "</p></b>";
         }
     }
@@ -473,15 +473,25 @@ QString Window::ItemToHTML(Item item)
  */
 void Window::ShowItemDropUI(Item new_item, std::map<EquipType, Item> equipment)
 {
-  ui->itemFoundDialogue->setVisible(true);
+  // If consumable, show the single item drop UI
+  if(new_item.get_equip_type() == EquipType::Consumable){
+      ui->consumableFoundDialogue->setVisible(true);
 
-  // Set the images and tooltip of the newly found item
-  ui->newItemImage->setToolTip(ItemToHTML(new_item));
-  ui->newItemImage->setPixmap(QPixmap(new_item.GetIcon()));
+      // Set the images and tooltip of the newly found item
+      ui->newItemImage_2->setToolTip(ItemToHTML(new_item));
+      ui->newItemImage_2->setPixmap(QPixmap(new_item.get_icon()));
+    }
+  else{
+      ui->equipmentFoundDialogue->setVisible(true);
 
-  // Set the currently equipped item
-  ui->currentItemImage->setToolTip(ItemToHTML(equipment.at(new_item.GetEquipType())));
-  ui->currentItemImage->setPixmap(QPixmap(equipment.at(new_item.GetEquipType()).GetIcon()));
+      // Set the images and tooltip of the newly found item
+      ui->newItemImage->setToolTip(ItemToHTML(new_item));
+      ui->newItemImage->setPixmap(QPixmap(new_item.get_icon()));
+
+      // Set the currently equipped item
+      ui->currentItemImage->setToolTip(ItemToHTML(equipment.at(new_item.get_equip_type())));
+      ui->currentItemImage->setPixmap(QPixmap(equipment.at(new_item.get_equip_type()).get_icon()));
+    }
 }
 
 void Window::on_save_button_clicked()
@@ -491,14 +501,29 @@ void Window::on_save_button_clicked()
 
 void Window::on_equipButton_clicked()
 {
-    ui->itemFoundDialogue->setVisible(false);
+    ui->equipmentFoundDialogue->setVisible(false);
     emit EquipItemSignal(true);
 }
 
 void Window::on_throwAwayButton_clicked()
 {
-    ui->itemFoundDialogue->setVisible(false);
+    ui->equipmentFoundDialogue->setVisible(false);
     emit EquipItemSignal(false);
+}
+
+/**
+ * The second buttons are for the 'consumable' items dialogue where a comparison of equipment doesn't make sense
+ */
+void Window::on_equipButton_2_clicked()
+{
+  ui->consumableFoundDialogue->setVisible(false);
+  emit EquipItemSignal(true);
+}
+
+void Window::on_throwAwayButton_2_clicked()
+{
+  ui->consumableFoundDialogue->setVisible(false);
+  emit EquipItemSignal(false);
 }
 
 void Window::on_resumeButton_clicked()
@@ -510,7 +535,8 @@ void Window::on_resumeButton_clicked()
 void Window::on_quitButton_clicked()
 {
   on_resumeButton_clicked();
-  ui->itemFoundDialogue->setVisible(false);
+  ui->equipmentFoundDialogue->setVisible(false);
+  ui->consumableFoundDialogue->setVisible(false);
   emit QuitGameSignal();
 }
 
