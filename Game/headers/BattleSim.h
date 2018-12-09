@@ -32,6 +32,7 @@ public slots:
 signals:
   void DropItemSignal();
   void GameOverSignal();
+  void AnimateAttackSignal(bool is_player);
 
 private:
   Entity* player_;

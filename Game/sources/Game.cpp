@@ -218,7 +218,7 @@ void Game::GetInputBattleSim(int skill_id){
 void Game::GoToBoard()
 {
   battle_sim_->DeactivateBattle();
-  fight_window_->hide();
+  EndBattle();
 }
 
 /**
@@ -284,6 +284,7 @@ void Game::StartBattle(){
   battle_sim_->ActivateBattle();
   connect(battle_sim_, &BattleSim::DropItemSignal, this, &Game::DropItem);
   connect(battle_sim_, &BattleSim::GameOverSignal, this, &Game::GameOver);
+  connect(battle_sim_, &BattleSim::AnimateAttackSignal, fight_window_, &FightWindow::AnimateAttack);
   fight_window_->UpdateFightWindow(battle_sim_);
   window_->hide();
   fight_window_->show();
@@ -323,6 +324,7 @@ void Game::QuitGame()
 {
   playing_ = false;
   window_->hide();
+  fight_window_->hide();
   menu_window_->show();
 
   // Update the menu_window

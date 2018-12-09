@@ -40,5 +40,20 @@
         <file>images/items/book_0.png</file>
         <file>images/items/headband_0.png</file>
         <file>images/Button.png</file>
+        <file>headers/BattleSim.h</file>
+        <file>headers/FightWindow.h</file>
+        <file>headers/Game.h</file>
+        <file>headers/ItemImage.h</file>
+        <file>headers/MenuWindow.h</file>
+        <file>headers/Window.h</file>
+        <file>sounds/weapon_fun_pea_shooter_01.wav</file>
+        <file>sources/BattleSim.cpp</file>
+        <file>sources/FightWindow.cpp</file>
+        <file>sources/Game.cpp</file>
+        <file>sources/ItemImage.cpp</file>
+        <file>sources/keypress.cpp</file>
+        <file>sources/main.cpp</file>
+        <file>sources/MenuWindow.cpp</file>
+        <file>sources/Window.cpp</file>
     </qresource>
 </RCC>

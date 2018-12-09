@@ -24,7 +24,6 @@ public:
     void UpdateFightWindow(BattleSim* battle_sim);
     void ShowGameOver(QString enemy_name, int level);
     void SetActionsVisible(bool visible);
-    void AnimateAttack(QGraphicsPixmapItem* obj);
 
 private:
 
@@ -46,8 +45,13 @@ private:
 
     double player_position_x_;
     double player_position_y_;
+    int player_layer_ = 1;
     double enemy_position_x_;
     double enemy_position_y_;
+    int enemy_layer_ = 2;
+
+public slots:
+    void AnimateAttack(bool is_player);
 
 private slots:
     void ButtonPressedSlot();

@@ -92,7 +92,6 @@ void FightWindow::ExitButtonPressed()
  */
 void FightWindow::GameOverButtonPressed()
 {
-  emit ToBoardSignal();
   emit GameOverSignal();
 }
 
@@ -118,7 +117,7 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   // removes old enemy and player pixmap from scene
   for(auto& item :scene_->items()){
-    if( item->zValue() == 1){
+    if( item->zValue() > 0){
       scene_->removeItem(item);
     }
   }
@@ -155,7 +154,7 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   int row = 0;
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_player = new QGraphicsPixmapItem();
-  pixmap_player->setZValue(1);
+  pixmap_player->setZValue(player_layer_);
   pixmap_player->setPixmap(player_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_player->setPos( player_position_x_ , player_position_y_);
   pixmap_player->setScale(pixmap_player->scale() * tile_scale_);
@@ -170,24 +169,46 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();
-  pixmap_enemy->setZValue(1);
+  pixmap_enemy->setZValue(enemy_layer_);
   pixmap_enemy->setPixmap(slime_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
   pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);
   scene_->addItem(pixmap_enemy);
 
-  //AnimateAttack(pixmap_player);
-
 }
 
-void FightWindow::AnimateAttack(QGraphicsPixmapItem* obj){
+void FightWindow::AnimateAttack(bool is_player){
+
+  ui->SkillButtons->setEnabled(false);
+
+  QGraphicsPixmapItem* obj_attacker;
+  QGraphicsPixmapItem* obj_attacked;
+
+  for(auto& item : scene_->items()){
+    // looking for attacker
+    if( is_player && item->zValue() == player_layer_ ){
+      obj_attacker = qgraphicsitem_cast<QGraphicsPixmapItem*>(item);
+    } else if( !is_player && item->zValue() == enemy_layer_ ){
+      obj_attacker = qgraphicsitem_cast<QGraphicsPixmapItem*>(item);
+    }
+    // looking for attacked
+    else if( !is_player && item->zValue() == player_layer_ ){
+      obj_attacked = qgraphicsitem_cast<QGraphicsPixmapItem*>(item);
+    }else if( is_player && item->zValue() == enemy_layer_ ){
+      obj_attacked = qgraphicsitem_cast<QGraphicsPixmapItem*>(item);
+    }
+  }
 
   int distance = 5;
+  int attack_dir = is_player ? 1 : -1;
 
   for(int i = 0; i < distance; i++){
-    delay(250);
-    obj->setOffset(i, 0);
+    delay(50);
+    obj_attacker->setOffset(attack_dir * (distance-i), 0);
+    obj_attacked->setOffset(0, -(distance-i));
   }
+
+  ui->SkillButtons->setEnabled(true);
 
 }
 
