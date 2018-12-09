@@ -245,7 +245,7 @@ void Game::DropRandomItem()
 void Game::EnemyDropItem()
 {
   std::map<EquipType, Item> item_drops = battle_sim_->GetEnemy()->GetEquipment();
-  item_to_equip_ = item_drops[EquipType::Weapon];
+  item_to_equip_ = item_drops[static_cast<EquipType>(qrand() % 4)];
   window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
 }

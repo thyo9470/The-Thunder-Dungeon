@@ -766,7 +766,7 @@
         "item_description": "A slightly magical ring.",
         "item_icon": ":/images/items/Accessory_01.png",
         "item_level": 1,
-        "item_name": "Metal ring.",
+        "item_name": "Metal Ring",
         "modifiers": [
             {
                 "amount": 10,
