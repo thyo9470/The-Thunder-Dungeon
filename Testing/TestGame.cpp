@@ -116,6 +116,7 @@ void TestGame::TestEquipment()
 
   // Test that equipping the item had the intended effects
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
+  QCOMPARE(player->GetHealth(), static_cast<float>(110));
   QCOMPARE(player->GetSkills()[0].get_name(), QString("Recover"));
 
   // Test the unequip ability by replacing the previous item with no mods
@@ -124,12 +125,44 @@ void TestGame::TestEquipment()
   player->EquipItem(no_mods);
 
   QCOMPARE(player->GetMaxHealth(), static_cast<float>(100));
+  QCOMPARE(player->GetHealth(), static_cast<float>(100));
+
+  // Direct mods for the item equip
+  std::vector<Modifier> more_mods;
+  Modifier multiplicative_health(ModifierType::MaxHealth, ModifierOperation::Multiplicative, 1.1);
+  more_mods.push_back(multiplicative_health);
+
+  // Test that equipping an item twice doesn't doing anything terrible
+  Item item2(1, "Multiplicative Item", ":)", more_mods , EquipType::Weapon, recover_skill, "");
+  player->EquipItem(item2);
+  player->EquipItem(item2);
+
+  QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
+
+  // Deal damage to the player
+  std::vector<Modifier> damage_mods;
+  damage_mods.push_back(Modifier(ModifierType::Health, ModifierOperation::Multiplicative, 0.5));
+  Skill damage_skill("Damage", "", damage_mods, 0, Target::Enemy);
+  player->ApplySkill(damage_skill);
+
+  QCOMPARE(player->GetHealth(), static_cast<float>(55));
+
+  // See how equipping a diffent item changes things
+  player->EquipItem(item);
+
+  QCOMPARE(player->GetMaxHealth(), static_cast<float>(110));
+  QCOMPARE(player->GetHealth(), static_cast<float>(55));
+
 }
 
 void TestGame::TestModiferString()
 {
   Modifier mod(ModifierType::Health, ModifierOperation::Additive, -5);
-  QCOMPARE(mod.ToString(), QString("Deals 5 Damage"));
+  QCOMPARE(mod.ToString(), QString("Changes health by -5"));
+  mod = Modifier(ModifierType::Health, ModifierOperation::Multiplicative, 0.5);
+  QCOMPARE(mod.ToString(), QString("Changes health by -50%"));
+  mod = Modifier(ModifierType::Health, ModifierOperation::Multiplicative, 1.5);
+  QCOMPARE(mod.ToString(), QString("Changes health by 50%"));
 }
 
 /**

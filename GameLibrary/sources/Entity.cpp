@@ -163,9 +163,7 @@ void Entity::ApplyModifier(Modifier mod, bool reverse)
       max_health_ = new_max;
 
       // Increase the health along with the max health increase
-      if(difference > 0){
-          health_ += difference;
-        }
+      health_ += difference;
       if(health_ > max_health_){
           health_ = max_health_;
         }
@@ -176,9 +174,7 @@ void Entity::ApplyModifier(Modifier mod, bool reverse)
       max_magic_ = new_max;
 
       // Increase magic along with max magic increase
-      if(difference > 0){
-          magic_ += difference;
-      }
+      magic_ += difference;
       if(magic_ > max_magic_){
           magic_ = max_magic_;
         }

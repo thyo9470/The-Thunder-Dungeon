@@ -67,35 +67,16 @@ QJsonObject Modifier::Write()
  */
 QString Modifier::ToString()
 {
+  QString adjusted_string = application_type_ == ModifierOperation::Multiplicative ? QString::number((amount_ - 1.0) * 100) + "%" : QString::number(amount_);
   switch(type_){
     case ModifierType::Health:
-      if(amount_ >= 0){
-          return "Heals " + OperationToString() +  " Health";
-        }
-      else{
-          return "Deals " + OperationToString() +  " Damage";
-        }
+      return "Changes health by " + adjusted_string;
     case ModifierType::Magic:
-      if(amount_ >= 0){
-          return "Restores " + OperationToString() +  " Magic";
-        }
-      else{
-          return "Drains " + OperationToString() +  " Magic";
-        }
+      return "Changes magic by " + adjusted_string;
     case ModifierType::MaxHealth:
-      if(amount_ >= 0){
-          return "Increases Max Health by " + OperationToString();
-        }
-      else{
-          return "Decreases Max Health by " + OperationToString();
-        }
+      return "Changes max health by " + adjusted_string;
     case ModifierType::MaxMagic:
-      if(amount_ >= 0){
-          return "Increases Max Magic by " + OperationToString();
-        }
-      else{
-          return "Decreases Max Magic by " + OperationToString();
-        }
+      return "Change max magic by " + adjusted_string;
     }
 }
 
@@ -123,13 +104,4 @@ Modifier Modifier::operator+(const Modifier &m1)
 bool operator==(const Modifier &m1, const Modifier &m2)
 {
   return m1.type_ == m2.type_ && m1.application_type_ == m2.application_type_;
-}
-
-/**
- * Helper function to return a percentage or not for toStirng()
- * @return
- */
-QString Modifier::OperationToString()
-{
-  return application_type_ == ModifierOperation::Multiplicative ? QString::number(static_cast<float>((abs(amount_) - 1.0) * 100.0)) + "%" : QString::number(abs(amount_));
 }

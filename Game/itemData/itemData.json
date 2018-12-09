@@ -3,11 +3,11 @@
     {
         "equip_type": 0,
         "item_description": "A light short sword.",
-        "item_icon": ":/images/items/sword_1.png",
+        "item_icon": ":/images/items/Weapon_06.png",
         "item_level": 1,
         "item_name": "Short Sword",
         "skill": {
-            "magic_cost": 10,
+            "magic_cost": 7,
             "modifiers": [
                 {
                     "amount": -10,
@@ -22,28 +22,8 @@
     },
     {
         "equip_type": 0,
-        "item_description": "A trusty wooden staff.",
-        "item_icon": ":/images/items/staff_4.png",
-        "item_level": 1,
-        "item_name": "Wooden Staff",
-        "skill": {
-            "magic_cost": 20,
-            "modifiers": [
-                {
-                    "amount": -20,
-                    "application_type": 1,
-                    "type": 0
-                }
-            ],
-            "skill_description": "Magic Blast: \n20 damage",
-            "skill_name": "Magic Blast",
-            "target": 1
-        }
-    },
-    {
-        "equip_type": 0,
         "item_description": "An axe fit for felling trees.",
-        "item_icon": ":/images/items/axe_0.png",
+        "item_icon": ":/images/items/Weapon_26.png",
         "item_level": 1,
         "item_name": "Woodsman's Axe",
         "skill": {
@@ -62,10 +42,30 @@
     },
     {
         "equip_type": 0,
-        "item_description": "A true soldier's sword.",
-        "item_icon": ":/images/items/sword_2.png",
+        "item_description": "A trusty staff.",
+        "item_icon": ":/images/items/Weapon_16.png",
         "item_level": 2,
-        "item_name": "Steel Sword",
+        "item_name": "Azure Staff",
+        "skill": {
+            "magic_cost": 15,
+            "modifiers": [
+                {
+                    "amount": -25,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Magic Blast: \n25 damage",
+            "skill_name": "Magic Blast",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 0,
+        "item_description": "A dagger the color of blood.",
+        "item_icon": ":/images/items/Weapon_01.png",
+        "item_level": 2,
+        "item_name": "Red Dagger",
         "skill": {
             "magic_cost": 10,
             "modifiers": [
@@ -82,50 +82,50 @@
     },
     {
         "equip_type": 0,
-        "item_description": "A sword of the desert.",
-        "item_icon": ":/images/items/sword_8.png",
+        "item_description": "A sturdy and heavy staff.",
+        "item_icon": ":/images/items/Weapon_17.png",
         "item_level": 3,
-        "item_name": "Sand Katana",
+        "item_name": "Earth Staff",
         "skill": {
-            "magic_cost": 15,
+            "magic_cost": 20,
             "modifiers": [
                 {
-                    "amount": -30,
+                    "amount": -35,
                     "application_type": 1,
                     "type": 0
                 }
             ],
-            "skill_description": "A precise attack. \n30 damage",
-            "skill_name": "Slash",
+            "skill_description": "\n35 damage",
+            "skill_name": "Earthquake",
             "target": 1
         }
     },
     {
         "equip_type": 0,
-        "item_description": "A great and heavy sword.",
-        "item_icon": ":/images/items/sword_0.png",
+        "item_description": "A double edged axe",
+        "item_icon": ":/images/items/Weapon_29.png",
         "item_level": 4,
-        "item_name": "Broadsword",
+        "item_name": "Double-Headed Axe",
         "skill": {
-            "magic_cost": 15,
+            "magic_cost": 20,
             "modifiers": [
                 {
-                    "amount": -40,
+                    "amount": -45,
                     "application_type": 1,
                     "type": 0
                 }
             ],
-            "skill_description": "An overpowering attack \n40 damage",
-            "skill_name": "Slash II",
+            "skill_description": "An overpowering attack \n45 damage",
+            "skill_name": "Cleave II",
             "target": 1
         }
     },
     {
         "equip_type": 0,
-        "item_description": "An elegant thin blade.",
-        "item_icon": ":/images/items/sword_6.png",
+        "item_description": "A magic sword of intense heat.",
+        "item_icon": ":/images/items/Weapon_60.png",
         "item_level": 5,
-        "item_name": "Elvensword",
+        "item_name": "Lava Sword",
         "skill": {
             "magic_cost": 10,
             "modifiers": [
@@ -136,39 +136,39 @@
                 }
             ],
             "skill_description": "An critical attack. \n30 damage",
-            "skill_name": "Strike IV",
+            "skill_name": "Strike III",
             "target": 1
         }
     },
     {
-        "equip_type": 3,
-        "item_description": "A book of power.",
-        "item_icon": ":/images/items/book_0.png",
-        "item_level": 1,
-        "item_name": "Mage's Tome",
+        "equip_type": 0,
+        "item_description": "A staff of ancient origin.",
+        "item_icon": ":/images/items/Weapon_24.png",
+        "item_level": 6,
+        "item_name": "Osiris's Staff",
         "skill": {
-            "magic_cost": 0,
+            "magic_cost": 15,
             "modifiers": [
                 {
-                    "amount": 20,
+                    "amount": -45,
                     "application_type": 1,
-                    "type": 2
+                    "type": 0
                 }
             ],
-            "skill_description": "Recover 20 Mana",
-            "skill_name": "Recovery",
+            "skill_description": "An critical attack. \n30 damage",
+            "skill_name": "Fireball",
             "target": 1
         }
     },
     {
         "equip_type": 4,
-        "item_description": "A potion of health gone sour over time.",
-        "item_icon": ":/images/items/Potion.png",
+        "item_description": "The hardest cheese on the planet.",
+        "item_icon": ":/images/items/Food_26.png",
         "item_level": 1,
-        "item_name": "Tainted Health Potion",
+        "item_name": "Stale Cheese",
         "modifiers": [
             {
-                "amount": 20,
+                "amount": 25,
                 "application_type": 1,
                 "type": 0
             },
@@ -178,6 +178,342 @@
                 "type": 1
             }
         ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "Water that smells of rotten fruit.",
+        "item_icon": ":/images/items/Potion_01.png",
+        "item_level": 1,
+        "item_name": "Tainted Water",
+        "modifiers": [
+            {
+                "amount": 20,
+                "application_type": 1,
+                "type": 2
+            },
+            {
+                "amount": -5,
+                "application_type": 1,
+                "type": 3
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "A healing potion made with lead.",
+        "item_icon": ":/images/items/Potion_06.png",
+        "item_level": 2,
+        "item_name": "Lead Infused Potion",
+        "modifiers": [
+            {
+                "amount": 30,
+                "application_type": 1,
+                "type": 0
+            },
+            {
+                "amount": -10,
+                "application_type": 1,
+                "type": 3
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "A full dose of iron.",
+        "item_icon": ":/images/items/Potion_02.png",
+        "item_level": 2,
+        "item_name": "Potion of Rust",
+        "modifiers": [
+            {
+                "amount": 10,
+                "application_type": 1,
+                "type": 1
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "A mysterious potion of wisdom.",
+        "item_icon": ":/images/items/Potion_08.png",
+        "item_level": 3,
+        "item_name": "Potion of Magic",
+        "modifiers": [
+            {
+                "amount": 10,
+                "application_type": 1,
+                "type": 3
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "Trade healing for a shortened life.",
+        "item_icon": ":/images/items/Potion_02.png",
+        "item_level": 4,
+        "item_name": "Demonic Health Potion",
+        "modifiers": [
+            {
+                "amount": 60,
+                "application_type": 1,
+                "type": 0
+            },
+            {
+                "amount": -20,
+                "application_type": 1,
+                "type": 1
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "Extremely pungent.",
+        "item_icon": ":/images/items/Food_43.png",
+        "item_level": 4,
+        "item_name": "1000 Year Old Beer",
+        "modifiers": [
+            {
+                "amount": 60,
+                "application_type": 1,
+                "type": 2
+            },
+            {
+                "amount": -10,
+                "application_type": 1,
+                "type": 0
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "Sweet, sugary, and powerful candy.",
+        "item_icon": ":/images/items/Food_39.png",
+        "item_level": 5,
+        "item_name": "Heaven's Candy",
+        "modifiers": [
+            {
+                "amount": 100,
+                "application_type": 1,
+                "type": 0
+            },
+            {
+                "amount": -20,
+                "application_type": 1,
+                "type": 1
+            }
+        ]
+    },
+    {
+        "equip_type": 4,
+        "item_description": "Provides healing without side effects.",
+        "item_icon": ":/images/items/Potion_04.png",
+        "item_level": 5,
+        "item_name": "Gold Potion",
+        "modifiers": [
+            {
+                "amount": 60,
+                "application_type": 1,
+                "type": 0
+            }
+        ]
+    },
+    {
+        "equip_type": 1,
+        "item_description": "Cheap armor",
+        "item_icon": ":/images/items/Armor_03.png",
+        "item_level": 1,
+        "item_name": "Iron Armor",
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": 3,
+                    "application_type": 1,
+                    "type": 1
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Self-Fortification",
+            "target": 0
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "A cloak infused with magic.",
+        "item_icon": ":/images/items/Armor_06.png",
+        "item_level": 1,
+        "item_name": "Magic Cloak",
+        "skill": {
+            "magic_cost": 0,
+            "modifiers": [
+                {
+                    "amount": 20,
+                    "application_type": 1,
+                    "type": 2
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Recovery",
+            "target": 0
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "A heavy set of armor made of sand.",
+        "item_icon": ":/images/items/Armor_12.png",
+        "item_level": 2,
+        "item_name": "Earthen Armor",
+        "modifiers": [
+            {
+                "amount": 15,
+                "application_type": 1,
+                "type": 1
+            }
+        ],
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": 5,
+                    "application_type": 1,
+                    "type": 1
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Fortification II",
+            "target": 0
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "A cloak of a fire magician.",
+        "item_icon": ":/images/items/Armor_07.png",
+        "item_level": 2,
+        "item_name": "Red Cloak",
+        "modifiers": [
+            {
+                "amount": 10,
+                "application_type": 1,
+                "type": 3
+            }
+        ],
+        "skill": {
+            "magic_cost": 20,
+            "modifiers": [
+                {
+                    "amount": 0.7,
+                    "application_type": 0,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Explosion",
+            "target": 1
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "Armor for a true soldier.",
+        "item_icon": ":/images/items/Armor_10.png",
+        "item_level": 3,
+        "item_name": "Steel Armor",
+        "modifiers": [
+            {
+                "amount": 40,
+                "application_type": 1,
+                "type": 1
+            }
+        ]
+    },
+    {
+        "equip_type": 1,
+        "item_description": "Provides the ability to heal.",
+        "item_icon": ":/images/items/Armor_02.png",
+        "item_level": 3,
+        "item_name": "Golden Armor",
+        "modifiers": [
+            {
+                "amount": 15,
+                "application_type": 1,
+                "type": 1
+            }
+        ],
+        "skill": {
+            "magic_cost": 10,
+            "modifiers": [
+                {
+                    "amount": 20,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Healing",
+            "target": 0
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "A cloak of a great magician.",
+        "item_icon": ":/images/items/Armor_20.png",
+        "item_level": 4,
+        "item_name": "Gandar's Cloak",
+        "modifiers": [
+            {
+                "amount": 30,
+                "application_type": 1,
+                "type": 3
+            }
+        ],
+        "skill": {
+            "magic_cost": 0,
+            "modifiers": [
+                {
+                    "amount": 50,
+                    "application_type": 1,
+                    "type": 2
+                },
+                {
+                    "amount": -10,
+                    "application_type": 1,
+                    "type": 0
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Masochism",
+            "target": 0
+        }
+    },
+    {
+        "equip_type": 1,
+        "item_description": "A truly valuable object.",
+        "item_icon": ":/images/items/Armor_15.png",
+        "item_level": 4,
+        "item_name": "Elven Chestplate",
+        "modifiers": [
+            {
+                "amount": 70,
+                "application_type": 1,
+                "type": 1
+            }
+        ],
+        "skill": {
+            "magic_cost": 20,
+            "modifiers": [
+                {
+                    "amount": 5,
+                    "application_type": 1,
+                    "type": 1
+                },
+                {
+                    "amount": 5,
+                    "application_type": 1,
+                    "type": 3
+                }
+            ],
+            "skill_description": "Fortification",
+            "skill_name": "Meditation",
+            "target": 0
+        }
     }
 ]
 }

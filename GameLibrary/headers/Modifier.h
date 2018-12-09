@@ -50,7 +50,7 @@ private:
   ModifierType type_;
   ModifierOperation application_type_;
   float amount_;
-  QString OperationToString();
+  float QuantifyEffect();
 };
 
 #endif // MODIFER_H

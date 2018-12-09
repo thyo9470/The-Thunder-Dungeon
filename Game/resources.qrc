@@ -1,45 +1,68 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/Background.png</file>
-        <file>images/Tiles.png</file>
         <file>images/Sprites.png</file>
-        <file>images/Crypte.png</file>
         <file>images/tiles_dungeon_v1.1.png</file>
         <file>images/chara_slime.png</file>
         <file>images/chara_hero.png</file>
         <file>images/Player.png</file>
         <file>images/Slime.png</file>
         <file>images/souterrain.png</file>
-        <file>images/items/axe_0.png</file>
-        <file>images/items/axe_6.png</file>
-        <file>images/items/axe_7.png</file>
-        <file>images/items/staff_0.png</file>
-        <file>images/items/staff_1.png</file>
-        <file>images/items/staff_2.png</file>
-        <file>images/items/staff_3.png</file>
-        <file>images/items/staff_4.png</file>
-        <file>images/items/staff_5.png</file>
-        <file>images/items/sword_0.png</file>
-        <file>images/items/sword_1.png</file>
-        <file>images/items/sword_2.png</file>
-        <file>images/items/sword_3.png</file>
-        <file>images/items/sword_4.png</file>
-        <file>images/items/sword_5.png</file>
-        <file>images/items/sword_6.png</file>
-        <file>images/items/sword_7.png</file>
-        <file>images/items/sword_8.png</file>
-        <file>images/items/armor_1.png</file>
-        <file>images/items/trinket_1.png</file>
-        <file>images/items/axe_1.png</file>
-        <file>images/items/axe_2.png</file>
-        <file>images/items/axe_3.png</file>
-        <file>images/items/axe_4.png</file>
-        <file>images/items/axe_5.png</file>
         <file>itemData/itemData.json</file>
         <file>itemData/affixes.json</file>
-        <file>images/items/book_0.png</file>
-        <file>images/items/headband_0.png</file>
         <file>images/Button.png</file>
-        <file>images/items/Potion.png</file>
+        <file>images/items/Weapon_01.png</file>
+        <file>images/items/Weapon_06.png</file>
+        <file>images/items/Weapon_08.png</file>
+        <file>images/items/Weapon_16.png</file>
+        <file>images/items/Weapon_17.png</file>
+        <file>images/items/Weapon_20.png</file>
+        <file>images/items/Weapon_24.png</file>
+        <file>images/items/Weapon_26.png</file>
+        <file>images/items/Weapon_29.png</file>
+        <file>images/items/Weapon_60.png</file>
+        <file>images/items/Weapon_61.png</file>
+        <file>images/items/Weapon_63.png</file>
+        <file>images/items/Accessory_01.png</file>
+        <file>images/items/Accessory_03.png</file>
+        <file>images/items/Accessory_05.png</file>
+        <file>images/items/Accessory_08.png</file>
+        <file>images/items/Accessory_09.png</file>
+        <file>images/items/Accessory_14.png</file>
+        <file>images/items/Accessory_19.png</file>
+        <file>images/items/Accessory_21.png</file>
+        <file>images/items/Accessory_24.png</file>
+        <file>images/items/Accessory_25.png</file>
+        <file>images/items/Armor_02.png</file>
+        <file>images/items/Armor_03.png</file>
+        <file>images/items/Armor_04.png</file>
+        <file>images/items/Armor_06.png</file>
+        <file>images/items/Armor_07.png</file>
+        <file>images/items/Armor_10.png</file>
+        <file>images/items/Armor_12.png</file>
+        <file>images/items/Armor_14.png</file>
+        <file>images/items/Armor_15.png</file>
+        <file>images/items/Armor_18.png</file>
+        <file>images/items/Armor_20.png</file>
+        <file>images/items/Food_26.png</file>
+        <file>images/items/Food_39.png</file>
+        <file>images/items/Food_43.png</file>
+        <file>images/items/Misc_14.png</file>
+        <file>images/items/Misc_29.png</file>
+        <file>images/items/Misc_50.png</file>
+        <file>images/items/Misc_57.png</file>
+        <file>images/items/Misc_58.png</file>
+        <file>images/items/Potion_01.png</file>
+        <file>images/items/Potion_02.png</file>
+        <file>images/items/Potion_03.png</file>
+        <file>images/items/Potion_04.png</file>
+        <file>images/items/Potion_05.png</file>
+        <file>images/items/Potion_06.png</file>
+        <file>images/items/Potion_07.png</file>
+        <file>images/items/Potion_08.png</file>
+        <file>images/items/Shield_01.png</file>
+        <file>images/items/Shield_09.png</file>
+        <file>images/items/Shield_12.png</file>
+        <file>images/items/Shield_24.png</file>
+        <file>images/items/Shield_27.png</file>
     </qresource>
 </RCC>

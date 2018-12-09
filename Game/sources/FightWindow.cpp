@@ -27,7 +27,6 @@ FightWindow::FightWindow(QWidget *parent) :
   //load backgroundr
   QLabel* background = new QLabel();
   background->setGeometry(10, 10, 781, 421);
-  //background->setPixmap(QPixmap(":/images/Crypte.png"));
   background->setPixmap(QPixmap(":/images/souterrain.png"));
   background->setScaledContents(true);
   scene_->addWidget(background);
