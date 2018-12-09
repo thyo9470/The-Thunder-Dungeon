@@ -70,6 +70,8 @@ private slots:
     void on_resumeButton_clicked();
     void on_quitButton_clicked();
     void on_pauseButton_clicked();
+    void on_equipButton_2_clicked();
+    void on_throwAwayButton_2_clicked();
 };
 
 #endif // MAINWINDOW_H

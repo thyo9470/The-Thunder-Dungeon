@@ -5,11 +5,11 @@
 #include<algorithm>
 #include<stdlib.h>
 #include<QJsonArray>
+#include<QtDebug>
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
 #include "../headers/Command.h"
-
 
 /**
  * @brief Board::Board
@@ -29,6 +29,8 @@ Board::Board(int layers, int width, int height){
   player_tile_ = new PlayerTile();
   exit_tile_ = new ExitTile();
   void_tile_ref_ = new VoidTile();
+  chest_tile_ref_ = new ChestTile();
+  empty_chest_tile_ref_ = new EmptyChestTile();
 
   // Initiate Command objects for command pattern
   up_command_ = new UpCommand();
@@ -76,6 +78,7 @@ void Board::NewLevel(){
   GenerateDungeon();
   FormatDungeon();
   SpawnEnemies();
+  GenerateChests();
 
   // update board data
   level_++;
@@ -390,26 +393,65 @@ void Board::SpawnEnemies()
 }
 
 /**
+ * Generates a certain amount of chests every level
+ */
+void Board::GenerateChests()
+{
+  int num_chests = 0;
+  for(int x = 0; x < width_res_; x++){
+      for(int y = 0; y < height_res_; y++){
+          if(num_chests == chests_per_level_){
+              return;
+            }
+
+          if(CheckCollision(Position(x, y)) == empty_tile_ref_){
+
+              // Count the number of surrounding walls of this position
+              std::vector<Position> positions {Position(0, 1), Position(1, 0), Position(0, -1), Position(-1, 0)};
+              int surrounding_walls = 0;
+              int surrounding_floors = 0;
+              for(Position pos : positions){
+                  Tile * tile = CheckCollision(pos + Position(x, y));
+                  if(tile == wall_tile_ref_){
+                      surrounding_walls += 1;
+                  }
+                  else if(tile == empty_tile_ref_){
+                      surrounding_floors += 1;
+                    }
+              }
+
+              // Do not place a chest if the are not 3 surrounding walls and one open passageway
+              if(surrounding_walls == 3 && surrounding_floors == 1){
+                board_[entity_layer_id_][y][x] = chest_tile_ref_;
+                num_chests += 1;
+                }
+            }
+        }
+    }
+}
+
+/**
  * @brief Board::MoveEnemies
  *
  * Makes all enemies take their turn
  *
+ * @return Whether an enemy was encountered or not
  */
 
-void Board::MoveEnemies()
+bool Board::MoveEnemies()
 {
   for(EnemyTile * enemy : enemies_){
       board_[entity_layer_id_][enemy->get_position().y_][enemy->get_position().x_] = empty_tile_ref_;
       //enemy->DFSMove(board_);
       enemy->Follow(board_);
   }
-  Tile* test = CheckCollision(player_tile_);
-  switch(test->get_type()){
-    case TileType::Enemy:
+  Tile* test = CheckCollision(player_tile_->get_position());
+  if(test->get_type() == TileType::Enemy){
       DeleteEnemy(player_tile_->get_position());
       emit StartBattle();
-      break;
+      return true;
   }
+  return false;
 }
 
 /**
@@ -434,7 +476,7 @@ void Board::DeleteEnemy(Position pos){
     if(enemies_[i]->get_position() == pos){
       enemies_.erase(enemies_.begin() + i);
     }
-  }
+    }
 }
 
 /**
@@ -450,39 +492,44 @@ void Board::MovePlayer(ActionType action_type){
   //int type = static_cast<int>(action_type);
   Position old_pos =  player_tile_->get_position(); 
   board_[player_layer_id_][old_pos.y_][old_pos.x_] = empty_tile_ref_;
+  Tile * collision_tile = empty_tile_ref_;
+  Position attempted_pos = old_pos;
   switch(action_type){
     case ActionType::Up : // up
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,-1)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(0,-1)) == TileType::Empty){
+      attempted_pos = old_pos + Position(0,-1);
+      collision_tile = CheckCollision(attempted_pos);
+      if(collision_tile == empty_tile_ref_ || collision_tile == exit_tile_){
         up_command_->execute(player_tile_);
       }
       break;
     case ActionType::Right: // right
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(1,0)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(1,0)) == TileType::Empty){
+      attempted_pos = old_pos + Position(1, 0);
+      collision_tile = CheckCollision(attempted_pos);
+      if(collision_tile == empty_tile_ref_ || collision_tile == exit_tile_){
         right_command_->execute(player_tile_);
       }
       break;
     case ActionType::Down: // down
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(0,1)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(0,1)) == TileType::Empty){
+      attempted_pos = old_pos + Position(0, 1);
+      collision_tile = CheckCollision(attempted_pos);
+      if(collision_tile == empty_tile_ref_ || collision_tile == exit_tile_){
         down_command_->execute(player_tile_);
       }
       break;
     case ActionType::Left: // left
-      if(GetTileAtPosition(0, player_tile_->get_position() + Position(-1,0)) != TileType::Wall &&
-         GetTileAtPosition(1, player_tile_->get_position() + Position(-1,0)) == TileType::Empty){
+      attempted_pos = old_pos + Position(-1, 0);
+      collision_tile = CheckCollision(attempted_pos);
+      if(collision_tile == empty_tile_ref_ || collision_tile == exit_tile_){
         left_command_->execute(player_tile_);
       }
-      break;
-    default:
       break;
   }
   // move player
   Position new_pos =  player_tile_->get_position(); 
   board_[player_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
+  bool encountered_enemy = false;
   // test for collision
-  Tile* test = CheckCollision(player_tile_);
+  Tile* test = CheckCollision(new_pos);
   switch(test->get_type()){
     case TileType::Exit: // move to next level
       NewLevel();
@@ -493,8 +540,12 @@ void Board::MovePlayer(ActionType action_type){
       emit StartBattle();
       break;
     default: // have enemies take their turn
-      MoveEnemies();
+      encountered_enemy = MoveEnemies();
       break;
+  }
+  if(collision_tile == chest_tile_ref_ && !encountered_enemy){
+      board_[entity_layer_id_][attempted_pos.y_][attempted_pos.x_] = empty_chest_tile_ref_;
+      emit DropItemSignal();
   }
 }
 
@@ -542,6 +593,12 @@ void Board::Read(const QJsonObject &json)
                   break;
                 case TileType::Exit:
                   board_[l][y][x] = exit_tile_;
+                  break;
+                case TileType::Chest:
+                  board_[l][y][x] = chest_tile_ref_;
+                  break;
+                case TileType::EmptyChest:
+                  board_[l][y][x] = empty_chest_tile_ref_;
                   break;
                 }
             }
@@ -639,10 +696,9 @@ TileType Board::GetTileAtPosition(int layer, Position pos){
  * @return The tile the entity collided with (empty if nothing)
  */
 
-Tile* Board::CheckCollision(EntityTile* entity){
+Tile* Board::CheckCollision(Position pos){
   for(int i = 0; i < layers_; i++){
-    Position cur_pos = entity->get_position();
-    Tile* check_tile = board_[i][cur_pos.y_][cur_pos.x_];
+    Tile* check_tile = board_[i][pos.y_][pos.x_];
     if( !((*check_tile) == TileType::Empty) && check_tile != player_tile_){
         return check_tile;
     }

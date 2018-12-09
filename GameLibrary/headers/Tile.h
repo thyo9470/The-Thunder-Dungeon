@@ -34,7 +34,7 @@ struct Position{
   } 
 };
 
-enum class TileType {Empty, Wall, Player, Enemy, Exit, Void};
+enum class TileType {Empty, Wall, Player, Enemy, Exit, Void, Chest, EmptyChest};
 
 std::string TileTypeToString(TileType tile);
 
@@ -74,6 +74,19 @@ class ExitTile:public Tile{
 public:
   ExitTile():Tile(TileType::Exit){}
 };
+
+class ChestTile:public Tile{
+
+public:
+  ChestTile():Tile(TileType::Chest){}
+};
+
+class EmptyChestTile:public Tile{
+
+public:
+  EmptyChestTile():Tile(TileType::EmptyChest){}
+};
+
 
 /*
     moveable objects

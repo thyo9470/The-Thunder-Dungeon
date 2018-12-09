@@ -27,7 +27,6 @@ FightWindow::FightWindow(QWidget *parent) :
   //load backgroundr
   QLabel* background = new QLabel();
   background->setGeometry(10, 10, 781, 421);
-  //background->setPixmap(QPixmap(":/images/Crypte.png"));
   background->setPixmap(QPixmap(":/images/souterrain.png"));
   background->setScaledContents(true);
   scene_->addWidget(background);
@@ -126,8 +125,8 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   std::vector<QPushButton*> button_skills = {ui->skillButton_1, ui->skillButton_2, ui->skillButton_3, ui->skillButton_4};
   for(unsigned int i = 0; i < 4; i++){
       if(i < player_skills.size()){
-        button_skills[i]->setText(player_skills[i].GetName());
-        button_skills[i]->setToolTip(player_skills[i].GetDescription());
+        button_skills[i]->setText(player_skills[i].get_name());
+        button_skills[i]->setToolTip(player_skills[i].get_description());
         }
       else{
           button_skills[i]->setText("Empty");
