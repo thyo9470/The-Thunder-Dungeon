@@ -24,6 +24,7 @@ public:
     void UpdateFightWindow(BattleSim* battle_sim);
     void ShowGameOver(QString enemy_name, int level);
     void SetActionsVisible(bool visible);
+    void AnimateAttack(QGraphicsPixmapItem* obj);
 
 private:
 

@@ -2,8 +2,18 @@
 
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
+#include <QPropertyAnimation>
+#include <QTime>
 #include <iostream>
 #include <ui_fightwindow.h>
+
+void delay(int delay_time)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(delay_time);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 
 FightWindow::FightWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -27,7 +37,6 @@ FightWindow::FightWindow(QWidget *parent) :
   //load backgroundr
   QLabel* background = new QLabel();
   background->setGeometry(10, 10, 781, 421);
-  //background->setPixmap(QPixmap(":/images/Crypte.png"));
   background->setPixmap(QPixmap(":/images/souterrain.png"));
   background->setScaledContents(true);
   scene_->addWidget(background);
@@ -96,6 +105,7 @@ void FightWindow::GameOverButtonPressed()
  */
 
 void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
+
   // if it's the end of a battle show exit button otherwise hide it
   if(battle_sim->GetState() == BattleState::End){
     ui->exitButton->setVisible(true);
@@ -105,6 +115,13 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
     ui->gameOverBox->setVisible(false);
     SetActionsVisible(true);
     }
+
+  // removes old enemy and player pixmap from scene
+  for(auto& item :scene_->items()){
+    if( item->zValue() == 1){
+      scene_->removeItem(item);
+    }
+  }
 
   //update log
   std::vector<std::string> log = battle_sim->GetLog();
@@ -138,6 +155,7 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
   int row = 0;
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_player = new QGraphicsPixmapItem();
+  pixmap_player->setZValue(1);
   pixmap_player->setPixmap(player_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_player->setPos( player_position_x_ , player_position_y_);
   pixmap_player->setScale(pixmap_player->scale() * tile_scale_);
@@ -152,10 +170,25 @@ void FightWindow::UpdateFightWindow(BattleSim* battle_sim){
 
   // Create and add the tile to the scene
   QGraphicsPixmapItem * pixmap_enemy = new QGraphicsPixmapItem();
+  pixmap_enemy->setZValue(1);
   pixmap_enemy->setPixmap(slime_sheet_.copy(0, 0, dungeon_sprite_size_, dungeon_sprite_size_));
   pixmap_enemy->setPos( enemy_position_x_ , enemy_position_y_);
   pixmap_enemy->setScale(pixmap_enemy->scale() * tile_scale_);
   scene_->addItem(pixmap_enemy);
+
+  //AnimateAttack(pixmap_player);
+
+}
+
+void FightWindow::AnimateAttack(QGraphicsPixmapItem* obj){
+
+  int distance = 5;
+
+  for(int i = 0; i < distance; i++){
+    delay(250);
+    obj->setOffset(i, 0);
+  }
+
 }
 
 /**

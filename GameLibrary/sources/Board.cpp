@@ -29,6 +29,8 @@ Board::Board(int layers, int width, int height){
   player_tile_ = new PlayerTile();
   exit_tile_ = new ExitTile();
   void_tile_ref_ = new VoidTile();
+  chest_closed_tile_ref_ = new ChestClosedTile();
+  chest_opened_tile_ref_ = new ChestOpenedTile();
 
   // Initiate Command objects for command pattern
   up_command_ = new UpCommand();
@@ -277,6 +279,9 @@ void Board::GenerateDungeon(){
             }
           }
 
+          // add extras to room
+          AddExtraToRoom(room_center.x_, room_center.y_, room_width, room_height);
+
         } 
         // if this is the position of a hallway
         else if( (x%2==1) || (y%2 == 1)  ){
@@ -328,6 +333,41 @@ void Board::GenerateDungeon(){
     for(int j = height_res_-5; j <= height_res_-3; j++){
       board_[0][j][i] = empty_tile_ref_;
     }
+  }
+
+}
+
+/**
+ * @brief Board::AddExtraToRoom
+ *
+ * Adds some kind of features to room (ie. chests)
+ *
+ * @param x - center of room x coordinate
+ * @param y - center of room y coordinate
+ * @param width - width of room
+ * @param height - height of room
+ */
+
+void Board::AddExtraToRoom(int x, int y, int width, int height){
+
+  double try_for_chest = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+  if(try_for_chest < chest_percent_){
+
+      // The place in the room the chest will be placed
+      int room_x = (rand() % ((2*width)+1)) - width;
+      int room_y = (rand() % ((2*height)+1)) - height;
+
+      // the place on the board the chest is placed
+      int chest_x = x + room_x;
+      int chest_y = y + room_y;
+
+      TileType test_placement = GetTileAtPosition(0, Position(chest_x, chest_y));
+
+      if(test_placement == TileType::Empty){
+        board_[entity_layer_id_][chest_y][chest_x] = chest_closed_tile_ref_;
+      }
+
   }
 
 }
@@ -403,7 +443,7 @@ void Board::MoveEnemies()
       //enemy->DFSMove(board_);
       enemy->Follow(board_);
   }
-  Tile* test = CheckCollision(player_tile_);
+  Tile* test = CheckCollision(player_tile_->get_position());
   switch(test->get_type()){
     case TileType::Enemy:
       DeleteEnemy(player_tile_->get_position());
@@ -482,7 +522,7 @@ void Board::MovePlayer(ActionType action_type){
   Position new_pos =  player_tile_->get_position(); 
   board_[player_layer_id_][new_pos.y_][new_pos.x_] = player_tile_;
   // test for collision
-  Tile* test = CheckCollision(player_tile_);
+  Tile* test = CheckCollision(new_pos);
   switch(test->get_type()){
     case TileType::Exit: // move to next level
       NewLevel();
@@ -491,6 +531,10 @@ void Board::MovePlayer(ActionType action_type){
     case TileType::Enemy: // fight enemy
       DeleteEnemy(player_tile_->get_position());
       emit StartBattle();
+      break;
+    case TileType::ChestClosed:
+      board_[entity_layer_id_][new_pos.y_][new_pos.x_] = chest_opened_tile_ref_;
+      emit DropItemSignal();
       break;
     default: // have enemies take their turn
       MoveEnemies();
@@ -639,9 +683,8 @@ TileType Board::GetTileAtPosition(int layer, Position pos){
  * @return The tile the entity collided with (empty if nothing)
  */
 
-Tile* Board::CheckCollision(EntityTile* entity){
+Tile* Board::CheckCollision(Position cur_pos){
   for(int i = 0; i < layers_; i++){
-    Position cur_pos = entity->get_position();
     Tile* check_tile = board_[i][cur_pos.y_][cur_pos.x_];
     if( !((*check_tile) == TileType::Empty) && check_tile != player_tile_){
         return check_tile;

@@ -47,6 +47,7 @@ Game::Game()
 void Game::StartGame()
 {
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
+  connect(board_, &Board::DropItemSignal, this, &Game::DropItem);
 
   // Update the window with the player's stats
   window_->UpdatePlayerStats(*player_);
@@ -217,7 +218,7 @@ void Game::GetInputBattleSim(int skill_id){
 void Game::GoToBoard()
 {
   battle_sim_->DeactivateBattle();
-  EndBattle();
+  fight_window_->hide();
 }
 
 /**
@@ -233,6 +234,7 @@ void Game::GameOver()
  */
 void Game::DropItem()
 {
+  std::cout << "test" << std::endl;
   item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
   window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;

@@ -34,6 +34,7 @@ public:
 
 signals:
   void StartBattle();
+  void DropItemSignal();
 
 private:
   // number of object layers
@@ -55,12 +56,15 @@ private:
   Tile* wall_tile_ref_;
   PlayerTile* player_tile_;
   Tile* exit_tile_;
+  Tile* chest_closed_tile_ref_;
+  Tile* chest_opened_tile_ref_;
   std::vector<EnemyTile *> enemies_;
 
   std::vector< std::vector< std::vector<Tile*> > > board_;
 
   // Board data
   int level_;
+  double chest_percent_ = 0.25; // chance of making a chest in a room
 
   // Commands
   Command* up_command_;
@@ -84,9 +88,10 @@ private:
   void MoveEnemies();
   void ClearEnemies();
   void DeleteEnemy(Position pos);
+  void AddExtraToRoom(int x, int y, int width, int height);
 
   // checks it an entity tile has collided with another object
-  Tile* CheckCollision(EntityTile* entity);
+  Tile* CheckCollision(Position cur_pos);
 };
 
 
