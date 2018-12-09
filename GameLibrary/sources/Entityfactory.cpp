@@ -1,6 +1,5 @@
 #include "headers/Entityfactory.h"
 #include <cmath>
-
 /**
  * Generates an enemy based on level
  * @param level
@@ -24,6 +23,21 @@ Entity * EntityFactory::GenerateEnemy(int level)
 
   EquipDefaultItems(*enemy);
 
+  return enemy;
+}
+
+/**
+ * Generates an enemy based on level with equipment based on the level
+ * @param level
+ * @return The enemy reference
+ */
+Entity *EntityFactory::GenerateEnemyWithEquipment(int level)
+{
+  Entity * enemy = GenerateEnemy(level);
+  int equipment_attempts = 4;
+  for(int i = 0; i < equipment_attempts; i++){
+      enemy->EquipItem(item_factory_.GenerateItem(level));
+    }
   return enemy;
 }
 
@@ -59,29 +73,30 @@ void EntityFactory::EquipDefaultItems(Entity &entity)
   Modifier damage_mod(ModifierType::Health, ModifierOperation::Additive, -10);
   strike_mods.push_back(damage_mod);
 
-  std::vector<Modifier> drain_mods;
-  int drain_cost = -5;
-  Modifier magic_mod(ModifierType::Magic, ModifierOperation::Additive, -10);
-  drain_mods.push_back(magic_mod);
-
-  std::vector<Modifier> recover_mods;
+  std::vector<Modifier> guard_mods;
   int recover_cost = 0;
-  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 20);
-  recover_mods.push_back(recover_mod);
+  Modifier recover_mod(ModifierType::Magic, ModifierOperation::Additive, 10);
+  Modifier health_mod(ModifierType::Health, ModifierOperation::Additive, 3);
+  guard_mods.push_back(recover_mod);
+  guard_mods.push_back(health_mod);
 
   Skill strike_skill("Strike", "Basic Attack: \n10 damage", strike_mods, strike_cost, Target::Enemy);
-  Skill drain_skill("Drain", "Enemy loses \n10 magic", drain_mods, drain_cost, Target::Enemy);
-  Skill recover_skill("Recover", "Regain 10 magic", recover_mods, recover_cost, Target::Self);
+  Skill guard_skill("Guard", "Regain 10 magic and 3 health", guard_mods, recover_cost, Target::Self);
 
   std::vector<Modifier> no_mods;
+  std::vector<Modifier> armor_mod;
+  armor_mod.push_back(Modifier(ModifierType::MaxHealth, ModifierOperation::Additive, 10));
+
+  std::vector<Modifier> ring_mod;
+  ring_mod.push_back(Modifier(ModifierType::MaxMagic, ModifierOperation::Additive, 10));
 
   Item start_weapon(1, "Short Sword", "A light short sword.", no_mods, EquipType::Weapon, strike_skill, ":/images/items/Weapon_06.png");
-//  Item start_special(1, "Mage's Tome", "A book of power", no_mods, EquipType::Special, recover_skill, ":/images/items/book_0.png");
-//  Item start_amulet(1, "Vampiric Amulet", "An amulet that drinks blood.", no_mods, EquipType::Trinket, drain_skill, ":/images/items/trinket_1.png");
-  Item start_armor(1, "Iron Armor", "Cheap armor.", no_mods, EquipType::Armor, ":/images/items/Armor_03.png");
+  Item start_special(1, "Buckler", "A light, small shield.", no_mods, EquipType::Special, guard_skill, ":/images/items/Shield_01.png");
+  Item start_amulet(1, "Metal Ring", "A slightly magical ring.", ring_mod, EquipType::Trinket, ":/images/items/Accessory_01.png");
+  Item start_armor(1, "Beginner's Armor", "Provides some protection.", armor_mod, EquipType::Armor, ":/images/items/Armor_03.png");
 
   entity.EquipItem(start_weapon);
-//  entity.EquipItem(start_special);
-//  entity.EquipItem(start_amulet);
+  entity.EquipItem(start_special);
+  entity.EquipItem(start_amulet);
   entity.EquipItem(start_armor);
 }

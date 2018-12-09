@@ -2,19 +2,20 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <cmath>
-
 #include <headers/Entity.h>
 
 #include "../headers/BattleSim.h"
 #include "headers/Item.h"
 #include "headers/Entityfactory.h"
+#include "headers/Itemfactory.h"
 
 BattleSim::BattleSim(Entity* player, int minimax_depth){
   minimax_depth_ = minimax_depth;
 
   player_ = player;
 
-  enemy_ = EntityFactory::GenerateEnemy(1);
+  EntityFactory entity_factory;
+  enemy_ = entity_factory.GenerateEnemyWithEquipment(player->GetLevel());
 
   agent_ = new BattleAgent(player_, enemy_);
 
