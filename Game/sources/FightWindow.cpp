@@ -69,7 +69,8 @@ FightWindow::FightWindow(QWidget *parent) :
 }
 
 FightWindow::~FightWindow(){
-    delete ui;
+  delete ui;
+  delete scene_;
 }
 
 void FightWindow::ButtonPressedSlot(){

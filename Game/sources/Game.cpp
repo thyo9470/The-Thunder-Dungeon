@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QJsonDocument>
+#include <QDebug>
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
@@ -19,6 +20,7 @@ Game::Game()
   window_ = new Window(); // Represents the board window
   fight_window_ = new FightWindow(); // Represents the fight scene window
   menu_window_ = new MenuWindow(); // Represents the starting window
+  win_window_ = new WinWindow();
 
   menu_window_->show();
 
@@ -38,6 +40,18 @@ Game::Game()
 
   connect(menu_window_, &MenuWindow::StartGameSignal, this, &Game::NewGame);
   connect(menu_window_, &MenuWindow::LoadGameSignal, this, &Game::LoadGame);
+  
+  connect(win_window_, &WinWindow::NewGameSignal, this, &Game::QuitGame);
+}
+
+Game::~Game(){
+  delete window_;
+  delete fight_window_;
+  delete menu_window_;
+  delete win_window_;
+  delete board_;
+  delete battle_sim_;
+  delete player_;
 }
 
 /**
@@ -226,7 +240,7 @@ void Game::GoToBoard()
  */
 void Game::GameOver()
 {
-  fight_window_->ShowGameOver("Slime", board_->GetLevel());
+  fight_window_->ShowGameOver("Slime", board_->get_level());
 }
 
 /**
@@ -235,7 +249,7 @@ void Game::GameOver()
 void Game::DropRandomItem()
 {
   std::cout << "test" << std::endl;
-  item_to_equip_ = item_factory_.GenerateItem(board_->GetLevel());
+  item_to_equip_ = item_factory_.GenerateItem(board_->get_level());
   window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
 }
@@ -258,9 +272,19 @@ void Game::EnemyDropItem()
  */
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
-  window_->AddLighting(board_->get_board(), board_->GetPlayer());
-  player_->SetLevel(board_->GetLevel());
-  window_->UpdateLevel(board_->GetLevel());
+  window_->AddLighting(board_->get_board(), board_->get_player());
+  player_->SetLevel(board_->get_level());
+  window_->UpdateLevel(board_->get_level());
+
+  if(board_->get_level() == end_level){
+    EndGame();
+  }
+}
+
+void Game::EndGame() const{
+  window_->hide();
+  fight_window_->hide();
+  win_window_->show();
 }
 
 /**
@@ -336,6 +360,7 @@ void Game::QuitGame()
   playing_ = false;
   window_->hide();
   fight_window_->hide();
+  win_window_->hide();
   menu_window_->show();
 
   // Update the menu_window

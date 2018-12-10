@@ -20,13 +20,13 @@ class Window : public QMainWindow
 
 public:
     explicit Window(QWidget *parent = nullptr, int window_x = 496, int window_y = 496);
+    ~Window();
     void UpdateBoard(std::vector< std::vector< std::vector<Tile*> > > tileInfo);
     void AddLighting(std::vector< std::vector< std::vector<Tile*> > > board, PlayerTile* player);
     void UpdatePlayerStats(Entity &entity);
     void UpdateLevel(int level);
     void UpdateItems(std::map<EquipType, Item> equipment);
     void ShowItemDropUI(Item item, std::map<EquipType, Item> equipment);
-    ~Window();
     void keyPressEvent( QKeyEvent * event );
     bool GetStillChoosingItem();
 
