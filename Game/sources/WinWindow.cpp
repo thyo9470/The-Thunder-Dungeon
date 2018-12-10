@@ -38,6 +38,13 @@ WinWindow::~WinWindow(){
   delete scene_;
 }
 
+/**
+ * @brief WinWindow::on_NewGameButton_clicked
+ *
+ * triggers the new game signal when pressing the new game button
+ *
+ */
+
 void WinWindow::on_NewGameButton_clicked()
 {
   emit NewGameSignal();

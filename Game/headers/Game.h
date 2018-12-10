@@ -43,9 +43,9 @@ private:
   bool playing_;
   Item item_to_equip_;
   Entity *player_;
-  int end_level = 5;
+  int end_level = 6;
 
-  void EndGame() const;
+  void WinGame() const;
 
 public slots:
   void GetInputBoard(QKeyEvent* event);
