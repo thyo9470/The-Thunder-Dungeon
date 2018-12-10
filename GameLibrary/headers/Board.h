@@ -10,7 +10,6 @@
 #include "Tile.h"
 #include "Command.h"
 
-
 enum class ActionType {Up=101, Right=102, Down=103, Left=104, TEST=999};
 
 class Board : public QObject {
@@ -29,8 +28,9 @@ public:
   void Read(const QJsonObject &json);
   void Write(QJsonObject &json) const;
 
-  const int static player_layer_id_ = 1;
-  const int static entity_layer_id_ = 2;
+  const int static player_layer_id_ = 2;
+  const int static entity_layer_id_ = 3;
+  const int chest_layer_id_ = 1;
 
 signals:
   void StartBattle();
@@ -49,8 +49,6 @@ private:
   // Number of tiles in each row and column
   int width_res_;
   int height_res_;
-
-  int chests_per_level_ = 10;
 
   // Pointers to Tile objects for flyweight
   Tile* empty_tile_ref_;

@@ -64,5 +64,8 @@
         <file>images/items/Shield_12.png</file>
         <file>images/items/Shield_24.png</file>
         <file>images/items/Shield_27.png</file>
+        <file>sounds/Main Theme.mp3</file>
+        <file>sounds/Hit.mp3</file>
+        <file>sounds/Self.mp3</file>
     </qresource>
 </RCC>
