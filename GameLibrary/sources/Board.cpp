@@ -687,6 +687,9 @@ TileType Board::GetTileAtPosition(int layer, Position pos){
  */
 ::
 Tile* Board::CheckCollision(Position pos){
+  if(pos.x_ == 0 || pos.y_ == 0 || pos.x_ == width_res_-1 || pos.y_ == height_res_-1){
+    return wall_tile_ref_;
+  }
   for(int i = 0; i < layers_; i++){
     Tile* check_tile = board_[i][pos.y_][pos.x_];
     if( !((*check_tile) == TileType::Empty) && check_tile != player_tile_){

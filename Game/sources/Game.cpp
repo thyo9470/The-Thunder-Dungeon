@@ -15,8 +15,6 @@
 
 Game::Game()
 {
-  window_ = new Window(); // Represents the board window
-  fight_window_ = new FightWindow(); // Represents the fight scene window
   menu_window_ = new MenuWindow(); // Represents the starting window
   win_window_ = new WinWindow();
 
@@ -26,15 +24,6 @@ Game::Game()
   menu_window_->UpdateWindow(loadFile.open(QIODevice::ReadOnly));
 
   playing_ = false;
-
-  connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
-  connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
-  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
-  connect(window_, &Window::QuitGameSignal, this, &Game::QuitGame);
-
-  connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
-  connect(fight_window_, &FightWindow::GameOverSignal, this, &Game::QuitGame);
-  connect(fight_window_, &FightWindow::ToBoardSignal, this, &Game::GoToBoard);
 
   connect(menu_window_, &MenuWindow::StartGameSignal, this, &Game::NewGame);
   connect(menu_window_, &MenuWindow::LoadGameSignal, this, &Game::LoadGame);
@@ -70,6 +59,19 @@ Game::~Game(){
  */
 void Game::StartGame()
 {
+
+  window_ = new Window(); // Represents the board window
+  fight_window_ = new FightWindow(); // Represents the fight scene window
+
+  connect(window_, &Window::KeyPressSignal, this, &Game::GetInputBoard);
+  connect(window_, &Window::SaveGameSignal, this, &Game::SaveGame);
+  connect(window_, &Window::EquipItemSignal, this, &Game::EquipItem);
+  connect(window_, &Window::QuitGameSignal, this, &Game::QuitGame);
+
+  connect(fight_window_, &FightWindow::ButtonPressedSignal, this, &Game::GetInputBattleSim);
+  connect(fight_window_, &FightWindow::GameOverSignal, this, &Game::QuitGame);
+  connect(fight_window_, &FightWindow::ToBoardSignal, this, &Game::GoToBoard);
+
   connect(board_, &Board::StartBattle, this, &Game::StartBattle);
   connect(board_, &Board::DropItemSignal, this, &Game::DropRandomItem);
 
@@ -384,8 +386,8 @@ void Game::EquipItem(bool equip_item)
 void Game::QuitGame()
 {
   playing_ = false;
-  window_->hide();
-  fight_window_->hide();
+  delete window_;
+  delete fight_window_;
   win_window_->hide();
   menu_window_->show();
 
