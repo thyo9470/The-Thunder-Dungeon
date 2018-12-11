@@ -1,4 +1,3 @@
-
 [![Build Status](https://travis-ci.org/thyo9470/The-Thunder-Dungeon.svg?branch=master)](https://travis-ci.org/thyo9470/The-Thunder-Dungeon)
 
 How to run:
