@@ -26,7 +26,7 @@ WinWindow::WinWindow(QWidget *parent) :
 
   //load backgroundr
   QLabel* background = new QLabel();
-  background->setGeometry(10, 10, 801, 631);
+  background->setGeometry(10, 10, 801, 590);
   background->setPixmap(background_image_);
   background->setScaledContents(true);
   scene_->addWidget(background);

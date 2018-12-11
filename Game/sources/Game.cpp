@@ -284,7 +284,7 @@ void Game::EnemyDropItem()
  */
 void Game::GameLoop() const{
   window_->UpdateBoard(board_->get_board());
-  //window_->AddLighting(board_->get_board(), board_->get_player());
+  window_->AddLighting(board_->get_board(), board_->get_player());
   player_->SetLevel(board_->get_level());
   window_->UpdateLevel(board_->get_level());
 }
