@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/thyo9470/The-Thunder-Dungeon.svg?branch=master)](https://travis-ci.org/thyo9470/The-Thunder-Dungeon)
+
 How to run:
 This is a Qt project that runs with only the Qt Creator. To open and run, use Qt creator and open the project, or double click the Game.pro file. Then, run the project!
 
