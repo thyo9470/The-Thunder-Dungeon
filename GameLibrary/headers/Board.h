@@ -20,8 +20,8 @@ public:
   Board(int layers, int width, int height);
 
   std::vector< std::vector< std::vector<Tile*> > > get_board(){return board_;}
-  int GetLevel() {return level_;}
-  PlayerTile* GetPlayer() {return player_tile_;}
+  int get_level() {return level_;}
+  PlayerTile* get_player() {return player_tile_;}
 
   // Move Player
   void MovePlayer(ActionType action_type);

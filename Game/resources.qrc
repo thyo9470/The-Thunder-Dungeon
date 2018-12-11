@@ -9,7 +9,6 @@
         <file>images/souterrain.png</file>
         <file>itemData/itemData.json</file>
         <file>itemData/affixes.json</file>
-        <file>images/Button.png</file>
         <file>images/items/Weapon_01.png</file>
         <file>images/items/Weapon_06.png</file>
         <file>images/items/Weapon_08.png</file>
@@ -64,5 +63,9 @@
         <file>images/items/Shield_12.png</file>
         <file>images/items/Shield_24.png</file>
         <file>images/items/Shield_27.png</file>
+        <file>images/HippoGoose.png</file>
+        <file>images/HippoGooseHead.png</file>
+        <file>images/HippoGooseEyes.png</file>
+        <file>images/Button.png</file>
     </qresource>
 </RCC>

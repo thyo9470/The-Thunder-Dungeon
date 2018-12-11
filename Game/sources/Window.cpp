@@ -42,6 +42,7 @@ Window::Window(QWidget *parent, int window_x, int window_y) :
 Window::~Window()
 {
     delete ui;
+    delete scene_;
 }
 
 void Window::keyPressEvent(QKeyEvent *event)
