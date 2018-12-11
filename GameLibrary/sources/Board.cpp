@@ -5,7 +5,6 @@
 #include<algorithm>
 #include<stdlib.h>
 #include<QJsonArray>
-#include<QtDebug>
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"

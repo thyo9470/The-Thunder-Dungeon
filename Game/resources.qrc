@@ -9,7 +9,6 @@
         <file>images/souterrain.png</file>
         <file>itemData/itemData.json</file>
         <file>itemData/affixes.json</file>
-        <file>images/Button.png</file>
         <file>images/items/Weapon_01.png</file>
         <file>images/items/Weapon_06.png</file>
         <file>images/items/Weapon_08.png</file>
@@ -67,5 +66,9 @@
         <file>sounds/Main Theme.mp3</file>
         <file>sounds/Hit.mp3</file>
         <file>sounds/Self.mp3</file>
+        <file>images/HippoGoose.png</file>
+        <file>images/HippoGooseHead.png</file>
+        <file>images/HippoGooseEyes.png</file>
+        <file>images/Button.png</file>
     </qresource>
 </RCC>

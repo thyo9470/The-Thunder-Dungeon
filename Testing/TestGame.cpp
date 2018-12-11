@@ -87,8 +87,6 @@ void TestGame::TestMinimax(){
 
   Skill best_move = agent->GetEnemyMove(3);
 
-  std::cout << "Best move: " << best_move.get_name().toStdString() << std::endl;
-
   QVERIFY(true);
 }
 

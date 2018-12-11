@@ -6,6 +6,23 @@ MenuWindow::MenuWindow(QWidget *parent) :
   ui(new Ui::MenuWindow)
 {
   ui->setupUi(this);
+
+  // Initialize the scene, which will hold all the objects to render
+  scene_ = new QGraphicsScene();
+  ui->backgroundView->setScene(scene_);
+
+  // Keep scrollbars from appearing
+  ui->backgroundView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  ui->backgroundView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+  background_image_ = QPixmap(":/images/HippoGooseEyes.png");
+
+  //load backgroundr
+  QLabel* background = new QLabel();
+  background->setGeometry(10, 10, 801, 590);
+  background->setPixmap(background_image_);
+  background->setScaledContents(true);
+  scene_->addWidget(background);
 }
 
 /**
@@ -25,6 +42,7 @@ void MenuWindow::UpdateWindow(bool saved_game)
 MenuWindow::~MenuWindow()
 {
   delete ui;
+  delete scene_;
 }
 
 void MenuWindow::on_playButton_clicked()

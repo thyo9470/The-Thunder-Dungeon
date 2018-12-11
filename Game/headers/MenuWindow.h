@@ -1,6 +1,7 @@
 #ifndef MENUWINDOW_H
 #define MENUWINDOW_H
 
+#include <QGraphicsScene>
 #include <QMainWindow>
 #include "headers/Board.h"
 
@@ -27,6 +28,10 @@ signals:
 
 private:
   Ui::MenuWindow *ui;
+  QGraphicsScene *scene_; // Objects get added to the scene
+
+  QPixmap background_image_;
+
 };
 
 #endif // MENUWINDOW_H

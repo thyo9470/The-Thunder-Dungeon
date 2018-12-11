@@ -11,6 +11,7 @@
 #include "BattleSim.h"
 #include "FightWindow.h"
 #include "Window.h"
+#include "WinWindow.h"
 #include "MenuWindow.h"
 #include "headers/Itemfactory.h"
 
@@ -20,6 +21,7 @@ class Game : public QObject{
   Q_OBJECT
 public:
   Game();
+  ~Game();
 
   void Read(const QJsonObject &json);
   void Write(QJsonObject &json) const;
@@ -34,6 +36,7 @@ private:
   Window * window_;
   FightWindow * fight_window_;
   MenuWindow * menu_window_;
+  WinWindow * win_window_;
   Board  *board_;
   BattleSim *battle_sim_;
   Difficulty difficulty;
@@ -42,6 +45,10 @@ private:
   Item item_to_equip_;
   Entity *player_;
   QMediaPlayer * fx_player_;
+
+  int end_level = 6;
+
+  void WinGame() const;
 
 public slots:
   void GetInputBoard(QKeyEvent* event);
