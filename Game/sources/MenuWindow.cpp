@@ -6,8 +6,6 @@ MenuWindow::MenuWindow(QWidget *parent) :
   ui(new Ui::MenuWindow)
 {
   ui->setupUi(this);
-  ui->playButton->autoFillBackground();
-  ui->playButton->setStyleSheet("border-image:url(:images/Button.png)");
 }
 
 /**
