@@ -5,7 +5,6 @@
 #include<algorithm>
 #include<stdlib.h>
 #include<QJsonArray>
-#include<QtDebug>
 
 #include "../headers/Board.h"
 #include "../headers/Tile.h"
@@ -72,7 +71,7 @@ void Board::NewLevel(){
   temp_board[player_layer_id_][3][3] = player_tile_;
 
   // place exit tile
-  temp_board[entity_layer_id_][height_res_-4][width_res_-4] = exit_tile_;
+  temp_board[chest_layer_id_][height_res_-4][width_res_-4] = exit_tile_;
 
   board_ = temp_board;
   GenerateDungeon();
@@ -365,7 +364,7 @@ void Board::AddExtraToRoom(int x, int y, int width, int height){
       Tile* test_placement = CheckCollision(Position(chest_x, chest_y));
 
       if(test_placement == empty_tile_ref_){
-        board_[entity_layer_id_][chest_y][chest_x] = chest_closed_tile_ref_;
+        board_[chest_layer_id_][chest_y][chest_x] = chest_closed_tile_ref_;
       }
 
   }
@@ -428,44 +427,6 @@ void Board::SpawnEnemies()
         }
     }
 }
-
-/**
- * Generates a certain amount of chests every level
- */
-/*void Board::GenerateChests()
-{
-  int num_chests = 0;
-  for(int x = 0; x < width_res_; x++){
-      for(int y = 0; y < height_res_; y++){
-          if(num_chests == chests_per_level_){
-              return;
-            }
-
-          if(CheckCollision(Position(x, y)) == empty_tile_ref_){
-
-              // Count the number of surrounding walls of this position
-              std::vector<Position> positions {Position(0, 1), Position(1, 0), Position(0, -1), Position(-1, 0)};
-              int surrounding_walls = 0;
-              int surrounding_floors = 0;
-              for(Position pos : positions){
-                  Tile * tile = CheckCollision(pos + Position(x, y));
-                  if(tile == wall_tile_ref_){
-                      surrounding_walls += 1;
-                  }
-                  else if(tile == empty_tile_ref_){
-                      surrounding_floors += 1;
-                    }
-              }
-
-              // Do not place a chest if the are not 3 surrounding walls and one open passageway
-              if(surrounding_walls == 3 && surrounding_floors == 1){
-                board_[entity_layer_id_][y][x] = chest_tile_ref_;
-                num_chests += 1;
-                }
-            }
-        }
-    }
-}*/
 
 /**
  * @brief Board::MoveEnemies
@@ -569,7 +530,7 @@ void Board::MovePlayer(ActionType action_type){
       emit StartBattle();
       break;
     case TileType::ChestClosed:
-      board_[entity_layer_id_][new_pos.y_][new_pos.x_] = chest_opened_tile_ref_;
+      board_[chest_layer_id_][new_pos.y_][new_pos.x_] = chest_opened_tile_ref_;
       emit DropItemSignal();
       break;
     default: // have enemies take their turn

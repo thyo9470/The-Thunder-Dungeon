@@ -23,13 +23,6 @@ MenuWindow::MenuWindow(QWidget *parent) :
   background->setPixmap(background_image_);
   background->setScaledContents(true);
   scene_->addWidget(background);
-
-  /*ui->playButton->autoFillBackground();
-  ui->playButton->setStyleSheet("border-image:url(:images/Button.png)");
-
-  ui->loadGameButton->autoFillBackground();
-  ui->loadGameButton->setStyleSheet("border-image:url(:images/Button.png)");*/
-
 }
 
 /**

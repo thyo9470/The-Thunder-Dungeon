@@ -101,13 +101,13 @@
             "name": "of the HippoGoose",
             "modifiers": [
                 {
-                    "amount": 1.1,
-                    "application_type": 0,
+                    "amount": 10,
+                    "application_type": 1,
                     "type": 1
                 },
                 {
-                    "amount": 1.1,
-                    "application_type": 0,
+                    "amount": 10,
+                    "application_type": 1,
                     "type": 3
                 }
             ]

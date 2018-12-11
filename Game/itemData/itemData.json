@@ -785,7 +785,7 @@
             {
                 "amount": 20,
                 "application_type": 1,
-                "type": 0
+                "type": 1
             }
         ]
     },

@@ -3,7 +3,7 @@
 
 #include <QApplication>
 #include <vector>
-
+#include <QMediaPlayer>
 
 #include <headers/Entity.h>
 #include "headers/BattleAgent.h"
@@ -14,7 +14,7 @@ class BattleSim : public QObject{
   Q_OBJECT
 
 public:
-  BattleSim(Entity* player, int minimax_depth = 3); // once player object created we will pass its reference
+  BattleSim(Entity* player, QMediaPlayer * fx_player, int minimax_depth = 3); // once player object created we will pass its reference
   ~BattleSim();
   std::vector<std::string> GetLog(){return log_;}
   Entity* GetPlayer(){return player_;}
@@ -38,6 +38,7 @@ private:
   Entity* player_;
   Entity* enemy_;
   BattleAgent* agent_;
+  QMediaPlayer * fx_player_;
   std::vector<std::string> log_;
   BattleState state_;
   // How many moves ahead can the enemy look at (larger = harder enemies)

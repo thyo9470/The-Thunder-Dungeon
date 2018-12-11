@@ -48,9 +48,9 @@ void TestGame::TestBoardInit_data()
   QTest::addColumn<int>("rooms_x");
   QTest::addColumn<int>("rooms_y");
 
-  QTest::newRow("small board") << 3 << 3 << 3;
-  QTest::newRow("medium board") << 3 << 5 << 5;
-  QTest::newRow("large board") << 3 << 10 << 10;
+  QTest::newRow("small board") << 4 << 3 << 3;
+  QTest::newRow("medium board") << 4 << 5 << 5;
+  QTest::newRow("large board") << 4 << 10 << 10;
 }
 
 /**
@@ -86,8 +86,6 @@ void TestGame::TestMinimax(){
   BattleAgent* agent = new BattleAgent(player, enemy);
 
   Skill best_move = agent->GetEnemyMove(3);
-
-  std::cout << "Best move: " << best_move.get_name().toStdString() << std::endl;
 
   QVERIFY(true);
 }

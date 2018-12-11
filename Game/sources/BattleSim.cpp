@@ -9,7 +9,7 @@
 #include "headers/Entityfactory.h"
 #include "headers/Itemfactory.h"
 
-BattleSim::BattleSim(Entity* player, int minimax_depth){
+BattleSim::BattleSim(Entity* player, QMediaPlayer * fx_player, int minimax_depth){
   minimax_depth_ = minimax_depth;
 
   player_ = player;
@@ -19,6 +19,7 @@ BattleSim::BattleSim(Entity* player, int minimax_depth){
 
   agent_ = new BattleAgent(player_, enemy_);
 
+  fx_player_ = fx_player;
 }
 
 BattleSim::~BattleSim(){
@@ -55,8 +56,12 @@ void BattleSim::PlayerTurn(int skill_id){
     }
     if(cur_skill.get_target() == Target::Self){
       player_->ApplySkill(cur_skill);
+      fx_player_->setMedia(QUrl("qrc:/sounds/Self.mp3"));
+      fx_player_->play();
     }else{
       enemy_->ApplySkill(cur_skill);
+      fx_player_->setMedia(QUrl("qrc:/sounds/Hit.mp3"));
+      fx_player_->play();
       emit AnimateAttackSignal(true);
     }
     UpdateLog("You used " + cur_skill.get_name().toStdString());
@@ -83,9 +88,13 @@ void BattleSim::EnemyTurn(){
         if(cur_skill.get_target() == Target::Self){
           enemy_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
+          fx_player_->setMedia(QUrl("qrc:/sounds/Self.mp3"));
+          fx_player_->play();
         }else{
           player_->ApplySkill(cur_skill);
           enemy_->UseSkill(cur_skill);
+          fx_player_->setMedia(QUrl("qrc:/sounds/Hit.mp3"));
+          fx_player_->play();
           emit AnimateAttackSignal(false);
         }
         UpdateLog("The enemy used " + cur_skill.get_name().toStdString());

@@ -58,12 +58,6 @@ Skill BattleAgent::GetEnemyMove(int depth){
     }
   }
 
-
-  for(unsigned long i = 0; i < skill_score.size(); i++){
-    std::cout << enemy_skills[i].get_name().toStdString() << "'s Score: " << skill_score[i] << " || ";
-  }
-  std::cout << std::endl;
-
   // Get the min skill score
   double min_score = *min_element(std::begin(skill_score), std::end(skill_score));
 

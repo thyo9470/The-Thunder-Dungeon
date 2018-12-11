@@ -4,6 +4,7 @@
 #define _GAME_H_
 
 #include <QApplication>
+#include <QMediaPlayer>
 
 #include "headers/Entity.h"
 #include "headers/Board.h"
@@ -43,6 +44,8 @@ private:
   bool playing_;
   Item item_to_equip_;
   Entity *player_;
+  QMediaPlayer * fx_player_;
+
   int end_level = 6;
 
   void WinGame() const;

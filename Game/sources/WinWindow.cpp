@@ -2,10 +2,6 @@
 #include "./headers/WinWindow.h"
 #include "ui_winwindow.h"
 
-#include <QDebug>
-
-
-
 WinWindow::WinWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::WinWindow)
@@ -30,9 +26,6 @@ WinWindow::WinWindow(QWidget *parent) :
   background->setPixmap(background_image_);
   background->setScaledContents(true);
   scene_->addWidget(background);
-
-  /*ui->newGameButton->autoFillBackground();
-  ui->newGameButton->setStyleSheet("border-image:url(:images/Button.png)");*/
 
 }
 

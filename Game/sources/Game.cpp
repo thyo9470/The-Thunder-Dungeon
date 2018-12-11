@@ -1,13 +1,11 @@
 #include<iostream>
 #include<thread>
 #include<chrono>
-
-
+#include <QMediaPlaylist>
 #include <QApplication>
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QJsonDocument>
-#include <QDebug>
 
 #include "../headers/Game.h"
 #include "./headers/Board.h"
@@ -40,6 +38,18 @@ Game::Game()
 
   connect(menu_window_, &MenuWindow::StartGameSignal, this, &Game::NewGame);
   connect(menu_window_, &MenuWindow::LoadGameSignal, this, &Game::LoadGame);
+
+  // Loops the music
+  QMediaPlaylist * playlist = new QMediaPlaylist();
+  playlist->addMedia(QUrl("qrc:/sounds/Main Theme.mp3"));
+  playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+  // Play the background music
+  QMediaPlayer * music = new QMediaPlayer();
+  music->setMedia(playlist);
+  music->play();
+
+  fx_player_ = new QMediaPlayer();
   
   connect(win_window_, &WinWindow::NewGameSignal, this, &Game::QuitGame);
 }
@@ -260,7 +270,6 @@ void Game::GameOver()
  */
 void Game::DropRandomItem()
 {
-  std::cout << "test" << std::endl;
   item_to_equip_ = item_factory_.GenerateItem(board_->get_level());
   window_->ShowItemDropUI(item_to_equip_, player_->GetEquipment());
   playing_ = false;
@@ -313,24 +322,20 @@ void Game::StartBattle(){
 
   switch (difficulty) {
     case Difficulty::Easy:
-      std::cout << "Easy" << std::endl;
       minimax_depth = 3;
       break;
     case Difficulty::Medium:
-      std::cout << "Medium" << std::endl;
       minimax_depth = 6;
       break;
     case Difficulty::Hard:
-      std::cout << "Hard" << std::endl;
       minimax_depth = 9;
       break;
     case Difficulty::Extreme:
-      std::cout << "Extremes" << std::endl;
       minimax_depth = 12;
       break;
   }
 
-  battle_sim_ = new BattleSim(player_, minimax_depth);
+  battle_sim_ = new BattleSim(player_, fx_player_, minimax_depth);
   battle_sim_->ActivateBattle();
   connect(battle_sim_, &BattleSim::DropItemSignal, this, &Game::EnemyDropItem);
   connect(battle_sim_, &BattleSim::GameOverSignal, this, &Game::GameOver);
