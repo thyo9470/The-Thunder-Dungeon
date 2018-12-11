@@ -12,7 +12,7 @@ WinWindow::WinWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  connect(ui->newGame, &QPushButton::pressed, this, &WinWindow::on_NewGameButton_clicked);
+  connect(ui->newGameButton, &QPushButton::pressed, this, &WinWindow::on_NewGameButton_clicked);
 
   // Initialize the scene, which will hold all the objects to render
   scene_ = new QGraphicsScene();
@@ -30,6 +30,9 @@ WinWindow::WinWindow(QWidget *parent) :
   background->setPixmap(background_image_);
   background->setScaledContents(true);
   scene_->addWidget(background);
+
+  /*ui->newGameButton->autoFillBackground();
+  ui->newGameButton->setStyleSheet("border-image:url(:images/Button.png)");*/
 
 }
 

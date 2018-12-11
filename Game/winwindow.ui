@@ -46,7 +46,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="newGame">
+   <widget class="QPushButton" name="newGameButton">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -54,6 +54,11 @@
       <width>171</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>New Game</string>

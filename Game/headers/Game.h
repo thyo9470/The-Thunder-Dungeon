@@ -43,7 +43,7 @@ private:
   bool playing_;
   Item item_to_equip_;
   Entity *player_;
-  int end_level = 6;
+  int end_level = 1;
 
   void WinGame() const;
 
