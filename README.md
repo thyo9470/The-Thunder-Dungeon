@@ -29,6 +29,7 @@ You play as an intrepid adventurer who enters the thunder dungeon in search of f
 - [Homework 3 Update](https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/Homework%203.md)
 - [Homework 4 Update](https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/homework%204.md)
 - [Checkpoint 1](https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/checkpoint.md)
+- [Final Checkpoint](https://github.com/thyo9470/The-Thunder-Dungeon/blob/master/homeworks/FinalProject.md)
 
 ### Board
 
