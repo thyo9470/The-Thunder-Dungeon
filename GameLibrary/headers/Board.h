@@ -65,6 +65,7 @@ private:
   // Board data
   int level_;
   double chest_percent_ = 0.25; // chance of making a chest in a room
+  double enemy_percent_ = 0.50; // BASE chance of spawning an enemy in a room
 
   // Commands
   Command* up_command_;
@@ -84,7 +85,6 @@ private:
   void FormatDungeon();
 
   // Spawn and move enemies
-  void SpawnEnemies();
   void MoveEnemies();
   void ClearEnemies();
   void DeleteEnemy(Position pos);

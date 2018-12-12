@@ -53,6 +53,7 @@ private:
 public slots:
   void GetInputBoard(QKeyEvent* event);
   void GetInputBattleSim(int skill_id);
+  void NewWindows();
   void StartGame();
   void NewGame();
   // For data persistence
