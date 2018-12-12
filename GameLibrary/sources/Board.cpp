@@ -21,7 +21,6 @@
  */
 
 Board::Board(int layers, int width, int height){
-
   // Initiate Tile reference objeccts for flyweight pattern 
   empty_tile_ref_ = new EmptyTile();
   wall_tile_ref_ = new WallTile();
@@ -49,7 +48,6 @@ Board::Board(int layers, int width, int height){
 
   // setup board data
   level_ = 0;
-
   NewLevel();
 }
 
