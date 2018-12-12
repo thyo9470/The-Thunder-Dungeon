@@ -29,10 +29,10 @@ Up until now, we’ve been trying to implement a ton of features and mechanics, 
     - Chests spawn in the dungeon
     - Better project README
 
-#### 4) Next Checkpoint:
+#### 3) Next Checkpoint:
 Overall, we are very happy with how our project has turned out. We didn't have to cut a whole lot of features, and the game works smoothly, and the architecture has been holding together well.
 Next: to Unity and beyond!
-#### 5) Screenshots:
+#### 4) Screenshots:
 #### Class Composition (Simplified)
 ![Class Composition](https://docs.google.com/drawings/d/e/2PACX-1vRmd_d0mH_sDSmvCkg4IkqocvTKKBipaIvFoicu_V8PU4xkaQ6ZW6U0kLebp7m30erIikTVr9Ejqhca/pub?w=960&h=720)
 #### Win Screens and Main Menu!
