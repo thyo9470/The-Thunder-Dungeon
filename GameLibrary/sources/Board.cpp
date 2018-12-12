@@ -64,6 +64,7 @@ Board::Board(int layers, int width, int height){
  */
 
 void Board::NewLevel(){
+  ClearEnemies();
   std::vector< std::vector< std::vector<Tile*> > > temp_board = GenerateBlankBoard();
 
   // place player tile
@@ -76,7 +77,6 @@ void Board::NewLevel(){
   board_ = temp_board;
   GenerateDungeon();
   FormatDungeon();
-  SpawnEnemies();
 
   // update board data
   level_++;
@@ -279,7 +279,9 @@ void Board::GenerateDungeon(){
           }
 
           // add extras to room
-          AddExtraToRoom(room_center.x_, room_center.y_, room_width, room_height);
+          if(room_center.x_ != 3 || room_center.y_ != 3){
+            AddExtraToRoom(room_center.x_, room_center.y_, room_width, room_height);
+            }
 
         } 
         // if this is the position of a hallway
@@ -366,9 +368,29 @@ void Board::AddExtraToRoom(int x, int y, int width, int height){
       if(test_placement == empty_tile_ref_){
         board_[chest_layer_id_][chest_y][chest_x] = chest_closed_tile_ref_;
       }
-
   }
 
+  double try_for_enemy = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+  // Scaled enemy percent starts at 50% to spawn an enemy, and ends at 70% at level 10
+  double scale_per_level = 0.02;
+  double scaled_enemy_percent = enemy_percent_ + scale_per_level * level_;
+    if(try_for_enemy < scaled_enemy_percent){
+
+        int room_x = (rand() % ((2*width)+1)) - width;
+        int room_y = (rand() % ((2*height)+1)) - height;
+
+        int enemy_x = x + room_x;
+        int enemy_y = y + room_y;
+
+        Tile* test_placement = CheckCollision(Position(enemy_x, enemy_y));
+
+        if(test_placement == empty_tile_ref_){
+            EnemyTile * enemy = new EnemyTile(Position(enemy_x, enemy_y));
+            board_[entity_layer_id_][enemy_y][enemy_x] = enemy;
+            enemies_.push_back(enemy);
+          }
+      }
 }
 
 /**
@@ -401,31 +423,6 @@ void Board::FormatDungeon(){
 
     }
   }
-}
-
-/**
- * @brief Board::SpawnEnemies
- *
- * - Populate board with enemies
- * - Ony spawns enemies in the center of rooms
- *
- */
-
-void Board::SpawnEnemies()
-{
-  ClearEnemies();
-
-  // Spawn a bunch of enemies in a grid
-  Position start_room_pos = Position(9, 3);
-  int room_spacing = 6;
-  Position end_room_pos = Position(width_ * room_spacing - 3, width_ * room_spacing - 3);
-  for(int i = start_room_pos.y_; i < end_room_pos.y_; i+=room_spacing){
-      for(int j = start_room_pos.x_; j < end_room_pos.x_; j+=room_spacing){
-          EnemyTile * enemy = new EnemyTile(Position(i, j));
-          board_[entity_layer_id_][j][i] = enemy;
-          enemies_.push_back(enemy);
-        }
-    }
 }
 
 /**

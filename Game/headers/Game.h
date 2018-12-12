@@ -46,7 +46,7 @@ private:
   Entity *player_;
   QMediaPlayer * fx_player_;
 
-  int end_level = 2;
+  int end_level = 6;
 
   void WinGame() const;
 
